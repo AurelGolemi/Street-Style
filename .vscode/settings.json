@@ -1,7 +1,7 @@
 {
   "typescript.preferences.importModuleSpecifier": "relative",
   "editor.codeActionsOnSave": {
-    "source.organizeImports": true
+    "source.organizeImports": "explicit"
   },
   "editor.formatOnSave": true,
   "tailwindCSS.experimental.classRegex": [
