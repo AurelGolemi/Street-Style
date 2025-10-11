@@ -1,8 +1,9 @@
 'use client'
 
-import { useCartStore } from '@/store/cartStore'
+import { useCartStore } from '@/store/CartStore'
 import { button } from 'framer-motion/client'
 import { useState } from 'react'
+import Image from 'next/image'
 
 interface ProductCardProps {
   product: {
@@ -44,7 +45,7 @@ export default function ProductCard({ product }: ProductCardProps) {
     <div className="bg-white rounded-lg shadow-md overflow-hidden">
       {/* Product Image */}
       <div className="aspect-square bg-gray-200">
-        <img 
+        <Image 
           src={product.image} 
           alt={product.name}
           className="w-full h-full object-cover"

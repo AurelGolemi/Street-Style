@@ -1,16 +1,32 @@
-/* New Layout (src/app/[locale]/layout.tsx) */
+'use client'
 
-
+import { useState } from 'react'
+import { Inter } from 'next/font/google'
+import Header from '@/components/layout/Header'
+import CartSidebar from '@/components/cart/CartSidebar'
 import './globals.css'
+
+const inter = Inter({ subsets: ['latin']})
 
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode
-}) {
+  }) {
+  const [isCartOpen, setIsCartOpen] = useState(false)
+
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body className={inter.className}>
+        <Header onCartClick={() => setIsCartOpen(true)} />
+        
+        <main className="min-h-screen">{children}</main>
+
+        <CartSidebar
+          isOpen={isCartOpen}
+          onClose={() => setIsCartOpen(false)}
+        />
+      </body>
     </html>
   )
 }

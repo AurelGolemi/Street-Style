@@ -1,0 +1,2 @@
+- [x] Update updateQuantity calls in CartSidebar.tsx to include size and color parameters
+- [x] Update removeItem call in CartSidebar.tsx to include size and color parameters
