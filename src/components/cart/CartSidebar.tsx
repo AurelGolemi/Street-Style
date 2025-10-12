@@ -2,6 +2,7 @@
 
 import { useCartStore } from '@/store/CartStore'
 import { X, Trash2 } from 'lucide-react'
+import Image from 'next/image'
 
 interface CartSidebarProps {
   isOpen: boolean
@@ -42,9 +43,10 @@ export default function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
                 {items.map((item) => (
                   <div key={`${item.id}-${item.size}-${item.color}`} className="flex gap-4 border-b pb-4">
                     {/* Item Image */}
-                    <img 
+                    <Image 
                       src={item.image} 
                       alt={item.name}
+                      fill
                       className="w-20 h-20 object-cover rounded"
                     />
 

@@ -1,2 +1,2 @@
-- [x] Update updateQuantity calls in CartSidebar.tsx to include size and color parameters
-- [x] Update removeItem call in CartSidebar.tsx to include size and color parameters
+- [x] Change ProductCard image display from object-cover to object-contain to fit images fully in cards without cropping
+- [x] Resize product images to 400x400 pixels with contain fit and white background for consistent square display

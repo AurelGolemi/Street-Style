@@ -1,7 +1,6 @@
 'use client'
 
 import { useCartStore } from '@/store/CartStore'
-import { button } from 'framer-motion/client'
 import { useState } from 'react'
 import Image from 'next/image'
 
@@ -14,6 +13,7 @@ interface ProductCardProps {
     image: string
     sizes: string[]
     colors: string[]
+    category: string
   }
 }
 
@@ -32,7 +32,7 @@ export default function ProductCard({ product }: ProductCardProps) {
       price: product.price,
       size: selectedSize,
       color: selectedColor,
-      quantity: 1,
+      category: product.category,
       image: product.image
     })
 
@@ -45,10 +45,12 @@ export default function ProductCard({ product }: ProductCardProps) {
     <div className="bg-white rounded-lg shadow-md overflow-hidden">
       {/* Product Image */}
       <div className="aspect-square bg-gray-200">
-        <Image 
-          src={product.image} 
+        <Image
+          src={product.image}
           alt={product.name}
-          className="w-full h-full object-cover"
+          width={700}
+          height={700}
+          className="object-contain"
         />
       </div>
 
@@ -79,7 +81,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         </div>
 
         {/* Color Selector */}
-<div className="mt-4">
+        <div className="mt-4">
           <p className="text-sm font-medium mb-2">Color:</p>
           <div className="flex gap-2">
             {product.colors.map(color => (

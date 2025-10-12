@@ -1,10 +1,11 @@
-{/* New products.ts */ }
+/* New products.ts */ 
 import { Product } from '@/lib/types'
 
 export const brands = [
   { id: 'nike', name: 'Nike', logo: '/brand-logos/nike-logo.svg' },
   { id: 'adidas', name: 'Adidas', logo: '/brand-logos/adidas-logo.svg' },
-  { id: 'puma', name: 'Puma', logo: '/brand-logos/puma-logo.svg'}
+  { id: 'puma', name: 'Puma', logo: '/brand-logos/puma-logo.svg' },
+  { id: 'hoodrich', name: 'Hoodrich', logo: '/brand-logos/hoodrich-logo.svg'}
 ]
 
 export const products: Product[] = [
@@ -12,13 +13,43 @@ export const products: Product[] = [
     id: 'nike-air-max-95-og',
     name: 'Air Max 95',
     price: 189.99,
-    image: '/nike-air-max-95-og.jpg',
+    image: '/brand-product/nike-air-max-95-og.jpg',
     category: 'men',
     subcategory: 'shoes',
-    sizes: [41, 42],
+    sizes: ['41', '42'],
     colors: ['Black-Persian-Violet', 'Baltic-Blue-Black-Pearl', 'MTLC Gold-Black-Pearl', 'Green-Shock-Black-Pearl-Grey', 'Metallic-Silver-Black-White'],
     description: "Get these '90s-inspired icons and stand out wherever you go! The Nike Air Max 95 trainers come in a black colourway with purple stitching that adds the perfect touch, from a durable and smooth upper for ultimate comfort, with a soft ankle collar to offer extra support.",
     inStock: true,
+    brand: 'Nike',
+    features: [],
+  },
+  {
+    id: 'nike-tech-mix-track-pants',
+    name: 'Nike Tech Mix Track Pants',
+    price: 100.00,
+    image: '/brand-product/nike-tech-mix-track-pants.jpg',
+    category: 'men',
+    subcategory: 'trousers',
+    sizes: ['XS', 'S', 'M', 'L'],
+    colors: ['Gray'],
+    description: "Made for the streets. These men's Tech Mix trackpants from Nike land in a Cool Grey colourway and are exclusive to JD. They're crafted from Nike's signature Tech Fleece fabric with cut-and-sew panels for a textured, modern look. Featuring an elasticated waistband and tapered legs for a streamlined fit, they're finished with side pockets and a Futura logo on the thigh.",
+    inStock: true,
+    brand: 'Nike',
+    features: [],
+  },
+  {
+    id: 'Hoodrich-Chromatic-Hoodie',
+    name: 'Hoodrich Chromatic Hoodie',
+    price: 55.00,
+    image: '/brand-product/hoodrich-chromatic-hoodie.jpg',
+    category: 'men',
+    subcategory: 'hoodie',
+    sizes: ['XS', 'S', 'M', 'L'],
+    colors: ['Black-Silver-Chromatic', 'Sky-Captain-Silver-Chromatic'],
+    description: "Layer up in iconic style with the Hoodrich Chromatic Hoodie in a black colourway with the shiny detail on the chest giving the perfect touch. This staple is made of smooth and soft fleece fabric to provide everyday comfort and warmth, while it features a hood that closes with a button for even more coverage from the cold. The front pocket is ideal for storing essentials, but also to keep your hands warm.",
+    inStock: true,
+    brand: 'Hoodrich',
+    features: [],
   },
 ]
 
@@ -36,7 +67,7 @@ export const getFeaturedProducts = () => {
 }
 
 
-{/* Old products.ts */}
+// {/* Old products.ts */}
 // export interface Product {
 //   id: string
 //   name: string

@@ -20,6 +20,11 @@ export interface Product {
   image: string
   category: string
   features: string[]
+  brand: string
+  subcategory: string
+  sizes: string[]
+  colors: string[]
+  inStock: boolean
 }
 
 export interface Testimonial {
