@@ -3,6 +3,7 @@ import Container from '@/components/ui/Container'
 import ProductCard from '@/components/product/ProductCard'
 import { getFeaturedProducts } from '@/data/products'
 import Link from 'next/link'
+import Image from 'next/image'
 
 export default function HomePage() {
   const featuredProducts = getFeaturedProducts()
@@ -36,6 +37,29 @@ export default function HomePage() {
           <div className="text-center mt-12">
             <Link href="/products" className="inline-block bg-black text-white px-8 py-3 rounded-lg font-semibold hover:bg-gray-800 transition">
               View All Products
+            </Link>
+          </div>
+        </Container>
+      </section>
+
+      {/* Categories Section */}
+      <section className="py-16">
+        <Container>
+          <h2 className="text-3xl font-bold text-center mb-12">Shop by Category</h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Men Category*/}
+
+            <Link href="/men" className="group relative overflow-hidden rounded-lg aspect-square bg-gray-200 hover:shadow-xl transition">
+              <Image
+                src="/brand-category/mens-collection.jpg"
+                alt="Men's Collection"
+                fill
+                className="object-cover group-hover:scale-105 transition duration-300"
+              />
+                <div className="absolute inset-0 bg-transparent bg-opacity-40 flex items-center justify-center">
+                  <h3 className="text-white text-3xl font-bold">Men</h3>
+                </div>
             </Link>
           </div>
         </Container>
