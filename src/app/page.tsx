@@ -35,7 +35,7 @@ export default function HomePage() {
 
           {/* View All Button */}
           <div className="text-center mt-12">
-            <Link href="/products" className="inline-block bg-black text-white px-8 py-3 rounded-lg font-semibold hover:bg-gray-800 transition">
+            <Link href="/products" className="inline-block bg-black text-white px-8 py-3 rounded-lg font-semibold hover:bg-gray-800 transition cursor-pointer">
               View All Products
             </Link>
           </div>
@@ -61,6 +61,54 @@ export default function HomePage() {
                   <h3 className="text-white text-3xl font-bold">Men</h3>
                 </div>
             </Link>
+
+            {/* Women Category */}
+            <Link href="/women" className="group relative overflow-hidden rounded-lg aspect-square bg-gray-200 hover:shadow-xl transition">
+              <Image
+                src="/brand-category/womens-collection.webp"
+                alt="Women's collection"
+                fill
+                className="object-cover group-hover:scale-105 transition duration-300"
+              />
+                <div className="absolute inset-0 bg-transparent bg-opacity-40 flex items-center justify-center">
+                  <h3 className="text-white text-3xl font-bold">Women</h3>
+                </div>
+            </Link>
+
+            {/* Kids Category*/}
+            <Link href="/kids" className="group relative overflow-hidden rounded-lg aspect-square bg-gray-200 hover-shadow:xl transition">
+              <Image
+                src="/brand-category/kids-collection.jpg"
+                alt="Kids' collection"
+                fill
+                className="object-cover group-hover:scale-105 transition duration-300"
+              />
+              <div className="absolute inset-0 bg-transparent bg-opacity-40 flex items-center justify-center">
+                <h3 className="text-white text-3xl font-bold">Kids</h3>
+              </div>
+            </Link>
+          </div>
+        </Container>
+      </section>
+
+      {/* Brands Section */}
+      <section className="py-16 bg-gray-50">
+        <Container>
+          <h2 className="text-3xl font-bold text-center mb-4 text-gray-900">Featured Brands</h2>
+          <p className="text-center text-gray-600 mb-12">
+            {"Shop from the world's leading sportswear brands"}
+          </p>
+
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-8">
+            {['Nike', 'Adidas', 'Puma', 'Hoodrich'].map((brand) => (
+              <div
+                key={brand}
+                className="bg-white rounded-lg p-8 flex items-center justify-center hover:shadow-lg transition cursor-pointer">
+                <span className="texxt-xl font-bold text-gray-800">
+                    <span className="text-xl font-bold text-gray-800">{brand}</span>
+                </span>
+              </div>
+            ))}
           </div>
         </Container>
       </section>

@@ -68,7 +68,7 @@ export default function ProductCard({ product }: ProductCardProps) {
               <button
                 key={size}
                 onClick={() => setSelectedSize(size)}
-                className={`px-3 py-1 border rounded ${
+                className={`px-3 py-1 border rounded cursor-pointer ${
                   selectedSize === size 
                     ? 'border-black bg-black text-white' 
                     : 'border-gray-300'
@@ -88,7 +88,7 @@ export default function ProductCard({ product }: ProductCardProps) {
               <button
                 key={color}
                 onClick={() => setSelectedColor(color)}
-                className={`w-8 h-8 rounded-full border-2 ${
+                className={`w-8 h-8 rounded-full border-2 cursor-pointer ${
                   selectedColor === color 
                     ? 'border-black' 
                     : 'border-gray-300'
@@ -102,7 +102,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         {/* Add to Cart Button */}
         <button
           onClick={handleAddToCart}
-          className="w-full mt-4 bg-black text-white py-3 rounded-lg font-semibold hover:bg-gray-800 transition"
+          className="w-full mt-4 bg-black text-white py-3 rounded-lg font-semibold hover:bg-gray-800 transition cursor-pointer"
         >
           {showSuccess ? '✔ Added to Cart!' : 'Add to Cart'}
         </button>
