@@ -2,6 +2,7 @@
 import type { Config } from 'tailwindcss'
 
 const config: Config = {
+  darkMode: 'class', // Enable class-based dark mode
   content: [
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
@@ -10,6 +11,15 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        // Theme Mode colors
+        background: {
+          light: '#ffffff',
+          dark: '#0f172a',
+        },
+        foreground: {
+          light: '#0f172a',
+          dark: '#f1f5f9',
+        },
         // Custom brand colors
         primary: {
           50: '#eff6ff',

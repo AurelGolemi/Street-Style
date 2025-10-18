@@ -3,7 +3,9 @@
 import { useState } from 'react'
 import { Inter } from 'next/font/google'
 import Header from '@/components/layout/Header'
+import Footer from '@/components/layout/Footer'
 import CartSidebar from '@/components/cart/CartSidebar'
+import { ThemeProvider } from '@/contexts/ThemeContext'
 import './globals.css'
 
 const inter = Inter({ subsets: ['latin']})
@@ -16,16 +18,22 @@ export default function RootLayout({
   const [isCartOpen, setIsCartOpen] = useState(false)
 
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
+        <ThemeProvider>
         <Header onCartClick={() => setIsCartOpen(true)} />
-        
-        <main className="min-h-screen">{children}</main>
+
+          <main className="min-h-screen bg-gray-50 dark:bg-slate-900">
+            {children}
+          </main>
+
+          <Footer />
 
         <CartSidebar
           isOpen={isCartOpen}
           onClose={() => setIsCartOpen(false)}
-        />
+          />
+        </ThemeProvider>
       </body>
     </html>
   )

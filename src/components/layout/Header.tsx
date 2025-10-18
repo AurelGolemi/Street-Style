@@ -4,6 +4,8 @@ import { ShoppingCart, Menu, X, Search, User } from 'lucide-react'
 import { useState } from 'react'
 import { useCartStore } from '@/store/CartStore'
 import Container from '@/components/ui/Container'
+import UserDropdown from '@/components/layout/UserDropdown'
+import ThemeToggle from '@/components/ui/ThemeToggle'
 import Link from 'next/link'
 
 interface HeaderProps {
@@ -15,7 +17,7 @@ export default function Header({ onCartClick }: HeaderProps) {
   const getTotalItems = useCartStore(state => state.getTotalItems)
 
   return (
-    <header className="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm">
+    <header className="sticky top-0 z-50 bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-slate-700 shadow-sm">
       <Container>
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
@@ -23,39 +25,46 @@ export default function Header({ onCartClick }: HeaderProps) {
             <div className="w-10 h-10 bg-black rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-xl">SS</span>
             </div>
-            <span className="font-bold text-xl text-gray-900 hidden sm:block">Street Style</span>
+            <span className="font-bold text-xl text-gray-900 dark:text-slate-100 hidden sm:block">Street Style</span>
           </Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
-            <Link href="/men" className="text-gray-800 hover:text-black font-medium transition">
+            <Link href="/men" className="text-gray-800 dark:text-slate-200 hover:text-black dark:hover:text-white font-medium transition">
               Men
             </Link>
-            <Link href="/women" className="text-gray-800 hover:text-black font-medium transition">
+            <Link href="/women" className="text-gray-800 dark:text-slate-200 hover:text-black dark:hover:text-white font-medium transition">
               Women
             </Link>
-            <Link href="/kids" className="text-gray-800 hover:text-black font-medium transition">
+            <Link href="/kids" className="text-gray-800 dark:text-slate-200 hover:text-black dark:hover:text-white font-medium transition">
               Kids
+            </Link>
+            <Link href="/brands" className="text-gray-800 dark:text-slate-200 hover:text-black dark:hover:text-white font-medium transition">
+              Brands
+            </Link>
+            <Link href="/sales" className="text-gray-800 dark:text-slate-200 hover:text-black dark:hover:text-white font-medium transition">
+              Sales
             </Link>
           </nav>
 
           {/* Right Actions */}
           <div className="flex items-center space-x-4">
             {/* Search */}
-            <button className="hidden md:block p-2 hover:bg-gray-100 rounded-full transition cursor-pointer">
-              <Search className="w-5 h-5 text-gray-900" />
+            <button className="hidden md:block p-2 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-full transition cursor-pointer">
+              <Search className="w-5 h-5 text-gray-900 dark:text-slate-100" />
             </button>
 
-            {/* Account */}
-            <button className="hidden md:block p-2 hover:bg-gray-100 rounded-full transition cursor-pointer">
-              <User className="w-5 h-5 text-gray-900" />
-            </button>
+            {/* Light - Dark Modes*/}
+            <ThemeToggle />
+
+            {/* User Dropdown */}
+            <UserDropdown />
 
             {/* Cart */}
             <button
               onClick={onCartClick}
-              className="relative p-2 hover:bg-gray-100 rounded-full transition cursor-pointer">
-                <ShoppingCart className="w-5 h-5 text-gray-900" />
+              className="relative p-2 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-full transition cursor-pointer">
+                <ShoppingCart className="w-5 h-5 text-gray-900 dark:text-slate-100" />
               {getTotalItems() > 0 && (
                 <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full font-bold">
                   {getTotalItems()}
@@ -66,18 +75,20 @@ export default function Header({ onCartClick }: HeaderProps) {
             {/* Mobile Menu Toggle */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="md:hidden p-2 hover:bg-gray-100 rounded-full transition">
-              {isMobileMenuOpen ? <X className="w-6 h-6 text-gray-900" /> : <Menu className="w-6 h-6 text-gray-900" />}
+              className="md:hidden p-2 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-full transition">
+              {isMobileMenuOpen ? <X className="w-6 h-6 text-gray-900 dark:text-slate-100" /> : <Menu className="w-6 h-6 text-gray-900 dark:text-slate-100" />}
             </button>
           </div>
         </div>
 
         {/* Mobile Menu */}
-        <div className="md:hidden py-4 border-t">
+        <div className="md:hidden py-4 border-t border-gray-200 dark:border-slate-700">
           <nav className="flex flex-col space-y-4">
-            <Link href="/men" className="text-gray-800 hover:text-black font-medium">Men</Link>
-              <Link href="/women" className="text-gray-800 hover:text-black font-medium">Women</Link>
-              <Link href="/kids" className="text-gray-800 hover:text-black font-medium">Kids</Link>
+            <Link href="/men" className="text-gray-800 dark:text-slate-200 hover:text-black dark:hover:text-white font-medium">Men</Link>
+              <Link href="/women" className="text-gray-800 dark:text-slate-200 hover:text-black dark:hover:text-white font-medium">Women</Link>
+            <Link href="/kids" className="text-gray-800 dark:text-slate-200 hover:text-black dark:hover:text-white font-medium">Kids</Link>
+            <Link href="/brands" className="text-gray-800 dark:text-slate-200 hover:text-black dark:hover:text-white font-medium">Brands</Link>
+            <Link href="/sales" className="text-gray-800 dark:text-slate-200 hover:text-black dark:hover:text-white font-medium">Sales</Link>
           </nav>
         </div>
       </Container>

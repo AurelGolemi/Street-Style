@@ -14,20 +14,20 @@ export default function HomePage() {
       <Hero />
 
       {/* Featured Products Section */}
-      <section className="py-16 bg-gray-50">
+      <section className="py-16 bg-gray-50 dark:bg-slate-900">
         <Container>
           {/* Section Header */}
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-slate-100 mb-4">
               Trending Now
             </h2>
-            <p className="text-gray-800 text-lg max-w-2xl mx-auto">
+            <p className="text-gray-800 dark:text-slate-200 text-lg max-w-2xl mx-auto">
               Discover the latest styles from your favourite brands.
             </p>
           </div>
 
           {/* Product Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 text-gray-900">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 text-gray-900 dark:text-slate-100">
             {featuredProducts.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
@@ -35,7 +35,7 @@ export default function HomePage() {
 
           {/* View All Button */}
           <div className="text-center mt-12">
-            <Link href="/products" className="inline-block bg-black text-white px-8 py-3 rounded-lg font-semibold hover:bg-gray-800 transition cursor-pointer">
+            <Link href="/products" className="inline-block bg-black dark:bg-slate-800 text-white px-8 py-3 rounded-lg font-semibold hover:bg-gray-800 dark:hover:bg-slate-700 transition cursor-pointer">
               View All Products
             </Link>
           </div>
@@ -45,7 +45,7 @@ export default function HomePage() {
       {/* Categories Section */}
       <section className="py-16">
         <Container>
-          <h2 className="text-3xl font-bold text-center mb-12">Shop by Category</h2>
+          <h2 className="text-3xl font-bold text-center mb-12 text-gray-900 dark:text-slate-100">Shop by Category</h2>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* Men Category*/}
@@ -92,10 +92,10 @@ export default function HomePage() {
       </section>
 
       {/* Brands Section */}
-      <section className="py-16 bg-gray-50">
+      <section className="py-16 bg-gray-50 dark:bg-slate-900">
         <Container>
-          <h2 className="text-3xl font-bold text-center mb-4 text-gray-900">Featured Brands</h2>
-          <p className="text-center text-gray-600 mb-12">
+          <h2 className="text-3xl font-bold text-center mb-4 text-gray-900 dark:text-slate-100">Featured Brands</h2>
+          <p className="text-center text-gray-600 dark:text-slate-200 mb-12">
             {"Shop from the world's leading sportswear brands"}
           </p>
 
@@ -103,10 +103,8 @@ export default function HomePage() {
             {['Nike', 'Adidas', 'Puma', 'Hoodrich'].map((brand) => (
               <div
                 key={brand}
-                className="bg-white rounded-lg p-8 flex items-center justify-center hover:shadow-lg transition cursor-pointer">
-                <span className="texxt-xl font-bold text-gray-800">
-                    <span className="text-xl font-bold text-gray-800">{brand}</span>
-                </span>
+                className="bg-white dark:bg-slate-800 rounded-lg p-8 flex items-center justify-center hover:shadow-lg transition cursor-pointer">
+                <span className="text-xl font-bold text-gray-800 dark:text-slate-100">{brand}</span>
               </div>
             ))}
           </div>
