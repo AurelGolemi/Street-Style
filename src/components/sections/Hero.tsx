@@ -8,7 +8,7 @@ export default function Hero() {
         <p className="text-xl mb-8 max-w-2xl mx-auto">
           Brief description of your amazing Product
         </p>
-        <button className="btn-primary bg-black dark:bg-slate-700 hover:bg-gray-800 dark:hover:bg-slate-600">
+        <button className="btn-primary bg-black dark:bg-slate-800 hover:bg-gray-800 dark:hover:bg-slate-800 p-1">
           Get Started
         </button>
       </div>

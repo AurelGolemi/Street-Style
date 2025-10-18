@@ -35,6 +35,10 @@ const config: Config = {
           950: '#172554',
         },
       },
+      transitionProperty: {
+        'height': 'height',
+        'spacing': 'margin, padding',
+      },
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
       },

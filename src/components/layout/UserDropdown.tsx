@@ -41,7 +41,7 @@ export default function UserDropdown() {
       {/* User Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="p-2 hover:bg-gray-100 rounded-full transition-colors relative"
+        className="p-2 hover:bg-gray-100 rounded-full transition-colors relative cursor-pointer"
         aria-label="User Menu"
         aria-expanded={isOpen}
       >

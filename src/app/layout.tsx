@@ -6,6 +6,7 @@ import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
 import CartSidebar from '@/components/cart/CartSidebar'
 import { ThemeProvider } from '@/contexts/ThemeContext'
+import { ThemeScript } from './ThemeScript'
 import './globals.css'
 
 const inter = Inter({ subsets: ['latin']})
@@ -19,9 +20,14 @@ export default function RootLayout({
 
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={inter.className}>
+      <head>
+        {/* Theme Script runs before any renders */}
+        <ThemeScript />
+      </head>
+      <body className={inter.className} suppressHydrationWarning>
         <ThemeProvider>
-        <Header onCartClick={() => setIsCartOpen(true)} />
+          <div className="min-h-screen bg-gray-50 dark:bg-slate-900 transition-colors duration-300">
+            <Header onCartClick={() => setIsCartOpen(true)} />
 
           <main className="min-h-screen bg-gray-50 dark:bg-slate-900">
             {children}
@@ -33,6 +39,7 @@ export default function RootLayout({
           isOpen={isCartOpen}
           onClose={() => setIsCartOpen(false)}
           />
+          </div>
         </ThemeProvider>
       </body>
     </html>
