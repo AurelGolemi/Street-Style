@@ -5,6 +5,7 @@ import { useState } from 'react'
 import { useCartStore } from '@/store/CartStore'
 import Container from '@/components/ui/Container'
 import UserDropdown from '@/components/layout/UserDropdown'
+import SearchModal from '@/components/search/SearchModal'
 import Link from 'next/link'
 
 interface HeaderProps {
@@ -15,8 +16,11 @@ export default function Header({ onCartClick }: HeaderProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const getTotalItems = useCartStore(state => state.getTotalItems)
 
+  const [isSearchOpen, setIsSearchOpen] = useState(false)
+
   return (
-    <header className="sticky top-0 z-50 bg-white border-b border-gray-200 dark:border-slate-700 shadow-sm">
+    <>
+    <header className="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm">
       <Container>
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
@@ -49,7 +53,11 @@ export default function Header({ onCartClick }: HeaderProps) {
           {/* Right Actions */}
           <div className="flex items-center space-x-4">
             {/* Search */}
-            <button className="hidden md:block p-2 hover:bg-gray-100 rounded-full transition cursor-pointer">
+              <button
+                onClick={() => setIsSearchOpen(true)}
+                className="hidden md:block p-2 hover:bg-gray-100 rounded-full transition cursor-pointer"
+                aria-label="search"
+              >
               <Search className="w-5 h-5 text-gray-900" />
             </button>
 
@@ -81,14 +89,18 @@ export default function Header({ onCartClick }: HeaderProps) {
         <div className="md:hidden py-4 border-t border-gray-200 dark:border-slate-700">
           <nav className="flex flex-col space-y-4">
             <Link href="/men" className="text-gray-800 hover:text-blackfont-medium">Men</Link>
-              <Link href="/women" className="text-gray-800hover:text-black font-medium">Women</Link>
-            <Link href="/kids" className="text-gray-800hover:text-blackfont-medium">Kids</Link>
-            <Link href="/brands" className="text-gray-800hover:text-blackfont-medium">Brands</Link>
+              <Link href="/women" className="text-gray-800 hover:text-black font-medium">Women</Link>
+            <Link href="/kids" className="text-gray-800 hover:text-blackfont-medium">Kids</Link>
+            <Link href="/brands" className="text-gray-800 hover:text-blackfont-medium">Brands</Link>
             <Link href="/sales" className="text-gray-800 hover:text-blackfont-medium">Sales</Link>
           </nav>
         </div>
       </Container>
-    </header>
+      </header>
+
+      {/* Search Modal */}
+      <SearchModal isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
+      </>
   )
 }
 
