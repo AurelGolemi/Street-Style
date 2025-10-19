@@ -42,7 +42,7 @@ export default function ProductCard({ product }: ProductCardProps) {
   }
 
   return (
-    <div className="bg-white dark:bg-slate-800 rounded-lg shadow-md overflow-hidden">
+    <div className="bg-white rounded-lg shadow-md overflow-hidden">
       {/* Product Image */}
       <div className="aspect-square bg-gray-200">
         <Image
@@ -57,12 +57,12 @@ export default function ProductCard({ product }: ProductCardProps) {
       {/* Product Info */}
       <div className="p-4">
         <p className="text-sm text-gray-500 dark:text-slate-400">{product.brand}</p>
-        <h3 className="text-lg font-semibold text-gray-900 dark:text-slate-100">{product.name}</h3>
-        <p className="text-xl font-bold mt-2 text-gray-900 dark:text-slate-100">€{product.price}</p>
+        <h3 className="text-lg font-semibold text-gray-900">{product.name}</h3>
+        <p className="text-xl font-bold mt-2 text-gray-900">€{product.price}</p>
 
         {/* Size Selector */}
       <div className="mt-4">
-          <p className="text-sm font-medium mb-2 text-gray-900 dark:text-slate-100">Size:</p>
+          <p className="text-sm font-medium mb-2 text-gray-900">Size:</p>
           <div className="flex gap-2">
             {product.sizes.map(size => (
               <button
@@ -70,8 +70,8 @@ export default function ProductCard({ product }: ProductCardProps) {
                 onClick={() => setSelectedSize(size)}
                 className={`px-3 py-1 border rounded cursor-pointer ${
                   selectedSize === size
-                    ? 'border-black bg-black text-white dark:border-slate-100 dark:bg-slate-100 dark:text-slate-900'
-                    : 'border-gray-300 dark:border-slate-600'
+                    ? 'border-black bg-black text-white'
+                    : 'border-gray-300'
                 }`}
               >
                 {size}
@@ -82,7 +82,7 @@ export default function ProductCard({ product }: ProductCardProps) {
 
         {/* Color Selector */}
         <div className="mt-4">
-          <p className="text-sm font-medium mb-2 text-gray-900 dark:text-slate-100">Color:</p>
+          <p className="text-sm font-medium mb-2 text-gray-900">Color:</p>
           <div className="flex gap-2">
             {product.colors.map(color => (
               <button
@@ -90,8 +90,8 @@ export default function ProductCard({ product }: ProductCardProps) {
                 onClick={() => setSelectedColor(color)}
                 className={`w-8 h-8 rounded-full border-2 cursor-pointer ${
                   selectedColor === color
-                    ? 'border-black dark:border-slate-100'
-                    : 'border-gray-300 dark:border-slate-600'
+                    ? 'border-black'
+                    : 'border-gray-300'
                 }`}
                 style={{ backgroundColor: color.toLowerCase() }}
               />
@@ -102,7 +102,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         {/* Add to Cart Button */}
         <button
           onClick={handleAddToCart}
-          className="w-full mt-4 bg-black dark:bg-slate-800 text-white py-3 rounded-lg font-semibold hover:bg-gray-800 dark:hover:bg-slate-700 transition cursor-pointer"
+          className="w-full mt-4 bg-black text-white py-3 rounded-lg font-semibold hover:bg-gray-800 transition cursor-pointer"
         >
           {showSuccess ? '✔ Added to Cart!' : 'Add to Cart'}
         </button>

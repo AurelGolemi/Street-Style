@@ -5,8 +5,6 @@ import { Inter } from 'next/font/google'
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
 import CartSidebar from '@/components/cart/CartSidebar'
-import { ThemeProvider } from '@/contexts/ThemeContext'
-import { ThemeScript } from './ThemeScript'
 import './globals.css'
 
 const inter = Inter({ subsets: ['latin']})
@@ -22,14 +20,13 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
         {/* Theme Script runs before any renders */}
-        <ThemeScript />
+        
       </head>
       <body className={inter.className} suppressHydrationWarning>
-        <ThemeProvider>
-          <div className="min-h-screen bg-gray-50 dark:bg-slate-900 transition-colors duration-300">
+          <div className="min-h-screen bg-white transition-colors duration-300">
             <Header onCartClick={() => setIsCartOpen(true)} />
 
-          <main className="min-h-screen bg-gray-50 dark:bg-slate-900">
+          <main className="min-h-screen bg-white">
               {children}
           </main>
 
@@ -40,7 +37,6 @@ export default function RootLayout({
           onClose={() => setIsCartOpen(false)}
           />
           </div>
-        </ThemeProvider>
       </body>
     </html>
   )
