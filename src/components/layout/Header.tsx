@@ -1,6 +1,6 @@
 'use client'
 
-import { ShoppingCart, Menu, X, Search, User } from 'lucide-react'
+import { ShoppingCart, Menu, X, Search } from 'lucide-react'
 import { useState } from 'react'
 import { useCartStore } from '@/store/CartStore'
 import Container from '@/components/ui/Container'
@@ -66,7 +66,7 @@ export default function Header({ onCartClick }: HeaderProps) {
               className="relative p-2 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-full transition cursor-pointer">
                 <ShoppingCart className="w-5 h-5 text-gray-900 dark:text-slate-100" />
               {getTotalItems() > 0 && (
-                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full font-bold">
+                <span suppressHydrationWarning={true} className="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full font-bold">
                   {getTotalItems()}
                 </span>
               )}

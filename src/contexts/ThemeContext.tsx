@@ -20,13 +20,13 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   // CRITICAL: Only run on client after mount
   useEffect(() => {
     setMounted(true)
-    
+
     // Read current theme from DOM (set by ThemeScript)
     const isDark = document.documentElement.classList.contains('dark')
     const initialTheme: Theme = isDark ? 'dark' : 'light'
-    
+
     setThemeState(initialTheme)
-    
+
     console.log('✅ Theme initialized:', initialTheme)
   }, [])
 
@@ -35,15 +35,16 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     if (!mounted || !theme) return
 
     const root = document.documentElement
-    
+
     console.log('🎨 Applying theme:', theme)
-    
-    // Remove both classes first
-    root.classList.remove('light', 'dark')
-    
-    // Add the new theme
-    root.classList.add(theme)
-    
+
+    // Tailwind dark mode: add 'dark' class for dark mode, remove for light mode
+    if (theme === 'dark') {
+      root.classList.add('dark')
+    } else {
+      root.classList.remove('dark')
+    }
+
     // Save to localStorage
     try {
       localStorage.setItem('theme', theme)
@@ -58,7 +59,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
       console.warn('⚠️ Attempted to toggle theme before mount')
       return
     }
-    
+
     const newTheme: Theme = theme === 'light' ? 'dark' : 'light'
     console.log('🔄 Toggling theme:', theme, '→', newTheme)
     setThemeState(newTheme)
@@ -69,7 +70,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
       console.warn('⚠️ Attempted to set theme before mount')
       return
     }
-    
+
     console.log('📝 Setting theme to:', newTheme)
     setThemeState(newTheme)
   }
@@ -78,11 +79,11 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   if (!mounted || !theme) {
     // During SSR and initial client render, provide no-op functions
     return (
-      <ThemeContext.Provider 
-        value={{ 
+      <ThemeContext.Provider
+        value={{
           theme: 'light', // Safe default for SSR
-          toggleTheme: () => {}, 
-          setTheme: () => {} 
+          toggleTheme: () => {},
+          setTheme: () => {}
         }}
       >
         {children}

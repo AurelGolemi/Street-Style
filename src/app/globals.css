@@ -2,55 +2,56 @@
 
 @layer base {
   :root {
-  --background: 249 250 251;
-  --foreground: 15 23 42;
-  --card: 255 255 255;
-  --card-foreground: 15 23 42;
-}
-
-.dark {
-  --background: 15 23 42;
-  --foreground: 241 245 249;
-  --card: 30 41 59;
-  --card-foreground: 241 245 249;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: 249 250 251;
+    --foreground: 15 23 42;
+    --card: 255 255 255;
+    --card-foreground: 15 23 42;
   }
-}
 
-body {
-   @apply bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100;
+  .dark {
+    --background: 15 23 42;
+    --foreground: 241 245 249;
+    --card: 30 41 59;
+    --card-foreground: 241 245 249;
+  }
+
+  /* Remove this entire block:
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --background: #0a0a0a;
+      --foreground: #ededed;
+    }
+  }
+  */
+
+  @theme inline {
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+    --font-sans: var(--font-geist-sans);
+    --font-mono: var(--font-geist-mono);
+  }
+
+  /* body {
+    @apply bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100;
     font-feature-settings: "rlig" 1, "calt" 1;
-}
+  } */
 
-/* Prevent overscroll bounce */
-html {
-  overscroll-behavior: none;
-  scroll-behavior: smooth;
-}
+  /* Prevent overscroll bounce */
+  html {
+    overscroll-behavior: none;
+    scroll-behavior: smooth;
+  }
 
-body {
-  overscroll-behavior: none;
-}
+  body {
+    overscroll-behavior: none;
+  }
 
-* {
+  * {
     transition-property: background-color, border-color, color, fill, stroke;
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     transition-duration: 200ms;
+  }
 }
-}
-
 
 @layer utilities {
   /* Custom scrollbar */
