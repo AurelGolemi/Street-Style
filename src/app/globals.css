@@ -1,40 +1,9 @@
 @import "tailwindcss";
 
 @layer base {
-  :root {
-    --background: 249 250 251;
-    --foreground: 15 23 42;
-    --card: 255 255 255;
-    --card-foreground: 15 23 42;
-  }
-
-  .dark {
-    --background: 15 23 42;
-    --foreground: 241 245 249;
-    --card: 30 41 59;
-    --card-foreground: 241 245 249;
-  }
-
-  /* Remove this entire block:
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --background: #0a0a0a;
-      --foreground: #ededed;
-    }
-  }
-  */
-
-  @theme inline {
-    --color-background: var(--background);
-    --color-foreground: var(--foreground);
-    --font-sans: var(--font-geist-sans);
-    --font-mono: var(--font-geist-mono);
-  }
-
-  /* body {
-    @apply bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100;
+  body {
     font-feature-settings: "rlig" 1, "calt" 1;
-  } */
+  }
 
   /* Prevent overscroll bounce */
   html {
@@ -50,6 +19,29 @@
     transition-property: background-color, border-color, color, fill, stroke;
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     transition-duration: 200ms;
+  }
+
+  .dark * {
+    background-color: black !important;
+    color: white !important;
+  }
+
+  /* Permanent override: Disable prefers-color-scheme entirely */
+  @media (prefers-color-scheme: dark) {
+    :root {
+      color-scheme: light !important;
+    }
+  }
+
+  /* Force Tailwind dark mode to work by ensuring .dark class triggers styles */
+  .dark body {
+    background-color: rgb(15 23 42) !important; /* Equivalent to bg-slate-900 */
+    color: rgb(241 245 249) !important; /* Equivalent to text-slate-100 */
+  }
+
+  :root:not(.dark) body {
+    background-color: rgb(255 255 255) !important; /* Force light bg when no .dark */
+    color: rgb(15 23 42) !important; /* Force dark text */
   }
 }
 

@@ -30,7 +30,7 @@ export default function RootLayout({
             <Header onCartClick={() => setIsCartOpen(true)} />
 
           <main className="min-h-screen bg-gray-50 dark:bg-slate-900">
-            {children}
+              {children}
           </main>
 
           <Footer />
