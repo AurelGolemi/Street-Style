@@ -238,6 +238,33 @@ export default function HomePage() {
           </div>
         </Container>
       </section>
+
+      {/* Newsletter Section */}
+      <div className="py-16 bg-gradient-to-r from-gray-100 to-gray-200">
+        <Container>
+          <div className="text-center max-w-2xl mx-auto">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              Stay in the Loop
+            </h2>
+            <p className="text-gray-600 text-lg mb-8">
+              Subscribe to get special offers, new product launches, and exclusive deals
+            </p>
+            <form className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
+              <input
+                type="email"
+                placeholder="Enter your email"
+                className="flex-1 bg-white px-6 py-4 rounded-lg focus:ring-1 focus:ring-gray/50 focus:outline-none transition"
+              />
+              <button type="submit" className="bg-white text-gray-900 px-8 py-4 rounded-lg border font-semibold hover:bg-gray-100 transition whitespace-nowrap cursor-pointer">
+                Subscribe
+              </button>
+            </form>
+            <p className="text-blue-800 text-sm mt-4">
+              No spam. Unsubscribe anytime.
+            </p>
+          </div>
+        </Container>
+      </div>
     </div>
   )
 }
