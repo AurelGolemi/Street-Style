@@ -2,17 +2,25 @@
 
 @layer base {
   body {
+    @apply bg-gray-50 text-slate-900;
     font-feature-settings: "rlig" 1, "calt" 1;
+    overscroll-behavior: none;
+    overscroll-behavior-y: contain;
+    min-height: 100vh;
+    position: relative
   }
 
   /* Prevent overscroll bounce */
   html {
     overscroll-behavior: none;
+    overscroll-behavior-y: contain;
     scroll-behavior: smooth;
   }
 
-  body {
-    overscroll-behavior: none;
+  html, body {
+    overflow-x: hidden;
+    position: relative;
+    width: 100%;
   }
 
   * {
