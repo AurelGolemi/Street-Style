@@ -1,2 +1,4 @@
-- [x] Change ProductCard image display from object-cover to object-contain to fit images fully in cards without cropping
-- [x] Resize product images to 400x400 pixels with contain fit and white background for consistent square display
+- [x] Update global Window interface to include dataLayer
+- [x] Add window guards in sendCustomEvent function
+- [x] Fix item_variant concatenation in trackAddToCart to handle undefined size/color
+- [x] Run TypeScript check to verify fixes

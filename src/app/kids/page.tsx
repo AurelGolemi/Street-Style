@@ -2,7 +2,7 @@ import Container from '@/components/ui/Container'
 import ProductCard from '@/components/product/ProductCard'
 import { getProductsByCategory } from '@/data/products'
 
-export default function MenPage() {
+export default function KidsPage() {
   const kidsProducts = getProductsByCategory('kids')
 
   return (

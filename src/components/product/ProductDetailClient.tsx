@@ -24,10 +24,11 @@ import ProductImageGallery from "./ProductImageGallery";
 import ProductTabs from "./ProductTabs";
 import RelatedProducts from "./RelatedProducts";
 
+
 // Extend Window interface for gtag
 declare global {
   interface Window {
-    gtag: (
+    gtag?: (
       command: "event",
       action: string,
       parameters?: Record<string, unknown>
