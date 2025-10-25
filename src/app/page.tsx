@@ -1,57 +1,57 @@
-import Hero from '@/components/sections/Hero'
-import Container from '@/components/ui/Container'
-import ProductCard from '@/components/product/ProductCard'
-import { getFeaturedProducts } from '@/data/products'
-import Link from 'next/link'
-import Image from 'next/image'
+import ProductCard from "@/components/products/ProductCard";
+import Hero from "@/components/sections/Hero";
+import Container from "@/components/ui/Container";
+import { getFeaturedProducts } from "@/data/products";
+import Image from "next/image";
+import Link from "next/link";
 
 export default function HomePage() {
-  const featuredProducts = getFeaturedProducts()
+  const featuredProducts = getFeaturedProducts();
 
   // Brand logos with real brand data
   const brands = [
-    { 
-      name: 'Nike', 
-      logo: '/brand-logos/nike-logo.svg',
-      href: '/brands/nike'
+    {
+      name: "Nike",
+      logo: "/brand-logos/nike-logo.svg",
+      href: "/brands/nike",
     },
-    { 
-      name: 'Adidas', 
-      logo: '/brand-logos/adidas-logo.svg',
-      href: '/brands/adidas'
+    {
+      name: "Adidas",
+      logo: "/brand-logos/adidas-logo.svg",
+      href: "/brands/adidas",
     },
-    { 
-      name: 'Puma', 
-      logo: '/brand-logos/puma-logo.svg',
-      href: '/brands/puma'
+    {
+      name: "Puma",
+      logo: "/brand-logos/puma-logo.svg",
+      href: "/brands/puma",
     },
-    { 
-      name: 'Hoodrich', 
-      logo: '/brand-logos/hoodrich-logo.svg',
-      href: '/brands/the-north-face'
+    {
+      name: "Hoodrich",
+      logo: "/brand-logos/hoodrich-logo.svg",
+      href: "/brands/the-north-face",
     },
-  ]
+  ];
 
   const categories = [
     {
-      name: 'Men',
-      href: '/men',
-      image: '/brand-category/mens-collection.jpg',
-      description: 'Discover the latest in men\'s fashion'
+      name: "Men",
+      href: "/men",
+      image: "/brand-category/mens-collection.jpg",
+      description: "Discover the latest in men's fashion",
     },
     {
-      name: 'Women',
-      href: '/women',
-      image: '/brand-category/womens-collection.webp',
-      description: 'Explore women\'s collection'
+      name: "Women",
+      href: "/women",
+      image: "/brand-category/womens-collection.webp",
+      description: "Explore women's collection",
     },
     {
-      name: 'Kids',
-      href: '/kids',
-      image: '/brand-category/kids-collection.jpg',
-      description: 'Shop for the little ones'
-    }
-  ]
+      name: "Kids",
+      href: "/kids",
+      image: "/brand-category/kids-collection.jpg",
+      description: "Shop for the little ones",
+    },
+  ];
 
   return (
     <div className="bg-gray-50">
@@ -83,7 +83,7 @@ export default function HomePage() {
 
           {/* View All Button */}
           <div className="text-center mt-12">
-            <Link href="/products" >
+            <Link href="/products">
               <button className="inline-block bg-black text-white px-8 py-3 rounded-lg font-semibold hover:bg-gray-800 transition cursor-pointer">
                 View All Products
               </button>
@@ -96,12 +96,13 @@ export default function HomePage() {
       <section className="py-16 bg-gray-50">
         <Container>
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-center mb-12 text-gray-900">Shop by Category</h2>
+            <h2 className="text-3xl font-bold text-center mb-12 text-gray-900">
+              Shop by Category
+            </h2>
             <p className="text-gray-600 text-lg">
               {"Find exactly what you're looking for"}
             </p>
           </div>
-          
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {categories.map((category) => (
@@ -128,8 +129,18 @@ export default function HomePage() {
                   </p>
                   <div className="inline-flex items-center gap-2 text-white font-semibold">
                     Shop Now
-                    <svg className="w-5 h-5 group-hover:translate-x-2 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                    <svg
+                      className="w-5 h-5 group-hover:translate-x-2 transition-transform"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M17 8l4 4m0 0l-4 4m4-4H3"
+                      />
                     </svg>
                   </div>
                 </div>
@@ -146,7 +157,9 @@ export default function HomePage() {
             <span className="inline-block px-4 py-2 bg-purple-100 text-purple-800 rounded-full text-sm font-semibold mb-4">
               FEATURED BRANDS
             </span>
-            <h2 className="text-3xl font-bold text-center mb-4 text-gray-900">Featured Brands</h2>
+            <h2 className="text-3xl font-bold text-center mb-4 text-gray-900">
+              Featured Brands
+            </h2>
             <p className="text-center text-gray-600 mb-12">
               {"Shop from the world's leading sportswear brands"}
             </p>
@@ -188,51 +201,92 @@ export default function HomePage() {
             {[
               {
                 icon: (
-                  <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
+                  <svg
+                    className="w-8 h-8"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"
+                    />
                   </svg>
                 ),
-                title: 'Free Shipping',
-                description: 'On orders over €50'
+                title: "Free Shipping",
+                description: "On orders over €50",
               },
               {
                 icon: (
-                  <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  <svg
+                    className="w-8 h-8"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
                   </svg>
                 ),
-                title: 'Secure Payment',
-                description: '100% secure transactions'
+                title: "Secure Payment",
+                description: "100% secure transactions",
               },
               {
                 icon: (
-                  <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                  <svg
+                    className="w-8 h-8"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                    />
                   </svg>
                 ),
-                title: 'Easy Returns',
-                description: '30-day return policy'
+                title: "Easy Returns",
+                description: "30-day return policy",
               },
               {
                 icon: (
-                  <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z" />
+                  <svg
+                    className="w-8 h-8"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"
+                    />
                   </svg>
                 ),
-                title: '24/7 Support',
-                description: 'Dedicated support team'
-              }
+                title: "24/7 Support",
+                description: "Dedicated support team",
+              },
             ].map((feature, index) => (
-              <div key={index} className="text-center p-6 bg-white rounded-xl border border-gray-200 hover:shadow-lg transition">
+              <div
+                key={index}
+                className="text-center p-6 bg-white rounded-xl border border-gray-200 hover:shadow-lg transition"
+              >
                 <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 text-blue-600 rounded-full mb-4">
                   {feature.icon}
                 </div>
                 <h3 className="text-lg font-semibold text-gray-900 mb-2">
                   {feature.title}
                 </h3>
-                <p className="text-gray-600 text-sm">
-                  {feature.description}
-                </p>
+                <p className="text-gray-600 text-sm">{feature.description}</p>
               </div>
             ))}
           </div>
@@ -247,7 +301,8 @@ export default function HomePage() {
               Stay in the Loop
             </h2>
             <p className="text-gray-600 text-lg mb-8">
-              Subscribe to get special offers, new product launches, and exclusive deals
+              Subscribe to get special offers, new product launches, and
+              exclusive deals
             </p>
             <form className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
               <input
@@ -255,7 +310,10 @@ export default function HomePage() {
                 placeholder="Enter your email"
                 className="flex-1 bg-white px-6 py-4 rounded-lg focus:ring-1 focus:ring-gray/50 focus:outline-none transition"
               />
-              <button type="submit" className="bg-white text-gray-900 px-8 py-4 rounded-lg border font-semibold hover:bg-gray-100 transition whitespace-nowrap cursor-pointer">
+              <button
+                type="submit"
+                className="bg-white text-gray-900 px-8 py-4 rounded-lg border font-semibold hover:bg-gray-100 transition whitespace-nowrap cursor-pointer"
+              >
                 Subscribe
               </button>
             </form>
@@ -266,7 +324,7 @@ export default function HomePage() {
         </Container>
       </div>
     </div>
-  )
+  );
 }
 
 // export default function HomePage() {

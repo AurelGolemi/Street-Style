@@ -7,41 +7,12 @@ import { ShoppingCart, Heart, Star } from 'lucide-react'
 import { Product } from '@/lib/types'
 import { useCartStore } from '@/store/CartStore'
 import { formatPrice, getDiscountPercentage, isOnSale } from '@/data/products'
-
-/**
- * ProductCard Component
- * 
- * Critical Conversion Component - This is where users first interact with products.
- * Every design decision here impacts revenue.
- * 
- * Architecture:
- * 1. Visual Appeal - High-quality image, clean layout
- * 2. Information Hierarchy - Price most prominent, then name, then brand
- * 3. Action Triggers - Quick add to cart, wishlist
- * 4. Trust Signals - Ratings, sale badges, stock status
- * 
- * Performance Considerations:
- * - Images optimized with Next.js Image component
- * - Hover states use CSS transforms (GPU accelerated)
- * - No unnecessary re-renders (React.memo could be added)
- * 
- * UX Research:
- * - Users scan left-to-right, top-to-bottom
- * - Price is decision factor #1
- * - Social proof (ratings) increases trust 25%
- * - Hover reveals additional info without cluttering
- * 
- * Conversion Optimization:
- * - Sale badges create urgency (scarcity principle)
- * - Quick add reduces friction
- * - Wishlist captures intent for remarketing
- * - Smooth animations feel premium
- */
+import { getProductUrl } from '@/utils/urls'
 
 interface ProductCardProps {
   product: Product
-  priority?: boolean // For above-the-fold images
-  showQuickAdd?: boolean // Toggle quick add button
+  priority?: boolean
+  showQuickAdd?: boolean
 }
 
 export default function ProductCard({ 
@@ -49,10 +20,8 @@ export default function ProductCard({
   priority = false,
   showQuickAdd = true 
 }: ProductCardProps) {
-  // ============================================
-  // STATE MANAGEMENT
-  // ============================================
-  
+
+  // STATE MANAGEMENT  
   const [isHovered, setIsHovered] = useState(false)
   const [isWishlisted, setIsWishlisted] = useState(false)
   const [isAddingToCart, setIsAddingToCart] = useState(false)
@@ -60,10 +29,7 @@ export default function ProductCard({
   // Cart store
   const addItem = useCartStore(state => state.addItem)
 
-  // ============================================
   // COMPUTED VALUES
-  // ============================================
-  
   const discount = getDiscountPercentage(product)
   const onSale = isOnSale(product)
   
@@ -71,36 +37,24 @@ export default function ProductCard({
   const primaryImage = product.images[0]
   const secondaryImage = product.images[1] || product.images[0]
 
-  // ============================================
-  // EVENT HANDLERS
-  // ============================================
+  // ✅ FIX: Correct product URL generation
+  const productUrl = getProductUrl(product.id)
 
-  /**
-   * Quick Add to Cart
-   * 
-   * Adds product with first available size and color.
-   * For products requiring variant selection, redirects to detail page.
-   * 
-   * UX Decision:
-   * - Quick add reduces friction for simple products
-   * - Redirects for complex products prevent errors
-   * - Loading state prevents double-clicks
-   * - Success feedback builds confidence
-   */
+  // EVENT HANDLERS
   const handleQuickAdd = (e: React.MouseEvent) => {
-    e.preventDefault() // Prevent navigation to detail page
-    e.stopPropagation() // Don't trigger parent Link
+    e.preventDefault()
+    e.stopPropagation()
 
     // Validate: Product must have size options
     if (!product.sizes || product.sizes.length === 0) {
-      // Navigate to detail page for size selection
-      window.location.href = `/product/${product.id}`
+      // ✅ CRITICAL FIX: Changed from /product/ to /products/
+      window.location.href = productUrl
       return
     }
 
     setIsAddingToCart(true)
 
-    // Simulate API delay (remove in production)
+    // Simulate API delay
     setTimeout(() => {
       addItem({
         id: `${product.id}-${product.sizes[0]}-${product.colors[0]?.name || 'default'}`,
@@ -108,7 +62,7 @@ export default function ProductCard({
         brand: product.brand,
         price: product.price,
         originalPrice: product.originalPrice,
-        size: product.sizes[0], // Default to first size
+        size: product.sizes[0],
         color: product.colors[0]?.name || 'Default',
         image: product.images[0],
         category: product.category,
@@ -116,22 +70,12 @@ export default function ProductCard({
 
       setIsAddingToCart(false)
       
-      // Show success state briefly
       setTimeout(() => {
         // Could trigger cart sidebar here
       }, 500)
     }, 300)
   }
 
-  /**
-   * Toggle Wishlist
-   * 
-   * In production, this would:
-   * 1. Check authentication status
-   * 2. Call API to save wishlist item
-   * 3. Update global wishlist state
-   * 4. Show toast notification
-   */
   const handleWishlistToggle = (e: React.MouseEvent) => {
     e.preventDefault()
     e.stopPropagation()
@@ -152,13 +96,15 @@ export default function ProductCard({
     }
   }
 
-  // ============================================
-  // RENDER
-  // ============================================
+  // ✅ DEBUG: Log product URL in development
+  if (process.env.NODE_ENV === 'development') {
+    console.log(`ProductCard: ${product.name} -> ${productUrl}`)
+  }
 
+  // RENDER
   return (
     <Link
-      href={`/product/${product.id}`}
+      href={productUrl}
       className="group block"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -176,7 +122,7 @@ export default function ProductCard({
               isHovered ? 'opacity-0 scale-110' : 'opacity-100 scale-100'
             }`}
             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-            priority={priority} // Load immediately if above fold
+            priority={priority}
           />
 
           {/* Secondary Image (Hover) */}
@@ -199,7 +145,7 @@ export default function ProductCard({
               </span>
             )}
             
-            {/* New Badge (if product is less than 30 days old) */}
+            {/* New Badge */}
             {product.createdAt && 
              new Date().getTime() - new Date(product.createdAt).getTime() < 30 * 24 * 60 * 60 * 1000 && (
               <span className="bg-blue-600 text-white text-xs font-bold px-2 py-1 rounded">
@@ -267,7 +213,7 @@ export default function ProductCard({
           )}
         </div>
 
-        {/* ==================== INFO SECTION ==================== */}
+        {/* INFO SECTION */}
         <div className="p-4">
           {/* Brand */}
           <p className="text-xs text-gray-600 uppercase tracking-wider font-semibold mb-1">

@@ -124,10 +124,10 @@ export default function ProductImageGallery({
                   e.stopPropagation()
                   prevImage()
                 }}
-                className="absolute left-4 top-1/2 -translate-y-1/2 bg-white bg-opacity-90 hover:bg-opacity-100 rounded-full p-2 shadow-lg transition-all opacity-0 group-hover:opacity-100"
+                className="absolute left-4 top-1/2 -translate-y-1/2 bg-white bg-opacity-90 hover:bg-opacity-100 rounded-full p-2 shadow-lg transition-all opacity-0 group-hover:opacity-100 text-gray-900"
                 aria-label="Previous image"
               >
-                <ChevronLeft className="w-6 h-6 text-gray-900" />
+                <ChevronLeft className="w-6 h-6" />
               </button>
 
               <button
@@ -135,10 +135,10 @@ export default function ProductImageGallery({
                   e.stopPropagation()
                   nextImage()
                 }}
-                className="absolute right-4 top-1/2 translate-y-1/2 bg-white bg-opacity-90 hover:bg-opacity-100 rounded-full p-2 shadow-lg transition-all opacity-0 group-hover:opacity-100"
+                className="absolute right-4 top-1/2 translate-y-1/2 bg-white bg-opacity-90 hover:bg-opacity-100 rounded-full p-2 shadow-lg transition-all opacity-0 group-hover:opacity-100 text-gray-900"
               aria-label="Next Image"
               >
-                <ChevronRight className="w-6 h-6 text-gray-900" />
+                <ChevronRight className="w-6 h-6" />
               </button>
             </>
           )}
@@ -187,19 +187,19 @@ export default function ProductImageGallery({
           {/* Close Button */}
           <button
             onClick={closeLightbox}
-            className="absolute top-4 right-4 z-10 bg-white bg-opacity-10 hover:bg-opacity-20 rounded-full p-3 transition-all"
+            className="absolute top-4 right-4 z-10 bg-white bg-opacity-10 hover:bg-opacity-20 rounded-full p-3 transition-all cursor-pointer"
             aria-label="Close fullscreen"
           >
-            <X className="w-6 h-6 text-white" />
+            <X className="w-6 h-6 text-gray-900" />
           </button>
 
           {/* Zoom Toggle */}
           <button
             onClick={() => setIsZoomed(!isZoomed)}
-            className="top-4 left-4 z-10 bg-white bg-opacity-10 hover:bg-opacity-20 rounded-full p-3 transition-all"
+            className="top-4 left-4 z-10 bg-white bg-opacity-10 hover:bg-opacity-20 rounded-full p-3 transition-all cursor-pointer"
             aria-label={isZoomed ? 'Zoom Out' : 'Zoom In'}
           >
-            <ZoomIn className={`w-6 h-6 text-white ${isZoomed ? 'scale-125' : ''}`} />
+            <ZoomIn className={`w-6 h-6 text-gray-900 ${isZoomed ? 'scale-125' : ''}`} />
           </button>
 
           {/* Image Counter */}
@@ -242,7 +242,7 @@ export default function ProductImageGallery({
                 className="absolute left-4 top-1/2 -translate-y-1/2 bg-white bg-opacity-10 hover:bg-opacity-20 rounded-full p-4 transition-all"
                 aria-label="Previous Image"
               >
-                <ChevronLeft className="w-8 h-8 text-white" />
+                <ChevronLeft className="w-8 h-8 text-gray-900" />
               </button>
 
               <button
@@ -250,7 +250,7 @@ export default function ProductImageGallery({
                 className="absolute right-4 top-1/2 -translate-y-1/2 bg-white bg-opacity-10 hover:bg-opacity-20 rounded-full p-4 transition-all"
                 aria-label="Next Image"
               >
-                <ChevronRight className="w-8 h-8 text-white" />
+                <ChevronRight className="w-8 h-8 text-gray-900" />
               </button>
             </>
           )}

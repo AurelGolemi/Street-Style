@@ -1,77 +1,82 @@
-'use client'
+"use client";
 
-import { useState, useMemo } from 'react'
-import Container from '@/components/ui/Container'
-import ProductCard from '@/components/product/ProductCard'
-import { products } from '@/data/products'
-import { Filter, X } from 'lucide-react'
-import { p, select } from 'framer-motion/client'
+import ProductCard from "@/components/products/ProductCard";
+import Container from "@/components/ui/Container";
+import { products } from "@/data/products";
+import { Filter, X } from "lucide-react";
+import { useMemo, useState } from "react";
 
 export default function ProductsPage() {
-  const [selectedBrands, setSelectedBrands] = useState<string[]>([])
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([])
-  const [priceRange, setPriceRange] = useState<[number, number]>([0, 300])
-  const [sortBy, setSortBy] = useState('featured')
-  const [showFilters, setShowFilters] = useState(false)
+  const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [priceRange, setPriceRange] = useState<[number, number]>([0, 300]);
+  const [sortBy, setSortBy] = useState("featured");
+  const [showFilters, setShowFilters] = useState(false);
 
   // Get unique brands and categories
-  const brands = Array.from(new Set(products.map(p => p.brand)))
-  const categories = Array.from(new Set(products.map(p => p.category)))
+  const brands = Array.from(new Set(products.map((p) => p.brand)));
+  const categories = Array.from(new Set(products.map((p) => p.category)));
 
   // Filter and sort products
   const filteredProducts = useMemo(() => {
-    let filtered = products
+    let filtered = products;
 
     // Filter by brand
     if (selectedBrands.length > 0) {
-      filtered = filtered.filter(p => selectedBrands.includes(p.brand))
+      filtered = filtered.filter((p) => selectedBrands.includes(p.brand));
     }
 
     // Filter by category
     if (selectedCategories.length > 0) {
-      filtered = filtered.filter(p => selectedCategories.includes(p.category))
+      filtered = filtered.filter((p) =>
+        selectedCategories.includes(p.category)
+      );
     }
 
     // Filter by price
-    filtered = filtered.filter(p => p.price >= priceRange[0] && p.price <= priceRange[1])
+    filtered = filtered.filter(
+      (p) => p.price >= priceRange[0] && p.price <= priceRange[1]
+    );
 
     // Sort
     switch (sortBy) {
-      case 'price-low':
-        filtered.sort((a, b) => a.price - b.price)
+      case "price-low":
+        filtered.sort((a, b) => a.price - b.price);
         break;
-      case 'price-high':
-        filtered.sort((a, b) => b.price - a.price)
+      case "price-high":
+        filtered.sort((a, b) => b.price - a.price);
         break;
-      case 'name':
-        filtered.sort((a, b) => a.name.localeCompare(b.name))
+      case "name":
+        filtered.sort((a, b) => a.name.localeCompare(b.name));
         break;
       default:
         break;
     }
 
-    return filtered
-  }, [selectedBrands, selectedCategories, priceRange, sortBy])
+    return filtered;
+  }, [selectedBrands, selectedCategories, priceRange, sortBy]);
 
   const toggleBrand = (brand: string) => {
-    setSelectedBrands(prev =>
-      prev.includes(brand) ? prev.filter(b => b !== brand) : [...prev, brand]
-    )
-  }
+    setSelectedBrands((prev) =>
+      prev.includes(brand) ? prev.filter((b) => b !== brand) : [...prev, brand]
+    );
+  };
 
   const toggleCategory = (category: string) => {
-    setSelectedCategories(prev =>
-      prev.includes(category) ? prev.filter(c => c !== category) : [...prev, category]
-    )
-  }
+    setSelectedCategories((prev) =>
+      prev.includes(category)
+        ? prev.filter((c) => c !== category)
+        : [...prev, category]
+    );
+  };
 
   const clearAllFilters = () => {
-    setSelectedBrands([])
-    setSelectedCategories([])
-    setPriceRange([0, 300])
-  }
+    setSelectedBrands([]);
+    setSelectedCategories([]);
+    setPriceRange([0, 300]);
+  };
 
-  const activeFiltersCount = selectedBrands.length + selectedCategories.length
+  const activeFiltersCount = selectedBrands.length + selectedCategories.length;
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -83,7 +88,8 @@ export default function ProductsPage() {
               All Products
             </h1>
             <p className="text-gray-700">
-              Discover our complete collection of premium streetwear and sportswear.
+              Discover our complete collection of premium streetwear and
+              sportswear.
             </p>
           </div>
         </Container>
@@ -91,7 +97,6 @@ export default function ProductsPage() {
 
       <Container className="py-8">
         <div className="fle flex-col lg:flex-row gap-8">
-
           {/* Filters Sidebar - Desktop */}
           <aside className="hidden lg:block lg:w-64 flex-shrink-0">
             <div className="sticky top-24 bg-white rounded-lg shadow-sm p-6 border border-gray-200">
@@ -112,7 +117,10 @@ export default function ProductsPage() {
                 <h4 className="font-semibold mb-3 text-gray-900">Brand</h4>
                 <div className="space-y-2">
                   {brands.map((brand) => (
-                    <label key={brand} className="flex items-center space-x-2 cursor-pointer group">
+                    <label
+                      key={brand}
+                      className="flex items-center space-x-2 cursor-pointer group"
+                    >
                       <input
                         type="checkbox"
                         checked={selectedBrands.includes(brand)}
@@ -132,7 +140,10 @@ export default function ProductsPage() {
                 <h4 className="font-semibold mb-3 text-gray-900">Category</h4>
                 <div className="space-y-2">
                   {categories.map((category) => (
-                    <label key={category} className="flex items-center space-x-2 cursor-pointer group">
+                    <label
+                      key={category}
+                      className="flex items-center space-x-2 cursor-pointer group"
+                    >
                       <input
                         type="checkbox"
                         checked={selectedCategories.includes(category)}
@@ -174,7 +185,7 @@ export default function ProductsPage() {
                 <p className="text-gray-700">
                   <span className="font-semibold text-gray-900">
                     {filteredProducts.length}
-                  </span>{' '}
+                  </span>{" "}
                   products found
                 </p>
 
@@ -224,7 +235,10 @@ export default function ProductsPage() {
                   <h4 className="font-semibold mb-3 text-gray-900">Brand</h4>
                   <div className="space-y-2">
                     {brands.map((brand) => (
-                      <label key={brand} className="flex items-center space-x-2 cursor-pointer">
+                      <label
+                        key={brand}
+                        className="flex items-center space-x-2 cursor-pointer"
+                      >
                         <input
                           type="checkbox"
                           checked={selectedBrands.includes(brand)}
@@ -242,14 +256,19 @@ export default function ProductsPage() {
                   <h4 className="font-semibold mb-3 text-gray-900">Category</h4>
                   <div className="space-y-2">
                     {categories.map((category) => (
-                      <label key={category} className="flex items-center space-x-2 cursor-pointer">
+                      <label
+                        key={category}
+                        className="flex items-center space-x-2 cursor-pointer"
+                      >
                         <input
-                        type="checkbox"
-                        checked={selectedCategories.includes(category)}
-                        onChange={() => toggleCategory(category)}
+                          type="checkbox"
+                          checked={selectedCategories.includes(category)}
+                          onChange={() => toggleCategory(category)}
                           className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                         />
-                        <span className="text-gray-700 capitalize">{category}</span>
+                        <span className="text-gray-700 capitalize">
+                          {category}
+                        </span>
                       </label>
                     ))}
                   </div>
@@ -272,27 +291,27 @@ export default function ProductsPage() {
                 ))}
               </div>
             ) : (
-                <div className="text-center py-16 bg-white rounded-lg border-gray-200">
-                  <div className="w-24 h-24 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
-                    <Filter className="w-12 h-12 text-gray-600" />
-                  </div>
-                  <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                    No products found
-                  </h3>
-                  <p className="text-gray-700 mb-6">
-                    Try adjusting your filters to see more results
-                  </p>
-                  <button
-                    onClick={clearAllFilters}
-                    className="bg-black text-white px-6 py-3 rounded-lg font-semibold hover:bg-gray-800 transition"
-                  >
-                    Clear All Filters
-                  </button>
+              <div className="text-center py-16 bg-white rounded-lg border-gray-200">
+                <div className="w-24 h-24 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
+                  <Filter className="w-12 h-12 text-gray-600" />
                 </div>
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                  No products found
+                </h3>
+                <p className="text-gray-700 mb-6">
+                  Try adjusting your filters to see more results
+                </p>
+                <button
+                  onClick={clearAllFilters}
+                  className="bg-black text-white px-6 py-3 rounded-lg font-semibold hover:bg-gray-800 transition"
+                >
+                  Clear All Filters
+                </button>
+              </div>
             )}
           </div>
         </div>
       </Container>
     </div>
-  )
+  );
 }

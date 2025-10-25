@@ -5,24 +5,6 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { Metadata } from 'next'
 
-/**
- * Brands Directory Page
- * 
- * Central hub for brand discovery.
- * Shows all available brands with product counts and quick links.
- * 
- * UX Strategy:
- * - Visual brand recognition (logos)
- * - Social proof (product counts)
- * - Easy navigation (large click targets)
- * - Grid layout (scannable)
- * 
- * SEO Value:
- * - Internal linking hub
- * - Keyword targeting ("Nike products", "Adidas store")
- * - Category organization
- */
-
 export const metadata: Metadata = {
   title: 'Shop by Brand - All Designer & Athletic Brands | Street Style',
   description: 'Browse products from Nike, Adidas, Puma, The North Face, Vans and more. Authentic products from your favorite brands.',
@@ -102,19 +84,29 @@ export default function BrandsPage() {
             Or Browse by Category
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {['Men', 'Women', 'Kids'].map((category) => (
+            {[
+              { name: 'Men', image: '/brand-category/mens-collection.jpg', alt: "Men's collection" },
+              { name: 'Women', image: '/brand-category/womens-collection.webp', alt: "Women's collection" },
+              { name: 'Kids', image: '/brand-category/kids-collection.jpg', alt: "Kids' collection" },
+            ].map((category) => (
               <Link
-                key={category}
-                href={`/${category.toLowerCase()}`}
+                key={category.name}
+                href={`/${category.name.toLowerCase()}`}
                 className="relative group aspect-square rounded-2xl overflow-hidden"
               >
                 <div className="absolute inset-0 bg-gradient-to-br from-gray-900 to-gray-700">
                   {/* Add background image here in production */}
+                  <Image
+                    src={category.image}
+                    alt={category.alt}
+                    fill
+                    className="object-cover"
+                  />
                 </div>
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="text-center text-white">
-                    <h3 className="text-4xl font-bold mb-2">{category}</h3>
-                    <p className="text-lg opacity-90">{`Shop {category}'s Collection`}</p>
+                    <h3 className="text-4xl font-bold mb-2">{category.name}</h3>
+                    <p className="text-lg opacity-90">{`Shop ${category.name}'s Collection`}</p>
                   </div>
                 </div>
               </Link>

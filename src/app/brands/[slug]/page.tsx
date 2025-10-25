@@ -1,26 +1,26 @@
-import { Metadata } from 'next'
-import { notFound } from 'next/navigation'
-import Container from '@/components/ui/Container'
-import ProductCard from '@/components/product/ProductCard'
-import { products, brands } from '@/data/products'
-import Image from 'next/image'
-import Link from 'next/link'
+import ProductCard from "@/components/products/ProductCard";
+import Container from "@/components/ui/Container";
+import { brands, products } from "@/data/products";
+import { Metadata } from "next";
+import Image from "next/image";
+import Link from "next/link";
+import { notFound } from "next/navigation";
 
 /**
  * Brand Detail Page
- * 
+ *
  * Displays all products from a specific brand with:
  * - Brand hero section (logo, description, heritage)
  * - Filtering by category
  * - Sorting options
  * - Product grid
- * 
+ *
  * SEO Strategy:
  * - Each brand gets unique meta tags
  * - Structured data for brand entity
  * - Rich snippets for product count
  * - Internal linking to product pages
- * 
+ *
  * Merchandising Strategy:
  * - Feature bestsellers first
  * - Show breadth of catalog
@@ -32,22 +32,24 @@ import Link from 'next/link'
 export async function generateStaticParams() {
   return brands.map((brand) => ({
     slug: brand.id,
-  }))
+  }));
 }
 
 // Generate metadata for SEO
-export async function generateMetadata(
-  { params }: { params: { slug: string } }
-): Promise<Metadata> {
-  const brand = brands.find(b => b.id === params.slug)
+export async function generateMetadata({
+  params,
+}: {
+  params: { slug: string };
+}): Promise<Metadata> {
+  const brand = brands.find((b) => b.id === params.slug);
 
   if (!brand) {
-    return { title: 'Brand Not Found' }
+    return { title: "Brand Not Found" };
   }
 
-  const productCount = products.filter(p => 
-    p.brand.toLowerCase() === brand.name.toLowerCase()
-  ).length
+  const productCount = products.filter(
+    (p) => p.brand.toLowerCase() === brand.name.toLowerCase()
+  ).length;
 
   return {
     title: `${brand.name} - Official Collection | Street Style`,
@@ -57,26 +59,26 @@ export async function generateMetadata(
       description: brand.description,
       images: [brand.logo],
     },
-  }
+  };
 }
 
 export default function BrandPage({ params }: { params: { slug: string } }) {
   // Find brand data
-  const brand = brands.find(b => b.id === params.slug)
+  const brand = brands.find((b) => b.id === params.slug);
 
   if (!brand) {
-    notFound()
+    notFound();
   }
 
   // Get all products from this brand
-  const brandProducts = products.filter(p => 
-    p.brand.toLowerCase() === brand.name.toLowerCase()
-  )
+  const brandProducts = products.filter(
+    (p) => p.brand.toLowerCase() === brand.name.toLowerCase()
+  );
 
   // Organize by category
-  const menProducts = brandProducts.filter(p => p.category === 'men')
-  const womenProducts = brandProducts.filter(p => p.category === 'women')
-  const kidsProducts = brandProducts.filter(p => p.category === 'kids')
+  const menProducts = brandProducts.filter((p) => p.category === "men");
+  const womenProducts = brandProducts.filter((p) => p.category === "women");
+  const kidsProducts = brandProducts.filter((p) => p.category === "kids");
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -102,9 +104,7 @@ export default function BrandPage({ params }: { params: { slug: string } }) {
               <h1 className="text-4xl md:text-5xl font-bold mb-4">
                 {brand.name}
               </h1>
-              <p className="text-xl text-gray-300 mb-6">
-                {brand.description}
-              </p>
+              <p className="text-xl text-gray-300 mb-6">{brand.description}</p>
               <div className="flex flex-wrap gap-4 justify-center md:justify-start">
                 <div className="text-center">
                   <p className="text-3xl font-bold">{brandProducts.length}+</p>
@@ -174,7 +174,7 @@ export default function BrandPage({ params }: { params: { slug: string } }) {
           <h2 className="text-2xl font-bold text-gray-900 mb-6">
             All {brand.name} Products
           </h2>
-          
+
           {brandProducts.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {brandProducts.map((product) => (
@@ -183,7 +183,9 @@ export default function BrandPage({ params }: { params: { slug: string } }) {
             </div>
           ) : (
             <div className="text-center py-12">
-              <p className="text-gray-600">No products available for this brand yet.</p>
+              <p className="text-gray-600">
+                No products available for this brand yet.
+              </p>
             </div>
           )}
         </Container>
@@ -252,13 +254,23 @@ export default function BrandPage({ params }: { params: { slug: string } }) {
               className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold"
             >
               Read Full Brand Story
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M17 8l4 4m0 0l-4 4m4-4H3"
+                />
               </svg>
             </Link>
           </div>
         </Container>
       </section>
     </div>
-  )
+  );
 }

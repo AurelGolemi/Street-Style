@@ -20,10 +20,9 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
-import ProductImageGallery from "./ProductImageGallery";
-import ProductTabs from "./ProductTabs";
-import RelatedProducts from "./RelatedProducts";
-
+import ProductImageGallery from "@/components/products/ProductImageGallery";
+import ProductTabs from "@/components/products/ProductTabs";
+import RelatedProducts from "@/components/products/RelatedProducts";
 
 // Extend Window interface for gtag
 declare global {
@@ -445,7 +444,7 @@ export default function ProductDetailClient({
                   <button
                     key={size}
                     onClick={() => handleSizeSelect(size)}
-                    className={`py-3 px-4 border-2 rounded-lg font-medium transition-all ${
+                    className={`py-3 px-4 border-2 rounded-lg font-medium transition-all cursor-pointer ${
                       selectedSize === size
                         ? "border-gray-900 bg-gray-900 text-white"
                         : sizeError
@@ -469,7 +468,7 @@ export default function ProductDetailClient({
                   <button
                     onClick={() => handleQuantityChange(-1)}
                     disabled={quantity <= 1}
-                    className="px-4 py-2 text-gray-700 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition"
+                    className="px-4 py-2 text-gray-700 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition cursor-pointer"
                   >
                     −
                   </button>
@@ -479,7 +478,7 @@ export default function ProductDetailClient({
                   <button
                     onClick={() => handleQuantityChange(1)}
                     disabled={quantity >= 10}
-                    className="px-4 py-2 text-gray-700 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition"
+                    className="px-4 py-2 text-gray-700 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition cursor-pointer"
                   >
                     +
                   </button>
@@ -496,7 +495,7 @@ export default function ProductDetailClient({
               <button
                 onClick={handleAddToCart}
                 disabled={!product.inStock || isAddingToCart}
-                className={`w-full py-4 px-6 rounded-lg font-semibold text-lg transition-all flex items-center justify-center gap-2 ${
+                className={`w-full py-4 px-6 rounded-lg font-semibold text-lg transition-all flex items-center justify-center gap-2 cursor-pointer ${
                   showAddedConfirmation
                     ? "bg-green-600 text-white"
                     : product.inStock
@@ -538,7 +537,7 @@ export default function ProductDetailClient({
               <div className="grid grid-cols-2 gap-4">
                 <button
                   onClick={handleWishlistToggle}
-                  className={`py-3 px-6 border-2 rounded-lg font-medium transition-all flex items-center justify-center gap-2 ${
+                  className={`py-3 px-6 border-2 rounded-lg font-medium transition-all flex items-center justify-center gap-2 cursor-pointer ${
                     isWishlisted
                       ? "border-red-500 bg-red-50 text-red-700"
                       : "border-gray-300 text-gray-700 hover:border-gray-400"
@@ -552,7 +551,7 @@ export default function ProductDetailClient({
 
                 <button
                   onClick={handleShare}
-                  className="py-3 px-6 border-2 border-gray-300 rounded-lg font-medium text-gray-700 hover:border-gray-400 transition-all flex items-center justify-center gap-2"
+                  className="py-3 px-6 border-2 border-gray-300 rounded-lg font-medium text-gray-700 hover:border-gray-400 transition-all flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <Share2 className="w-5 h-5" />
                   Share
@@ -567,7 +566,7 @@ export default function ProductDetailClient({
                 <p className="text-xs font-medium text-gray-900">
                   Free Delivery
                 </p>
-                <p className="text-xs text-gray-600">On orders over £50</p>
+                <p className="text-xs text-gray-600">On orders over €50</p>
               </div>
               <div className="text-center">
                 <RefreshCw className="w-6 h-6 mx-auto mb-2 text-gray-600" />

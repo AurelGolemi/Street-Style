@@ -34,7 +34,7 @@ export const brands: Brand[] = [
 
 export const products: Product[] = [
   {
-    id: "nike-air-max-95-og.jpg",
+    id: "nike-air-max-95-og",
     sku: "IB7936-001",
     name: "Air Max 95",
     brand: "Nike",
@@ -260,7 +260,7 @@ export const products: Product[] = [
       "Experience epic energy with the Ultraboost 22 shoes from Adidas. These men's running shoes feature a Primeknit upper with a heel pull for easy on/off, while the soft foam midsole provides responsive cushioning. The Continental rubber outsole delivers superior traction, and the Linear Energy Push system returns energy with every step.",
     price: 190.0,
     currency: "EUR",
-    images: ["/brand-product/adidas-ultraboost-22.jpg"],
+    images: ["/brand-product/adidas-ultraboost-22.avif"],
     category: "men",
     subcategory: "shoes",
     tags: ["running shoes", "boost", "comfort", "performance"],
@@ -314,7 +314,7 @@ export const products: Product[] = [
       "Step into playful style with the Puma RS-X Toys sneakers. These chunky retro runners feature a mesh and synthetic upper with signature RS branding. The IMEVA foam midsole provides lightweight cushioning, while the rubber outsole ensures excellent traction. Perfect for streetwear enthusiasts.",
     price: 110.0,
     currency: "EUR",
-    images: ["/brand-product/puma-rs-x-toys.jpg"],
+    images: ["/brand-product/puma-rs-x-toys.webp"],
     category: "women",
     subcategory: "shoes",
     tags: ["sneakers", "retro", "chunky", "streetwear"],
@@ -368,8 +368,10 @@ export const products: Product[] = [
  * @returns Product object or undefined
  */
 
-export function getProductById(id: string): Product | undefined {
-  return products.find((p) => p.id === id);
+export async function getProductById(id: string): Promise<Product | null> {
+  return Promise.resolve(
+    products.find((p) => p.id === id) || null
+  );
 }
 
 /**
@@ -413,24 +415,25 @@ export function getFeaturedProducts(limit: number = 4): Product[] {
  * @returns Array of related products
  */
 
-export function getRelatedProducts(
+export async function getRelatedProducts(
   product: Product,
   limit: number = 4
-): Product[] {
-  if (!product.relatedProducts) {
-    return products
-      .filter(
-        (p) =>
-          p.id !== product.id &&
-          p.category === product.category &&
-          p.subcategory === product.subcategory
-      )
-      .slice(0, limit);
+): Promise<Product[]> {
+  // If product has explicit relatedProducts use those ids to fetch
+  if (product.relatedProducts && product.relatedProducts.length > 0) {
+    const related = await Promise.all(
+      product.relatedProducts.map((id) => getProductById(id))
+    );
+    return related.filter((p): p is Product => p !== null).slice(0, limit);
   }
 
-  return product.relatedProducts
-    .map((id) => getProductById(id))
-    .filter((p): p is Product => p !== undefined)
+  // Fallback: find products with same category or brand
+  return products
+    .filter(
+      (p) =>
+        p.id !== product.id &&
+        (p.category === product.category || p.brand === product.brand)
+    )
     .slice(0, limit);
 }
 
@@ -507,115 +510,3 @@ export function formatPrice(price: number, currency: string = "GBP"): string {
   const symbol = symbols[currency] || currency;
   return `${symbol}${price.toFixed(2)}`;
 }
-{
-  /* Old products.ts 2 */
-}
-// export const brands = [
-//   { id: 'nike', name: 'Nike', logo: '/brand-logos/nike-logo.svg' },
-//   { id: 'adidas', name: 'Adidas', logo: '/brand-logos/adidas-logo.svg' },
-//   { id: 'puma', name: 'Puma', logo: '/brand-logos/puma-logo.svg' },
-//   { id: 'hoodrich', name: 'Hoodrich', logo: '/brand-logos/hoodrich-logo.svg'}
-// ]
-
-// export const products: Product[] = [
-//   {
-//     id: 'nike-air-max-95-og',
-//     name: 'Air Max 95',
-//     price: 189.99,
-//     image: '/brand-product/nike-air-max-95-og.jpg',
-//     category: 'men',
-//     subcategory: 'shoes',
-//     sizes: ['41', '42'],
-//     colors: ['Black-Persian-Violet', 'Baltic-Blue-Black-Pearl', 'MTLC Gold-Black-Pearl', 'Green-Shock-Black-Pearl-Grey', 'Metallic-Silver-Black-White'],
-//     description: "Get these '90s-inspired icons and stand out wherever you go! The Nike Air Max 95 trainers come in a black colourway with purple stitching that adds the perfect touch, from a durable and smooth upper for ultimate comfort, with a soft ankle collar to offer extra support.",
-//     inStock: true,
-//     brand: 'Nike',
-//     features: [],
-//   },
-//   {
-//     id: 'nike-tech-mix-track-pants',
-//     name: 'Nike Tech Mix Track Pants',
-//     price: 100.00,
-//     image: '/brand-product/nike-tech-mix-track-pants.jpg',
-//     category: 'men',
-//     subcategory: 'trousers',
-//     sizes: ['XS', 'S', 'M', 'L'],
-//     colors: ['Gray'],
-//     description: "Made for the streets. These men's Tech Mix trackpants from Nike land in a Cool Grey colourway and are exclusive to JD. They're crafted from Nike's signature Tech Fleece fabric with cut-and-sew panels for a textured, modern look. Featuring an elasticated waistband and tapered legs for a streamlined fit, they're finished with side pockets and a Futura logo on the thigh.",
-//     inStock: true,
-//     brand: 'Nike',
-//     features: [],
-//   },
-//   {
-//     id: 'Hoodrich-Chromatic-Hoodie',
-//     name: 'Hoodrich Chromatic Hoodie',
-//     price: 55.00,
-//     image: '/brand-product/hoodrich-chromatic-hoodie.jpg',
-//     category: 'men',
-//     subcategory: 'hoodie',
-//     sizes: ['XS', 'S', 'M', 'L'],
-//     colors: ['Black-Silver-Chromatic', 'Sky-Captain-Silver-Chromatic'],
-//     description: "Layer up in iconic style with the Hoodrich Chromatic Hoodie in a black colourway with the shiny detail on the chest giving the perfect touch. This staple is made of smooth and soft fleece fabric to provide everyday comfort and warmth, while it features a hood that closes with a button for even more coverage from the cold. The front pocket is ideal for storing essentials, but also to keep your hands warm.",
-//     inStock: true,
-//     brand: 'Hoodrich',
-//     features: [],
-//   },
-// ]
-
-// // Helper functions to filter products
-// export const getProductsByCategory = (category: string) => {
-//   return products.filter(p => p.category === category)
-// }
-
-// export const getProductsByBrand = (brand: string) => {
-//   return products.filter(p => p.brand.toLowerCase() === brand.toLowerCase())
-// }
-
-// export const getFeaturedProducts = () => {
-//   return products.slice(0, 4)
-// }
-
-// {/* Old products.ts */}
-// export interface Product {
-//   id: string
-//   name: string
-//   brand: string
-//   price: number
-//   originalPrice?: number
-//   category: 'sneakers' | 'jackets'
-//   images: string[]
-//   subcategory: 'shoes' | 'clothing' | 'accessories'
-//   sizes: string[]
-//   colors: string[]
-//   description: string
-//   features: string[]
-//   inStock: boolean
-// }
-
-// export interface Brand {
-//   id: string
-//   name: string
-//   logo: string
-//   description: string
-//   // category: 'men' | 'women' | 'kids'
-// }
-
-// export const brands: Brand[] = [
-//   { id: 'nike', name: 'Nike', logo: '/logos/nike.svg', description: 'Just Do It' },
-//   { id: 'adidas', name: 'Adidas', logo: '/logos/adidas.svg', description: 'Impossible is Nothing' },
-// ]
-
-// export const products: Product[] = [
-//   {
-//     id: 'nike-air-max-95-mens-shoes',
-//     name: `Air Max 95 Men's Shoes`,
-//     brand: 'nike',
-//     price: 190,
-//     originalPrice: 190,
-//     image: '/public/nike-air-max-95-og.jpg',
-//     category: 'sneakers',
-//     description: { "Rep '90s - inspired sneaks with these men's Air Max 95 OG trainers from Nike. In a Black, Persian Violet and Wolf Grey colourway, these sneaks mix real and synthetic leather with airy textiles for a layered look. They feature a lace fastening to keep you locked in, with wavy side panels for natural flow."},
-//     sizes: [41, 42],
-//     colors: ['black-persian-violet', 'black-baltic-blue', 'gold-black-pearl', 'green-shock-black-pearl', 'metallic-silver-black-white']
-//   }
-// ]
