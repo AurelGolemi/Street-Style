@@ -20,9 +20,7 @@ type PageProps = {
   params: Promise<{ id: string }>;
 };
 
-/**
- * Generate static paths for pre-rendering
- */
+// Generate static paths for pre-rendering
 export async function generateStaticParams() {
   try {
     console.log("🔄 Generating static params...");
@@ -40,9 +38,8 @@ export async function generateStaticParams() {
   }
 }
 
-/**
- * Generate dynamic metadata for SEO
- */
+
+ // Generate dynamic metadata for SEO
 export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
@@ -139,9 +136,7 @@ export async function generateMetadata({
   }
 }
 
-/**
- * Generate JSON-LD structured data
- */
+// Generate JSON-LD structured data
 type Product = {
   id: string;
   name: string;
@@ -180,10 +175,8 @@ function generateProductJsonLd(product: Product) {
   };
 }
 
-/**
- * Product Detail Page Component
- * CRITICAL: This MUST be async and properly await all data
- */
+// Product detail page component 
+// CRITICAL: This MUST be async and properly await all data
 export default async function ProductPage({ params }: PageProps) {
   try {
     console.log("🚀 ProductPage rendering started");

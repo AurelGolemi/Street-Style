@@ -5,26 +5,6 @@ import Image from 'next/image'
 import { Product } from '@/lib/types'
 import { Star } from 'lucide-react'
 
-/**
- * Product Tabs Component
- * 
- * Displays product information in organized tabs:
- * 1. Description - Full product story and benefits
- * 2. Features & Specs - Technical details and materials
- * 3. Reviews - Customer feedback and ratings
- * 
- * UX Pattern:
- * - Default tab: Description (most users start here)
- * - Persistent tab state (doesn't reset on scroll)
- * - Smooth content transitions
- * - Mobile: Full-width stacked content
- * 
- * Conversion Impact:
- * - Reviews tab increases trust by 25%
- * - Specs tab reduces returns by 15%
- * - Description tab educates and persuades
- */
-
 interface ProductTabsProps {
   product: Product
 }
@@ -63,7 +43,7 @@ export default function ProductTabs({ product }: ProductTabsProps) {
 
       {/* Tab Content */}
       <div className="p-6 md:p-8">
-        {/* ==================== DESCRIPTION TAB ==================== */}
+        {/* DESCRIPTION TAB */}
         {activeTab === 'description' && (
           <div className="prose prose-gray max-w-none">
             <div 
@@ -75,7 +55,7 @@ export default function ProductTabs({ product }: ProductTabsProps) {
           </div>
         )}
 
-        {/* ==================== FEATURES TAB ==================== */}
+        {/* FEATURES TAB */}
         {activeTab === 'features' && (
           <div className="space-y-8">
             {/* Key Features */}
@@ -170,7 +150,7 @@ export default function ProductTabs({ product }: ProductTabsProps) {
           </div>
         )}
 
-        {/* ==================== REVIEWS TAB ==================== */}
+        {/* REVIEWS TAB */}
         {activeTab === 'reviews' && (
           <div className="space-y-8">
             {/* Overall Rating Summary */}

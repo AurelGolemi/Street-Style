@@ -361,59 +361,23 @@ export const products: Product[] = [
   },
 ];
 
-/**
- * Get product by ID
- *
- * @param id - Product ID or slug
- * @returns Product object or undefined
- */
-
 export async function getProductById(id: string): Promise<Product | null> {
   return Promise.resolve(
     products.find((p) => p.id === id) || null
   );
 }
 
-/**
- * Get products by category
- *
- * @param category - Category filter
- * @returns Array of matching products
- */
-
 export function getProductsByCategory(category: string): Product[] {
   return products.filter((p) => p.category === category);
 }
-
-/**
- * Get products by brand
- *
- * @param brand - Brand name
- * @returns Array of matching products
- */
 
 export function getProductsByBrand(brand: string): Product[] {
   return products.filter((p) => p.brand.toLowerCase() === brand.toLowerCase());
 }
 
-/**
- * Get featured/bestselling products
- *
- * @param limit - Maximum number of products to return
- * @returns Array of featured products
- */
-
 export function getFeaturedProducts(limit: number = 4): Product[] {
   return products.slice(0, limit);
 }
-
-/**
- * Get related products
- *
- * @param product - Current product
- * @param limit - Maximum number of related products
- * @returns Array of related products
- */
 
 export async function getRelatedProducts(
   product: Product,
@@ -437,13 +401,6 @@ export async function getRelatedProducts(
     .slice(0, limit);
 }
 
-/**
- * Search products
- *
- * @param query - Search term
- * @returns Array of matching products
- */
-
 export function searchProducts(query: string): Product[] {
   const lowerQuery = query.toLowerCase();
 
@@ -456,13 +413,6 @@ export function searchProducts(query: string): Product[] {
   );
 }
 
-/**
- * Calculate discount percentage
- *
- * @param product - Product object
- * @returns Discount percentage or 0
- */
-
 export function getDiscountPercentage(product: Product): number {
   if (!product.originalPrice) return 0;
   return Math.round(
@@ -470,37 +420,17 @@ export function getDiscountPercentage(product: Product): number {
   );
 }
 
-/**
- * Check if product is on sale
- *
- * @param product - Product object
- * @returns Boolean indicating sale status
- */
 export function isOnSale(product: Product): boolean {
   return Boolean(
     product.originalPrice && product.originalPrice > product.price
   );
 }
 
-/**
- * Check if product is low stock
- *
- * @param product - Product object
- * @returns Boolean indicating low stock status
- */
-
 export function isLowStock(product: Product): boolean {
   if (!product.stockLevel || !product.lowStockThreshold) return false;
   return product.stockLevel <= product.lowStockThreshold;
 }
 
-/**
- * Format price with currency symbol
- *
- * @param price - Price value
- * @param currency - Currency code
- * @returns Formatted price string
- */
 export function formatPrice(price: number, currency: string = "GBP"): string {
   const symbols: Record<string, string> = {
     GBP: "£",

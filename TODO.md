@@ -1,4 +1,0 @@
-- [x] Update global Window interface to include dataLayer
-- [x] Add window guards in sendCustomEvent function
-- [x] Fix item_variant concatenation in trackAddToCart to handle undefined size/color
-- [x] Run TypeScript check to verify fixes

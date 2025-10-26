@@ -35,24 +35,6 @@ declare global {
   }
 }
 
-/**
- * Product Detail Client Component
- *
- * This is the main interactive component for product pages.
- * It handles:
- * - Size and color selection
- * - Quantity management
- * - Add to cart functionality
- * - Wishlist actions
- * - Social sharing
- * - Dynamic price calculations
- *
- * Component State Management:
- * - Local state for user selections (size, color, quantity)
- * - Global state (Zustand) for cart operations
- * - Optimistic UI updates for better UX
- */
-
 interface ProductDetailClientProps {
   product: Product;
   relatedProducts: Product[];
@@ -62,9 +44,8 @@ export default function ProductDetailClient({
   product,
   relatedProducts,
 }: ProductDetailClientProps) {
-  // ============================================
-  // STATE MANAGEMENT
-  // ============================================
+
+  // State Management
 
   // User selections
   const [selectedSize, setSelectedSize] = useState<string>("");
@@ -84,9 +65,7 @@ export default function ProductDetailClient({
   // Cart store
   const addItem = useCartStore((state) => state.addItem);
 
-  // ============================================
-  // COMPUTED VALUES
-  // ============================================
+// Computed Values
 
   const discount = getDiscountPercentage(product);
   const isLowStockProduct = isLowStock(product);
@@ -99,20 +78,8 @@ export default function ProductDetailClient({
     product.colors.find((c) => c.name === selectedColor)?.images ||
     product.images;
 
-  // ============================================
-  // EVENT HANDLERS
-  // ============================================
+// Event Handlers
 
-  /**
-   * Handle Add to Cart
-   *
-   * Validation flow:
-   * 1. Check if size is selected
-   * 2. Show error if not
-   * 3. Add to cart via Zustand
-   * 4. Show success confirmation
-   * 5. Clear confirmation after 3 seconds
-   */
   const handleAddToCart = () => {
     // Validate size selection
     if (!selectedSize) {
@@ -170,14 +137,14 @@ export default function ProductDetailClient({
     }, 500);
   };
 
-  /**
+  {/*
    * Handle Wishlist Toggle
    *
    * In production, this would:
    * 1. Call API to save to user's wishlist
    * 2. Update global wishlist state
    * 3. Show toast notification
-   */
+   */}
   const handleWishlistToggle = () => {
     setIsWishlisted(!isWishlisted);
 
@@ -198,11 +165,8 @@ export default function ProductDetailClient({
     }
   };
 
-  /**
-   * Handle Social Share
-   *
-   * Uses Web Share API if available, falls back to copy link
-   */
+  // Handle social share
+  // Uses Web Share API if available, falls back to copy link
   const handleShare = async () => {
     const shareData = {
       title: `${product.brand} ${product.name}`,
@@ -223,24 +187,18 @@ export default function ProductDetailClient({
     }
   };
 
-  /**
-   * Handle Size Selection
-   */
+// Handle size selection
   const handleSizeSelect = (size: string) => {
     setSelectedSize(size);
     setSizeError(false);
   };
 
-  /**
-   * Handle Color Selection
-   */
+// Handle color selection
   const handleColorSelect = (colorName: string) => {
     setSelectedColor(colorName);
   };
 
-  /**
-   * Handle Quantity Change
-   */
+// Handle quality change
   const handleQuantityChange = (delta: number) => {
     const newQuantity = quantity + delta;
     if (newQuantity >= 1 && newQuantity <= 10) {
@@ -248,17 +206,15 @@ export default function ProductDetailClient({
     }
   };
 
-  // ============================================
-  // RENDER
-  // ============================================
+// Render
 
   return (
     <div className="min-h-screen bg-gray-50">
       <Container className="py-8">
-        {/* ==================== BREADCRUMBS ==================== */}
+        {/* Product Navigation */}
         <nav
           className="flex items-center space-x-2 text-sm mb-8"
-          aria-label="Breadcrumb"
+          aria-label="Product Navigation"
         >
           <Link
             href="/"
@@ -284,7 +240,7 @@ export default function ProductDetailClient({
           <span className="text-gray-900 font-medium">{product.name}</span>
         </nav>
 
-        {/* ==================== MAIN PRODUCT SECTION ==================== */}
+        {/* MAIN PRODUCT SECTION */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
           {/* LEFT COLUMN: Image Gallery */}
           <div>
@@ -586,10 +542,10 @@ export default function ProductDetailClient({
           </div>
         </div>
 
-        {/* ==================== PRODUCT TABS ==================== */}
+        {/* PRODUCT TABS */}
         <ProductTabs product={product} />
 
-        {/* ==================== RELATED PRODUCTS ==================== */}
+        {/* RELATED PRODUCTS */}
         {relatedProducts.length > 0 && (
           <div className="mt-16">
             <RelatedProducts products={relatedProducts} />

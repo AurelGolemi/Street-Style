@@ -3,8 +3,6 @@
 import { useState } from 'react'
 import Image from 'next/image'
 import { ChevronLeft, ChevronRight, ZoomIn, X } from 'lucide-react'
-// import { Product } from '../../lib/types'
-// import { button, div } from 'framer-motion/client'
 
 interface ProductImageGalleryProps {
   images: string[]

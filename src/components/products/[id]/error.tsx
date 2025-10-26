@@ -2,7 +2,7 @@
  * Error Boundary for Product Page
  * Catches and displays errors that occur during rendering or data fetching
  * 
- * This is a Client Component (must use 'use client')
+ * This is a Client Component
  */
 
 'use client';

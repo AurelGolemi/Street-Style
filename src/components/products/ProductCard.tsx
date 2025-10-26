@@ -111,7 +111,7 @@ export default function ProductCard({
     >
       <div className="bg-white rounded-lg overflow-hidden border border-gray-200 hover:border-gray-400 transition-all duration-300 hover:shadow-lg">
         
-        {/* ==================== IMAGE SECTION ==================== */}
+        {/* IMAGE SECTION */}
         <div className="relative aspect-square overflow-hidden bg-gray-100">
           {/* Primary Image */}
           <Image
