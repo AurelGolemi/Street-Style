@@ -6,28 +6,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-/**
- * Brand Detail Page
- *
- * Displays all products from a specific brand with:
- * - Brand hero section (logo, description, heritage)
- * - Filtering by category
- * - Sorting options
- * - Product grid
- *
- * SEO Strategy:
- * - Each brand gets unique meta tags
- * - Structured data for brand entity
- * - Rich snippets for product count
- * - Internal linking to product pages
- *
- * Merchandising Strategy:
- * - Feature bestsellers first
- * - Show breadth of catalog
- * - Cross-sell with "Complete the Look"
- * - Highlight exclusive items
- */
-
 // Generate static params for all brands
 export async function generateStaticParams() {
   return brands.map((brand) => ({
