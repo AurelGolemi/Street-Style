@@ -5,6 +5,7 @@ import { Inter } from 'next/font/google'
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
 import CartSidebar from '@/components/cart/CartSidebar'
+import { Analytics } from "@vercel/analytics/next"
 import './globals.css'
 
 const inter = Inter({ subsets: ['latin']})
@@ -20,7 +21,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
         {/* Theme Script runs before any renders */}
-        
+        <Analytics />
       </head>
       <body className={inter.className} suppressHydrationWarning>
           <div className="min-h-screen bg-white transition-colors duration-300">
