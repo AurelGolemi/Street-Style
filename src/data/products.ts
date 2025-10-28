@@ -270,7 +270,7 @@ export const products: Product[] = [
       {
         name: "Core Black",
         hex: "#000000",
-        images: ["/brand-product/adidas-ultraboost-22.jpg"],
+        images: ["/brand-product/adidas-ultraboost-22.avif"],
       },
     ],
 
@@ -324,7 +324,7 @@ export const products: Product[] = [
       {
         name: "White-Black",
         hex: "#FFFFFF",
-        images: ["/brand-product/puma-rs-x-toys.jpg"],
+        images: ["/brand-product/puma-rs-x-toys.webp"],
       },
     ],
 
@@ -349,14 +349,66 @@ export const products: Product[] = [
     createdAt: new Date("2025-09-01"),
     updatedAt: new Date("2025-10-20"),
 
-    seoTitle: "Puma RS-X Toys - Retro Sneakers | Street Style",
+    seoTitle: "Drea Wide Leg Joggers | Street Style",
     seoDescription:
-      "Shop Puma RS-X Toys sneakers with chunky design and retro appeal. Perfect for streetwear looks.",
+      "Shop Drea Wide Leg Joggers with chunky design and gothic appeal. Perfect for streetwear looks.",
     seoKeywords: [
       "puma rs-x",
       "retro sneakers",
       "chunky shoes",
       "puma sneakers",
+    ],
+  },
+  {
+    id: "drea-wide-leg-joggers",
+    sku: "PM-RS-X-001",
+    name: "Drea Wide Leg Joggers",
+    brand: "Hoodrich",
+    description:
+      "Step into playful style with the Drea Wide Leg Joggers. These baggy trousers feature a brushback fleece with an applique gothic logo.",
+    price: 75.0,
+    currency: "EUR",
+    images: ["/brand-product/drea-wide-leg-joggers.webp"],
+    category: "women",
+    subcategory: "clothing",
+    tags: ["track pants", "tech fleece", "streetwear", "casual"],
+
+    sizes: ["XS", "S", "M", "L", "XL"],
+    colors: [
+      {
+        name: "Gray",
+        hex: "#666666",
+        images: ["/brand-product/drea-wide-leg-joggers.webp"],
+      },
+    ],
+
+    features: [
+      "Wide leg fit",
+      "Applique Gothic Logo",
+      "Brushback fleece",
+      "Material 80% Cotton 20% Polyester",
+    ],
+
+    materials: ["Cotton", "Polyester"],
+    care: ["Machine wash cold", "Tumble dry low", "Do not bleach", "Do not iron",],
+
+    inStock: true,
+    stockLevel: 15,
+    lowStockThreshold: 3,
+
+    rating: 4.3,
+    reviewCount: 23,
+
+    createdAt: new Date("2025-10-14"),
+    updatedAt: new Date("2025-10-26"),
+
+    seoTitle: "Drea Wide Leg Joggers | Street Style",
+    seoDescription:
+      "Shop Drea Wide Leg Joggers with brushback fleece design and retro appeal. Perfect for streetwear looks.",
+    seoKeywords: [
+      "drea wide leg joggers",
+      "Applique Gothic Logo",
+      "Brushback Fleece",
     ],
   },
 ];

@@ -17,9 +17,10 @@ export async function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
-  const brand = brands.find((b) => b.id === params.slug);
+  const { slug } = await params;
+  const brand = brands.find((b) => b.id === slug);
 
   if (!brand) {
     return { title: "Brand Not Found" };
@@ -31,7 +32,7 @@ export async function generateMetadata({
 
   return {
     title: `${brand.name} - Official Collection | Street Style`,
-    description: `Shop ${productCount}+ ${brand.name} products. ${brand.description}. Free shipping on orders over £50.`,
+    description: `Shop ${productCount}+ ${brand.name} products. ${brand.description}. Free shipping on orders over €50.`,
     openGraph: {
       title: `${brand.name} Official Collection`,
       description: brand.description,
@@ -40,9 +41,15 @@ export async function generateMetadata({
   };
 }
 
-export default function BrandPage({ params }: { params: { slug: string } }) {
+export default async function BrandPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+
   // Find brand data
-  const brand = brands.find((b) => b.id === params.slug);
+  const brand = brands.find((b) => b.id === slug);
 
   if (!brand) {
     notFound();
