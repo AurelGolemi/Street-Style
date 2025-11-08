@@ -30,6 +30,11 @@ export default function HomePage() {
       logo: "/brand-logos/hoodrich-logo.svg",
       href: "/brands/the-north-face",
     },
+    {
+      name: "The North Face",
+      logo: "/brand-logos/the-north-face.svg",
+      href: "/brands/the-north-face",
+    }
   ];
 
   const categories = [

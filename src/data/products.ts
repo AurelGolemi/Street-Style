@@ -30,6 +30,13 @@ export const brands: Brand[] = [
     description:
       "Hoodrich is a streetwear brand known for its bold designs and urban fashion.",
   },
+  {
+    id: "the-north-face",
+    name: "The North Face",
+    logo: "/brand-logos/the-north-face.svg",
+    description:
+      "The North Face is and has been a leader in outdoor performance clothing & gear for hiking, skiing, trail running, camping, and other adventures."
+  }
 ];
 
 export const products: Product[] = [

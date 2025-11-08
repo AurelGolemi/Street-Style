@@ -289,6 +289,15 @@ const Hero = () => {
       backgroundImage: '/slideshow-image/street-style.jpg',
       overlayOpacity: 60
     },
+    {
+      id: 3,
+      title: "Forever Forward",
+      description: "Cop Unique Styles from Top Brands & Exclusive Collections",
+      ctaText: "Shop Now",
+      ctaLink: "/sales",
+      backgroundImage: '/slideshow-image/forever-forward.jpg',
+      overlayOpacity: 60
+    }
   ];
 
   return (
