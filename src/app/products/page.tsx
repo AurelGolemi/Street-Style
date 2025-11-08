@@ -96,7 +96,7 @@ export default function ProductsPage() {
       </div>
 
       <Container className="py-8">
-        <div className="fle flex-col lg:flex-row gap-8">
+        <div className="flex flex-col lg:flex-row gap-8">
           {/* Filters Sidebar - Desktop */}
           <aside className="hidden lg:block lg:w-64 flex-shrink-0">
             <div className="sticky top-24 bg-white rounded-lg shadow-sm p-6 border border-gray-200">
