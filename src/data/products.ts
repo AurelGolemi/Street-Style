@@ -78,7 +78,7 @@ export const products: Product[] = [
         name: "Gold-White",
         hex: "#FFFFF4",
         images: [
-          "/brand-product/nike-air-max-95-og/nike-air-max-95-og-baltic-blue.jpg",
+          "/brand-product/nike-air-max-95-og/nike-air-max-95-og-gold-white.jpg",
         ],
       },
       {
