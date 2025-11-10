@@ -139,64 +139,65 @@ export const products: Product[] = [
     ],
   },
   {
-    id: "nike-tech-mix-track-pants",
-    sku: "CW7456-063",
-    name: "Nike Tech Mix Track Pants",
+    id: "nike-shox-ride-2",
+    sku: "II7635-001",
+    name: "Nike Shox Ride 2",
     brand: "Nike",
     description:
-      "Made for the streets. These men's Tech Mix trackpants from Nike land in a Cool Grey colourway and are exclusive to JD. They're crafted from Nike's signature Tech Fleece fabric with cut-and-sew panels for a textured, modern look. Featuring an elasticated waistband and tapered legs for a streamlined fit, they're finished with side pockets and a Futura logo on the thigh.",
-    price: 100.0,
+      "A modern take on the classic, this Nike Shox Ride 2 offers responsive cushioning with four pillars of support under the heel and Max Air technology in the forefoot. Plus, the breathable textile and genuine leather upper is comfortable and durable.",
+    price: 179.99,
     currency: "EUR",
-    images: ["/brand-product/nike-tech-mix-track-pants.jpg"],
+    images: ["/brand-product/nike-shox-ride-2/nike-shox-ride-2-black.avif"],
     category: "men",
     subcategory: "clothing",
-    tags: ["track pants", "tech fleece", "streetwear", "casual"],
+    tags: ["sneakers", "running", "casual", "bestseller"],
 
-    sizes: ["XS", "S", "M", "L"],
+    sizes: ["36", "37", "38", "39", "40", "41", "42", "43", "44", "45"],
     colors: [
       {
-        name: "Cool Grey",
-        hex: "#8B8B8B",
-        images: ["/brand-product/nike-tech-mix-track-pants.jpg"],
+        name: "black",
+        hex: "#111",
+        images: ["/brand-product/nike-shox-ride-2/nike-shox-ride-2-black.avif"],
+      },
+      {
+        name: "ash-silver",
+        hex: "#464646",
+        images: ["/brand-product/nike-shox-ride-2/nike-shox-ride-2-silver.avif"],
+      },
+      {
+        name: "metallic-silver",
+        hex: "#999999",
+        images: ["/brand-product/nike-shox-ride-2/nike-shox-ride-2-metallic-silver.avif"],
       },
     ],
 
     features: [
-      "Tech Fleece fabric for warmth and comfort",
-      "Cut-and-sew panels for modern design",
-      "Elasticated waistband with drawcord",
-      "Tapered legs for streamlined fit",
-      "Side pockets for storage",
-      "Futura logo branding",
+      "Foam midsole",
+      "Rubber outsole",
+      "Reflective design details",
+      "Not intended for use as personal protective equipment (PPE)",
     ],
 
-    materials: ["Polyester", "Cotton"],
-    care: [
-      "Machine wash cold",
-      "Tumble dry low",
-      "Do not bleach",
-      "Do not iron",
-    ],
+    materials: ["Foam", "Rubber", "Leather"],
+    care: ["Wipe away dust with a dry brush", "Clean with water and a little laundry detergent", "Remove the laces from the shoes and wash them the same way", "Let your sneakers dry naturally, ideally in the shade, so they retain their color and shape. This process takes about 8 hours",],
 
     inStock: true,
-    stockLevel: 25,
+    stockLevel: 18,
     lowStockThreshold: 5,
 
-    rating: 4.5,
-    reviewCount: 18,
+    rating: 4.9,
+    reviewCount: 89,
 
-    createdAt: new Date("2025-10-01"),
-    updatedAt: new Date("2025-10-15"),
+    createdAt: new Date("2025-11-09"),
+    updatedAt: new Date("2025-11-10"),
 
-    seoTitle:
-      "Nike Tech Mix Track Pants - Streetwear Essentials | Street Style",
+    seoTitle: "Nike Shox Ride 2 | Street Style",
     seoDescription:
-      "Shop Nike Tech Mix Track Pants in Cool Grey. Premium Tech Fleece fabric with modern cut-and-sew design. Free shipping on orders over €50.",
+      "Add a street-inspired edge to your looks with the Nike Shox Ride 2, in a black colourway. These iconic sneaks are made with a breathable and durable upper for a snug fit, with a soft ankle collar for extra support. They sit atop a lightweight midsole with a Max Air unit for cushioning, and a durable outsole for reliable traction.",
     seoKeywords: [
-      "nike track pants",
-      "tech fleece",
-      "streetwear pants",
-      "nike clothing",
+      "drea wide leg joggers",
+      "Applique Gothic Logo",
+      "Brushback Fleece",
     ],
   },
   {
@@ -208,7 +209,10 @@ export const products: Product[] = [
       "Layer up in iconic style with the Hoodrich Chromatic Hoodie in a black colourway with the shiny detail on the chest giving the perfect touch. This staple is made of smooth and soft fleece fabric to provide everyday comfort and warmth, while it features a hood that closes with a button for even more coverage from the cold. The front pocket is ideal for storing essentials, but also to keep your hands warm.",
     price: 55.0,
     currency: "EUR",
-    images: ["/brand-product/hoodrich-chromatic-hoodie.jpg"],
+    images: [
+      "/brand-product/hoodrich-chromatic-hoodie/hoodrich-chromatic-hoodie-3.jpg",
+      "/brand-product/hoodrich-chromatic-hoodie/hoodrich-chromatic-hoodie-2.jpg",
+    ],
     category: "men",
     subcategory: "clothing",
     tags: ["hoodie", "streetwear", "urban", "chromatic"],
@@ -218,12 +222,12 @@ export const products: Product[] = [
       {
         name: "Black-Silver-Chromatic",
         hex: "#000000",
-        images: ["/brand-product/hoodrich-chromatic-hoodie.jpg"],
+        images: ["/brand-product/hoodrich-chromatic-hoodie/hoodrich-chromatic-hoodie-3.jpg"],
       },
       {
         name: "Sky-Captain-Silver-Chromatic",
         hex: "#4A90E2",
-        images: ["/brand-product/hoodrich-chromatic-hoodie.jpg"],
+        images: ["/brand-product/hoodrich-chromatic-hoodie/hoodrich-chromatic-hoodie-blue.jpg"],
       },
     ],
 
@@ -416,6 +420,67 @@ export const products: Product[] = [
       "drea wide leg joggers",
       "Applique Gothic Logo",
       "Brushback Fleece",
+    ],
+  },
+  {
+    id: "nike-tech-mix-track-pants",
+    sku: "CW7456-063",
+    name: "Nike Tech Mix Track Pants",
+    brand: "Nike",
+    description:
+      "Made for the streets. These men's Tech Mix trackpants from Nike land in a Cool Grey colourway and are exclusive to JD. They're crafted from Nike's signature Tech Fleece fabric with cut-and-sew panels for a textured, modern look. Featuring an elasticated waistband and tapered legs for a streamlined fit, they're finished with side pockets and a Futura logo on the thigh.",
+    price: 100.0,
+    currency: "EUR",
+    images: ["/brand-product/nike-tech-mix-track-pants.jpg"],
+    category: "men",
+    subcategory: "clothing",
+    tags: ["track pants", "tech fleece", "streetwear", "casual"],
+
+    sizes: ["XS", "S", "M", "L"],
+    colors: [
+      {
+        name: "Cool Grey",
+        hex: "#8B8B8B",
+        images: ["/brand-product/nike-tech-mix-track-pants.jpg"],
+      },
+    ],
+
+    features: [
+      "Tech Fleece fabric for warmth and comfort",
+      "Cut-and-sew panels for modern design",
+      "Elasticated waistband with drawcord",
+      "Tapered legs for streamlined fit",
+      "Side pockets for storage",
+      "Futura logo branding",
+    ],
+
+    materials: ["Polyester", "Cotton"],
+    care: [
+      "Machine wash cold",
+      "Tumble dry low",
+      "Do not bleach",
+      "Do not iron",
+    ],
+
+    inStock: true,
+    stockLevel: 25,
+    lowStockThreshold: 5,
+
+    rating: 4.5,
+    reviewCount: 18,
+
+    createdAt: new Date("2025-10-01"),
+    updatedAt: new Date("2025-10-15"),
+
+    seoTitle:
+      "Nike Tech Mix Track Pants - Streetwear Essentials | Street Style",
+    seoDescription:
+      "Shop Nike Tech Mix Track Pants in Cool Grey. Premium Tech Fleece fabric with modern cut-and-sew design. Free shipping on orders over €50.",
+    seoKeywords: [
+      "nike track pants",
+      "tech fleece",
+      "streetwear pants",
+      "nike clothing",
     ],
   },
 ];

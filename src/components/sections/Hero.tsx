@@ -282,8 +282,8 @@ const Hero = () => {
     },
     {
       id: 2,
-      title: "Nike Shox Ride 2 Coming Soon",
-      description: "Coming soon to Street Style",
+      title: "Nike Shox Ride 2 Out Now",
+      description: "Shop now and deliver the best fit from Street Style",
       ctaText: "Shop Now",
       ctaLink: "/products/nike-shox-ride-2",
       backgroundImage: '/slideshow-image/street-style.jpg',
