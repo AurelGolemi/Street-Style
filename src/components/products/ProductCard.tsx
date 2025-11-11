@@ -13,12 +13,14 @@ interface ProductCardProps {
   product: Product
   priority?: boolean
   showQuickAdd?: boolean
+  onNavigate?: () => void;
 }
 
 export default function ProductCard({ 
   product, 
   priority = false,
-  showQuickAdd = true 
+  showQuickAdd = true,
+  onNavigate
 }: ProductCardProps) {
 
   // STATE MANAGEMENT  
@@ -108,6 +110,7 @@ export default function ProductCard({
       className="group block"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      onClick={onNavigate}
     >
       <div className="bg-white rounded-lg overflow-hidden border border-gray-200 hover:border-gray-400 transition-all duration-300 hover:shadow-lg">
         

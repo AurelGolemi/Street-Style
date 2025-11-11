@@ -15,6 +15,9 @@ interface HeaderProps {
 export default function Header({ onCartClick }: HeaderProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const getTotalItems = useCartStore(state => state.getTotalItems)
+  const handleNavClick = () => {
+    setIsMobileMenuOpen(false)
+  }
 
   const [isSearchOpen, setIsSearchOpen] = useState(false)
 
@@ -79,22 +82,24 @@ export default function Header({ onCartClick }: HeaderProps) {
             {/* Mobile Menu Toggle */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="md:hidden p-2 hover:bg-gray-100 rounded-full transition">
+              className="md:hidden p-2 hover:bg-gray-100 rounded-full transition cursor-pointer">
               {isMobileMenuOpen ? <X className="w-6 h-6 text-gray-900" /> : <Menu className="w-6 h-6 text-gray-900" />}
             </button>
           </div>
         </div>
 
         {/* Mobile Menu */}
-        <div className="md:hidden py-4 border-t border-gray-200 dark:border-slate-700">
+        {isMobileMenuOpen && (
+          <div className="md:hidden py-4 border-t border-gray-200 dark:border-slate-700">
           <nav className="flex flex-col space-y-4">
-            <Link href="/men" className="text-gray-800 hover:text-blackfont-medium">Men</Link>
-              <Link href="/women" className="text-gray-800 hover:text-black font-medium">Women</Link>
-            <Link href="/kids" className="text-gray-800 hover:text-blackfont-medium">Kids</Link>
-            <Link href="/brands" className="text-gray-800 hover:text-blackfont-medium">Brands</Link>
-            <Link href="/sales" className="text-gray-800 hover:text-blackfont-medium">Sales</Link>
+            <Link href="/men" onClick={handleNavClick} className="text-gray-800 hover:text-blackfont-medium">Men</Link>
+            <Link href="/women" onClick={handleNavClick} className="text-gray-800 hover:text-black font-medium">Women</Link>
+            <Link href="/kids" onClick={handleNavClick} className="text-gray-800 hover:text-blackfont-medium">Kids</Link>
+            <Link href="/brands" onClick={handleNavClick} className="text-gray-800 hover:text-blackfont-medium">Brands</Link>
+            <Link href="/sales" onClick={handleNavClick} className="text-gray-800 hover:text-blackfont-medium">Sales</Link>
           </nav>
         </div>
+        )}
       </Container>
       </header>
 

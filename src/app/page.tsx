@@ -1,12 +1,20 @@
+"use client"
+
 import ProductCard from "@/components/products/ProductCard";
 import Hero from "@/components/sections/Hero";
 import Container from "@/components/ui/Container";
 import { getFeaturedProducts } from "@/data/products";
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 
 export default function HomePage() {
   const featuredProducts = getFeaturedProducts();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const handleNavClick = () => {
+    setIsMobileMenuOpen(false);
+  }
 
   // Brand logos with real brand data
   const brands = [
@@ -82,7 +90,7 @@ export default function HomePage() {
           {/* Product Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 text-gray-900">
             {featuredProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
+              <ProductCard key={product.id} product={product} onNavigate={handleNavClick} />
             ))}
           </div>
 
