@@ -201,7 +201,7 @@ export default function ProductImageGallery({
           </button>
 
           {/* Image Counter */}
-          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-white bg-opacity-10 text-white px-4 py-2 rounded-full text-sm font-medium">
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-white bg-opacity-10 text-gray-900 px-4 py-2 rounded-full text-sm font-medium">
             {currentIndex + 1} / {images.length}
           </div>
 
