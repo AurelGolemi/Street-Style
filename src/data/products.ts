@@ -145,7 +145,8 @@ export const products: Product[] = [
     brand: "Nike",
     description:
       "A modern take on the classic, this Nike Shox Ride 2 offers responsive cushioning with four pillars of support under the heel and Max Air technology in the forefoot. Plus, the breathable textile and genuine leather upper is comfortable and durable.",
-    price: 179.99,
+    originalPrice: 179.99,
+    price: 119.99,
     currency: "EUR",
     images: ["/brand-product/nike-shox-ride-2/nike-shox-ride-2-black.avif"],
     category: "men",
