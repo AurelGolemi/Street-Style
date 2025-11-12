@@ -55,7 +55,7 @@ export default function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
                   </div>
                   <p className="text-gray-700 text-lg font-medium">Your cart is empty</p>
                   <p className="text-gray-600 text-sm mt-2">Add items to get started</p>
-                  <Link href="/product">
+                  <Link href="/products">
                     <button
                       onClick={onClose}
                       className="mt-6 bg-black text-white px-6 py-3 rounded-lg font-semibold hover:bg-gray-800 transition cursor-pointer">

@@ -90,13 +90,13 @@ export default function HomePage() {
           {/* Product Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 text-gray-900">
             {featuredProducts.map((product) => (
-              <ProductCard key={product.id} product={product} onNavigate={handleNavClick} />
+              <ProductCard key={product.id} product={product} />
             ))}
           </div>
 
           {/* View All Button */}
           <div className="text-center mt-12">
-            <Link href="/products">
+            <Link href="/products" onClick={handleNavClick}>
               <button className="inline-block bg-black text-white px-8 py-3 rounded-lg font-semibold hover:bg-gray-800 transition cursor-pointer">
                 View All Products
               </button>
@@ -184,6 +184,7 @@ export default function HomePage() {
                 key={brand.name}
                 href={brand.href}
                 className="group bg-gray-50 rounded-xl p-8 flex items-center justify-center hover:shadow-xl hover:scale-105 transition-all duration-300 border border-gray-200"
+                onClick={handleNavClick}
               >
                 <div className="relative w-full h-16">
                   <Image
@@ -199,7 +200,7 @@ export default function HomePage() {
 
           <div className="text-center mt-12">
             <Link href="/brands">
-              <button className="text-gray-700 hover:text-gray-900 border border-gray-500 p-3 rounded-xl font-semibold transition inline-flex items-center gap-2 cursor-pointer">
+              <button onClick={handleNavClick} className="text-gray-700 hover:text-gray-900 border border-gray-500 p-3 rounded-xl font-semibold transition inline-flex items-center gap-2 cursor-pointer">
                 View All Brands
               </button>
             </Link>
