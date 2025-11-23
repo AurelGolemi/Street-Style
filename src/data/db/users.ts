@@ -4,7 +4,7 @@ import bcrypt from 'bcryptjs'
 export interface User {
   id: string
   email: string
-  phone: string | number | null
+  phone: string | null
   password_hash: string
   firstName: string
   lastName: string
@@ -175,4 +175,72 @@ class UserDatabase {
     this.users.set(user.id, user)
     return user
   }
+
+  async verifyPassword(user: User, password: string): Promise<boolean> {
+    return await bcrypt.compare(password, user.password_hash)
+  }
+
+  async recordFailedLogin(userId: string): Promise<void> {
+    await this.simulateLatency()
+
+    const user = this.users.get(userId)
+    if (!user) return
+
+    user.failedLoginAttempts += 1
+    user.updatedAt = new Date()
+
+    // Calculate lockout duration
+    if (user.failedLoginAttempts >= 15) {
+      user.lockUntil = new Date(Date.now() + 24 * 60 * 60 * 1000) // 15+ attempts = 24 hour lockout
+    } else if (user.failedLoginAttempts >= 10) {
+      user.lockUntil = new Date(Date.now() + 60 * 60 * 1000) // 10+ attempts = 1 hour lockout
+    } else if (user.failedLoginAttempts >= 5) {
+      user.lockUntil = new Date(Date.now() + 15 * 60 * 1000) // 5+ attempts = 15 minute lockout
+    } else if (user.failedLoginAttempts >= 3) {
+      user.lockUntil = new Date(Date.now() + 5 * 60 * 1000) // 3+ attempts = 5 minute lockout
+    }
+
+    this.users.set(userId, user)
+  }
+
+  async recordSuccessfulLogin(userId: string): Promise<void> {
+    await this.simulateLatency()
+
+    const user = this.users.get(userId)
+    if (!user) return
+
+    user.failedLoginAttempts = 0
+    user.lockUntil = null
+    user.lastLoginAt = new Date()
+    user.updatedAt = new Date()
+
+    this.users.set(userId, user)
+  }
+
+  isAccountLocked(user: User): boolean {
+    if (!user.lockUntil) return false
+    return new Date() < user.lockUntil
+  }
+
+  async getAllUsers(): Promise<User[]> {
+    await this.simulateLatency()
+    return Array.from(this.users.values())
+  }
+
+  async deleteUser(id: string): Promise<boolean> {
+    await this.simulateLatency()
+
+    const user = this.users.get(id)
+    if (!user) return false
+
+    this.emailIndex.delete(user.email)
+    if (user.phone) {
+      this.phoneIndex.delete(user.phone.replace(/\D/g, ''))
+    }
+
+    this.users.delete(id)
+    return true
+  }
 }
+
+export const userDb = new UserDatabase()
