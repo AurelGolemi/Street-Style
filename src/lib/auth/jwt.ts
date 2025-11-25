@@ -48,3 +48,74 @@ export function verifyToken(token: string): DecodedToken | null {
   }
 }
 
+export function decodeToken(token: string): DecodedToken | null {
+  try {
+    const decoded = jwt.decode(token) as DecodedToken
+    return decoded
+  } catch (error) {
+    return null
+  }
+}
+
+export function refreshToken(oldToken: string): string | null {
+  const decoded = verifyToken(oldToken)
+
+  if (!decoded) {
+    return null
+  }
+
+  const newToken = generateToken({
+    userId: decoded.userId,
+    email: decoded.email,
+    role: decoded.role,
+  })
+
+  return newToken
+}
+
+export function extractTokenFromCookie(cookieHeader: string | undefined) {
+  if (!cookieHeader) return null
+
+  const cookies = cookieHeader.split(';').map(c => c.trim())
+  const sessionCookie = cookies.find(c => c.startsWith('session='))
+
+  if (!sessionCookie) return null
+
+  return sessionCookie.split('=')[1]
+}
+
+export function createSecureCookie(token: string): string {
+  const maxAge = 7 * 24 * 60 * 60 // 7 days in seconds
+
+  // In production, add Secure Flag
+  const secureFlag = process.env.NODE_ENV === 'production' ? 'Secure;' : ''
+
+  return `session=${token}; HttpOnly ${secureFlag} SameSite=Strict; Path=/; Max-Age=${maxAge}`
+}
+
+export function deleteCookie(): string {
+  return 'session=; HttpOnly; SameSite=Strict; Path=/; Max-Age=0'
+}
+
+export function getTokenExpiration(token: string): Date | null {
+  const decoded = decodeToken(token)
+
+  if (!decoded || !decoded.exp) {
+    return null
+  }
+
+  // JWT exp is in seconds, JavaScript Date uses miliseconds
+  return new Date(decoded.exp * 1000)
+}
+
+export function isTokenExpiringSoon(token: string, hoursBeforeExpiry: number = 24): boolean {
+  const expirationDate = getTokenExpiration(token)
+
+  if (!expirationDate) {
+    return true // Invalid token, treat as expiring
+  }
+
+  const hoursUntilExpiry = (expirationDate.getTime() - Date.now()) / (1000 * 60 * 60)
+
+  return hoursUntilExpiry <= hoursBeforeExpiry
+}
