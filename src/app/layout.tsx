@@ -5,6 +5,7 @@ import { Inter } from 'next/font/google'
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
 import CartSidebar from '@/components/cart/CartSidebar'
+import { AuthProvider } from '@/contexts/AuthContext'
 import { Analytics } from "@vercel/analytics/next"
 import './globals.css'
 
@@ -24,6 +25,7 @@ export default function RootLayout({
         <Analytics />
       </head>
       <body className={inter.className} suppressHydrationWarning>
+        <AuthProvider>
           <div className="min-h-screen bg-white transition-colors duration-300">
             <Header onCartClick={() => setIsCartOpen(true)} />
 
@@ -38,6 +40,7 @@ export default function RootLayout({
           onClose={() => setIsCartOpen(false)}
           />
           </div>
+        </AuthProvider>
       </body>
     </html>
   )
