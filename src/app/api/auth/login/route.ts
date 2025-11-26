@@ -2,10 +2,10 @@ import { NextRequest, NextResponse } from "next/server"
 import { userDb } from '@/data/db/users'
 import { generateToken, createSecureCookie } from '@/lib/auth/jwt'
 
-// 1. Login API Route
+// Login API Route
 export async function POST(request: NextRequest) {
   try {
-    // Parse & validate input
+    // 1. Parse & validate input
     const body = await request.json()
     const { email, password } = body
 
