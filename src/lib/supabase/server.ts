@@ -16,7 +16,7 @@ export async function createClient() {
           try {
             cookieStore.set({ name, value, ...options })
           } catch (error) {
-            // Handle cookie setting in Server Components
+            console.error("The client is not working!")
           }
         },
         remove(name: string, options: CookieOptions) {
