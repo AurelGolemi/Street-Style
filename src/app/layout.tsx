@@ -17,6 +17,7 @@ export default function RootLayout({
   children: React.ReactNode
   }) {
   const [isCartOpen, setIsCartOpen] = useState(false)
+  const [user, setUser] = useState<{ id: string; email: string; name?: string } | null>(null)
 
   return (
     <html lang="en" suppressHydrationWarning>
@@ -27,7 +28,7 @@ export default function RootLayout({
       <body className={inter.className} suppressHydrationWarning>
         <AuthProvider>
           <div className="min-h-screen bg-white transition-colors duration-300">
-            <Header onCartClick={() => setIsCartOpen(true)} />
+            <Header onCartClick={() => setIsCartOpen(true)} user={user} />
 
           <main className="min-h-screen bg-white">
               {children}
