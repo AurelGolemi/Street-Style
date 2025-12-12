@@ -6,7 +6,7 @@ import { userDb } from '@/data/db/users'
 export async function GET(request: NextRequest) {
   try {
     // 1. Extract Token From Cookie
-    const cookieHeader = request.headers.get('cookie')
+    const cookieHeader = request.headers.get('cookie') ?? undefined
     const token = extractTokenFromCookie(cookieHeader)
 
     if (!token) {
