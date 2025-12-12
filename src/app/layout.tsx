@@ -18,6 +18,7 @@ export default function RootLayout({
   }) {
   const [isCartOpen, setIsCartOpen] = useState(false)
   const [user, setUser] = useState<{ id: string; email: string; name?: string } | null>(null)
+  
 
   return (
     <html lang="en" suppressHydrationWarning>
