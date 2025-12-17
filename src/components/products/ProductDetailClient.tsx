@@ -1,5 +1,8 @@
 "use client";
 
+import ProductImageGallery from "@/components/products/ProductImageGallery";
+import ProductTabs from "@/components/products/ProductTabs";
+import RelatedProducts from "@/components/products/RelatedProducts";
 import Container from "@/components/ui/Container";
 import {
   formatPrice,
@@ -20,9 +23,6 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
-import ProductImageGallery from "@/components/products/ProductImageGallery";
-import ProductTabs from "@/components/products/ProductTabs";
-import RelatedProducts from "@/components/products/RelatedProducts";
 
 // Extend Window interface for gtag
 declare global {
@@ -44,7 +44,6 @@ export default function ProductDetailClient({
   product,
   relatedProducts,
 }: ProductDetailClientProps) {
-
   // State Management
 
   // User selections
@@ -65,7 +64,7 @@ export default function ProductDetailClient({
   // Cart store
   const addItem = useCartStore((state) => state.addItem);
 
-// Computed Values
+  // Computed Values
 
   const discount = getDiscountPercentage(product);
   const isLowStockProduct = isLowStock(product);
@@ -78,7 +77,7 @@ export default function ProductDetailClient({
     product.colors.find((c) => c.name === selectedColor)?.images ||
     product.images;
 
-// Event Handlers
+  // Event Handlers
 
   const handleAddToCart = () => {
     // Validate size selection
@@ -99,15 +98,15 @@ export default function ProductDetailClient({
     setTimeout(() => {
       // Add to cart
       addItem({
+        productId: product.id,
         id: `${product.id}-${selectedSize}-${selectedColor}`,
         name: product.name,
         brand: product.brand,
         price: product.price,
-        originalPrice: product.originalPrice,
+        quantity: quantity || 1,
         size: selectedSize,
         color: selectedColor,
         image: currentColorImages[0],
-        category: product.category,
       });
 
       setIsAddingToCart(false);
@@ -137,14 +136,16 @@ export default function ProductDetailClient({
     }, 500);
   };
 
-  {/*
-   * Handle Wishlist Toggle
-   *
-   * In production, this would:
-   * 1. Call API to save to user's wishlist
-   * 2. Update global wishlist state
-   * 3. Show toast notification
-   */}
+  {
+    /*
+     * Handle Wishlist Toggle
+     *
+     * In production, this would:
+     * 1. Call API to save to user's wishlist
+     * 2. Update global wishlist state
+     * 3. Show toast notification
+     */
+  }
   const handleWishlistToggle = () => {
     setIsWishlisted(!isWishlisted);
 
@@ -187,18 +188,18 @@ export default function ProductDetailClient({
     }
   };
 
-// Handle size selection
+  // Handle size selection
   const handleSizeSelect = (size: string) => {
     setSelectedSize(size);
     setSizeError(false);
   };
 
-// Handle color selection
+  // Handle color selection
   const handleColorSelect = (colorName: string) => {
     setSelectedColor(colorName);
   };
 
-// Handle quality change
+  // Handle quality change
   const handleQuantityChange = (delta: number) => {
     const newQuantity = quantity + delta;
     if (newQuantity >= 1 && newQuantity <= 10) {
@@ -206,7 +207,7 @@ export default function ProductDetailClient({
     }
   };
 
-// Render
+  // Render
 
   return (
     <div className="min-h-screen bg-gray-50">

@@ -3,10 +3,12 @@
 import { useState } from 'react'
 import { signIn } from '@/app/actions/auth'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 
 export default function LoginPage() {
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
+  const router = useRouter()
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -19,6 +21,10 @@ export default function LoginPage() {
     if (result?.error) {
       setError(result.error)
       setLoading(false)
+    } else if (result?.success) {
+      // Redirect on success
+      router.push('/')
+      router.refresh()
     }
   }
 
@@ -72,6 +78,12 @@ export default function LoginPage() {
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-black focus:border-black"
               />
             </div>
+          </div>
+
+          <div className="flex items-center justify-between">
+            <Link href="/forgot-password" className="text-sm text-black hover:underline">
+              Forgot password?
+            </Link>
           </div>
 
           <button

@@ -1,5 +1,6 @@
 import { createServerClient, type CookieOptions } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
+import { verifyToken, extractTokenFromCookie } from '@/lib/auth/jwt'
 
 export async function middleware(request: NextRequest) {
   let response = NextResponse.next({
@@ -8,6 +9,18 @@ export async function middleware(request: NextRequest) {
     },
   })
 
+  // Check JWT token first
+  const cookieHeader = request.headers.get('cookie') ?? undefined
+  const token = extractTokenFromCookie(cookieHeader)
+  const isJWTValid = token ? verifyToken(token) : null
+
+  // If JWT is valid, allow access
+  if (isJWTValid) {
+    // Allow protected routes
+    return response
+  }
+
+  // Fallback to Supabase if JWT fails
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
@@ -54,16 +67,26 @@ export async function middleware(request: NextRequest) {
     },
   )
 
-  const { data: { user } } = await supabase.auth.getUser()
+  const { data: { user: supabaseUser } } = await supabase.auth.getUser()
 
-  // Redirect to login if accessing protected routes without auth
-  if (!user && (request.nextUrl.pathname.startsWith('/cart') || request.nextUrl.pathname.startsWith('/account'))) {
-    return NextResponse.redirect(new URL('/login', request.url))
+  // Redirect unauthenticated users from protected routes
+  if (!isJWTValid && !supabaseUser) {
+    if (
+      request.nextUrl.pathname.startsWith('/cart') ||
+      request.nextUrl.pathname.startsWith('/account')
+    ) {
+      return NextResponse.redirect(new URL('/login', request.url))
+    }
   }
 
-  // Redirect to home if accessing auth pages while logged in
-  if (user && (request.nextUrl.pathname.startsWith('/login') || request.nextUrl.pathname.startsWith('/register'))) {
-    return NextResponse.redirect(new URL('/', request.url))
+  // Redirect authenticated users away from auth pages
+  if (isJWTValid || supabaseUser) {
+    if (
+      request.nextUrl.pathname.startsWith('/login') ||
+      request.nextUrl.pathname.startsWith('/register')
+    ) {
+      return NextResponse.redirect(new URL('/', request.url))
+    }
   }
 
   return response
