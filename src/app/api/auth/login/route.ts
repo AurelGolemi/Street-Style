@@ -79,10 +79,21 @@ export async function POST(request: NextRequest) {
 
     // 4. Verify Password
     console.log("🔑 Verifying password...");
+    console.log("User password hash exists:", !!user.password_hash);
+    console.log("User password hash length:", user.password_hash?.length || 0);
+
     const isValidPassword = await userDb.verifyPassword(user, password);
+    console.log("Password verification result:", isValidPassword);
 
     if (!isValidPassword) {
       console.log("❌ PASSWORD VERIFICATION FAILED");
+      console.log("Debug info:", {
+        userId: user.id,
+        email: user.email,
+        hasPasswordHash: !!user.password_hash,
+        passwordHashLength: user.password_hash?.length,
+        inputPasswordLength: password.length,
+      });
       await userDb.recordFailedLogin(user.id);
       console.log("📝 Failed login recorded");
       console.log("🔐 ========== LOGIN END (ERROR) ========== 🔐\n");

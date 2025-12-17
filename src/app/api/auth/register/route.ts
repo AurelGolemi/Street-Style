@@ -197,6 +197,7 @@ export async function POST(request: NextRequest) {
 
     // 8. Create User
     console.log("👤 Creating user in database...");
+    console.log("Password to hash:", password.substring(0, 3) + "***");
     try {
       const user = await userDb.createUser({
         email,
@@ -211,6 +212,8 @@ export async function POST(request: NextRequest) {
         email: user.email,
         firstName: user.firstName,
         lastName: user.lastName,
+        hasPasswordHash: !!user.password_hash,
+        passwordHashLength: user.password_hash?.length || 0,
       });
 
       // Generate JWT Token (auto-login after registration)
