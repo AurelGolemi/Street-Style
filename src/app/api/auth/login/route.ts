@@ -1,63 +1,67 @@
-import { NextRequest, NextResponse } from "next/server"
-import { userDb } from '@/data/db/users'
-import { generateToken, createSecureCookie } from '@/lib/auth/jwt'
+import { userDb } from "@/data/db/users";
+import { createSecureCookie, generateToken } from "@/lib/auth/jwt";
+import { NextRequest, NextResponse } from "next/server";
 
 // Login API Route
 export async function POST(request: NextRequest) {
   try {
     // 1. Parse & validate input
-    const body = await request.json()
-    const { email, password } = body
+    const body = await request.json();
+    const { email, password } = body;
+
+    console.log("Login request received:", { email });
 
     // Validate required fields
     if (!email || !password) {
       return NextResponse.json(
-        { error: 'Email/phone and password are required' },
+        { error: "Email/phone and password are required" },
         { status: 400 }
-      )
+      );
     }
 
     // 2. Find User
     // Try to find by email first
-    let user = await userDb.findUserByEmail(email)
+    let user = await userDb.findUserByEmail(email);
 
     // If not found and looks like phone number, try phone lookup
     if (!user && /^\+?[\d\s\-()]+$/.test(email)) {
-      user = await userDb.findUserByPhone(email)
+      user = await userDb.findUserByPhone(email);
     }
 
     // User not found
     if (!user) {
       return NextResponse.json(
-        { error: 'Invalid credentials' },
+        { error: "Invalid credentials" },
         { status: 401 }
-      )
+      );
     }
 
     // 3. Check account lockout
     if (userDb.isAccountLocked(user)) {
-      const lockUntil = user.lockUntil!
-      const minutesRemaining = Math.ceil((lockUntil.getTime() - Date.now()) / 60000)
+      const lockUntil = user.lockUntil!;
+      const minutesRemaining = Math.ceil(
+        (lockUntil.getTime() - Date.now()) / 60000
+      );
 
       return NextResponse.json(
-        { 
+        {
           error: `Account is temporarily locked. Please try again in ${minutesRemaining} minutes.`,
-          lockedUntil: lockUntil.toISOString()
+          lockedUntil: lockUntil.toISOString(),
         },
         { status: 423 } // 423 Locked
-      )
+      );
     }
 
     // 4. Verify Password
-    const isValidPassword = await userDb.verifyPassword(user, password)
+    const isValidPassword = await userDb.verifyPassword(user, password);
 
     if (!isValidPassword) {
-      await userDb.recordFailedLogin(user.id)
+      await userDb.recordFailedLogin(user.id);
 
       return NextResponse.json(
-        { error: 'Invalid credentials' },
+        { error: "Invalid credentials" },
         { status: 401 }
-      )
+      );
     }
 
     // 5. Generate JWT Token
@@ -65,10 +69,10 @@ export async function POST(request: NextRequest) {
       userId: user.id,
       email: user.email,
       role: user.role,
-    })
+    });
 
     // 6. Record successful login
-    await userDb.recordSuccessfulLogin(user.id)
+    await userDb.recordSuccessfulLogin(user.id);
 
     // 7. Return Response With Secure Cookie
     const response = NextResponse.json({
@@ -81,17 +85,20 @@ export async function POST(request: NextRequest) {
         role: user.role,
         emailVerified: user.emailVerified,
       },
-    })
+    });
 
     // Set secure cookie
-    response.headers.set('Set-Cookie', createSecureCookie(token))
+    response.headers.set("Set-Cookie", createSecureCookie(token));
 
-    return response
+    return response;
   } catch (error) {
-    console.error('Login error:', error)
+    console.error("Login error:", error);
+    const errorMessage =
+      error instanceof Error ? error.message : "Unknown error";
+    console.error("Error details:", errorMessage);
     return NextResponse.json(
-      { error: 'An error occurred during login' },
+      { error: "An error occurred during login: " + errorMessage },
       { status: 500 }
-    )
+    );
   }
 }

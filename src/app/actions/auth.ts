@@ -38,6 +38,13 @@ export async function signUp(formData: FormData) {
       return { error: "Password must be at least 8 characters" };
     }
 
+    console.log("Attempting to register user:", {
+      email,
+      firstName,
+      lastName,
+      url: `${process.env.NEXT_PUBLIC_APP_URL}/api/auth/register`,
+    });
+
     // Call your API route instead of Supabase
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_APP_URL}/api/auth/register`,
@@ -58,6 +65,8 @@ export async function signUp(formData: FormData) {
 
     const data = await response.json();
 
+    console.log("Registration response:", { status: response.status, data });
+
     if (!response.ok) {
       return { error: data.error || "Registration failed" };
     }
@@ -68,7 +77,10 @@ export async function signUp(formData: FormData) {
     };
   } catch (error) {
     console.error("Signup error:", error);
-    return { error: "An unexpected error occurred" };
+    return {
+      error:
+        error instanceof Error ? error.message : "An unexpected error occurred",
+    };
   }
 }
 
@@ -80,6 +92,11 @@ export async function signIn(formData: FormData) {
     if (!email || !password) {
       return { error: "Email and password are required" };
     }
+
+    console.log("Attempting to login:", {
+      email,
+      url: `${process.env.NEXT_PUBLIC_APP_URL}/api/auth/login`,
+    });
 
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_APP_URL}/api/auth/login`,
@@ -93,6 +110,8 @@ export async function signIn(formData: FormData) {
 
     const data = await response.json();
 
+    console.log("Login response:", { status: response.status, data });
+
     if (!response.ok) {
       return { error: data.error || "Login failed" };
     }
@@ -101,7 +120,10 @@ export async function signIn(formData: FormData) {
     return { success: true, user: data.user };
   } catch (error) {
     console.error("Signin error:", error);
-    return { error: "An unexpected error occurred" };
+    return {
+      error:
+        error instanceof Error ? error.message : "An unexpected error occurred",
+    };
   }
 }
 
