@@ -2,12 +2,9 @@
 
 export async function getUser() {
   try {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_APP_URL}/api/auth/me`,
-      {
-        credentials: "include",
-      }
-    );
+    const response = await fetch("/api/auth/me", {
+      credentials: "include",
+    });
 
     if (!response.ok) {
       return null;
@@ -42,26 +39,23 @@ export async function signUp(formData: FormData) {
       email,
       firstName,
       lastName,
-      url: `${process.env.NEXT_PUBLIC_APP_URL}/api/auth/register`,
+      url: "/api/auth/register",
     });
 
     // Call your API route instead of Supabase
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_APP_URL}/api/auth/register`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({
-          email,
-          password,
-          confirmPassword,
-          firstName: firstName || "User",
-          lastName: lastName || "",
-          phone: phone_number,
-        }),
-      }
-    );
+    const response = await fetch("/api/auth/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({
+        email,
+        password,
+        confirmPassword,
+        firstName: firstName || "User",
+        lastName: lastName || "",
+        phone: phone_number,
+      }),
+    });
 
     const data = await response.json();
 
@@ -95,18 +89,15 @@ export async function signIn(formData: FormData) {
 
     console.log("Attempting to login:", {
       email,
-      url: `${process.env.NEXT_PUBLIC_APP_URL}/api/auth/login`,
+      url: "/api/auth/login",
     });
 
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_APP_URL}/api/auth/login`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({ email, password }),
-      }
-    );
+    const response = await fetch("/api/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({ email, password }),
+    });
 
     const data = await response.json();
 
@@ -129,13 +120,10 @@ export async function signIn(formData: FormData) {
 
 export async function signOut() {
   try {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_APP_URL}/api/auth/logout`,
-      {
-        method: "POST",
-        credentials: "include",
-      }
-    );
+    const response = await fetch("/api/auth/logout", {
+      method: "POST",
+      credentials: "include",
+    });
 
     return response.ok ? { success: true } : { error: "Logout failed" };
   } catch (error) {
