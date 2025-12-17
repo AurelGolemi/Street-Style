@@ -1,5 +1,7 @@
 "use server";
 
+import { headers } from "next/headers";
+
 export async function getUser() {
   try {
     const response = await fetch("/api/auth/me", {
@@ -83,8 +85,15 @@ export async function signUp(formData: FormData) {
       phone: phone_number?.trim() || undefined,
     };
 
+    // Construct absolute URL for server-side fetch
+    const headersList = await headers();
+    const host = headersList.get('host') || 'localhost:3000';
+    const protocol = headersList.get('x-forwarded-proto') || (host.includes('localhost') ? 'http' : 'https');
+    const baseUrl = `${protocol}://${host}`;
+    const registerUrl = `${baseUrl}/api/auth/register`;
+
     console.log("🚀 Sending registration request:", {
-      url: "/api/auth/register",
+      url: registerUrl,
       payload: {
         ...payload,
         password: "***",
@@ -92,7 +101,7 @@ export async function signUp(formData: FormData) {
       },
     });
 
-    const response = await fetch("/api/auth/register", {
+    const response = await fetch(registerUrl, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
@@ -142,12 +151,19 @@ export async function signIn(formData: FormData) {
       return { error: "Email and password are required" };
     }
 
+    // Construct absolute URL for server-side fetch
+    const headersList = await headers();
+    const host = headersList.get('host') || 'localhost:3000';
+    const protocol = headersList.get('x-forwarded-proto') || (host.includes('localhost') ? 'http' : 'https');
+    const baseUrl = `${protocol}://${host}`;
+    const loginUrl = `${baseUrl}/api/auth/login`;
+
     console.log("🚀 Sending login request:", {
-      url: "/api/auth/login",
+      url: loginUrl,
       email: email.trim(),
     });
 
-    const response = await fetch("/api/auth/login", {
+    const response = await fetch(loginUrl, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
