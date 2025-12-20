@@ -1,45 +1,45 @@
-'use client'
+"use client";
 
-import { useState, FormEvent } from 'react'
-import { signUp } from '@/app/actions/auth'
-import { useRouter } from 'next/navigation'
-import Link from 'next/link'
+import { signUp } from "@/app/actions/auth";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { FormEvent, useState } from "react";
 
 export default function RegisterForm() {
-  const [error, setError] = useState<string | null>(null)
-  const [success, setSuccess] = useState<string | null>(null)
-  const [isLoading, setIsLoading] = useState(false)
-  const router = useRouter()
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    setError(null)
-    setSuccess(null)
-    setIsLoading(true)
+    e.preventDefault();
+    setError(null);
+    setSuccess(null);
+    setIsLoading(true);
 
     try {
-      const formData = new FormData(e.currentTarget)
-      const result = await signUp(formData)
+      const formData = new FormData(e.currentTarget);
+      const result = await signUp(formData);
 
       if (result.error) {
-        setError(result.error)
-        setIsLoading(false)
-        return
+        setError(result.error);
+        setIsLoading(false);
+        return;
       }
 
       if (result.success) {
-        setSuccess(result.message || 'Account created successfully!')
+        setSuccess("Account created successfully!");
         // Redirect to login after 2 seconds
         setTimeout(() => {
-          router.push('/login')
-        }, 2000)
+          router.push("/login");
+        }, 2000);
       }
     } catch (err) {
-      setError('An unexpected error occurred')
-      setIsLoading(false)
-      console.error('Submit error:', err)
+      setError("An unexpected error occurred");
+      setIsLoading(false);
+      console.error("Submit error:", err);
     }
-  }
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
@@ -49,8 +49,11 @@ export default function RegisterForm() {
             Create Account
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600">
-            Or{' '}
-            <Link href="/login" className="font-medium text-black hover:underline">
+            Or{" "}
+            <Link
+              href="/login"
+              className="font-medium text-black hover:underline"
+            >
               sign in to your account
             </Link>
           </p>
@@ -72,7 +75,10 @@ export default function RegisterForm() {
           <div className="space-y-4">
             {/* Full Name */}
             <div>
-              <label htmlFor="full_name" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="full_name"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Full Name
               </label>
               <input
@@ -87,7 +93,10 @@ export default function RegisterForm() {
 
             {/* Email */}
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Email
               </label>
               <input
@@ -102,7 +111,10 @@ export default function RegisterForm() {
 
             {/* Phone */}
             <div>
-              <label htmlFor="phone_number" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="phone_number"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Phone Number (Optional)
               </label>
               <input
@@ -116,7 +128,10 @@ export default function RegisterForm() {
 
             {/* Password */}
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Password
               </label>
               <input
@@ -134,7 +149,10 @@ export default function RegisterForm() {
 
             {/* Confirm Password */}
             <div>
-              <label htmlFor="confirm_password" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="confirm_password"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Confirm Password
               </label>
               <input
@@ -153,10 +171,10 @@ export default function RegisterForm() {
             disabled={isLoading}
             className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-black hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {isLoading ? 'Creating Account...' : 'Create Account'}
+            {isLoading ? "Creating Account..." : "Create Account"}
           </button>
         </form>
       </div>
     </div>
-  )
+  );
 }

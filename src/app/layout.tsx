@@ -1,24 +1,22 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import { Inter } from 'next/font/google'
-import Header from '@/components/layout/Header'
-import Footer from '@/components/layout/Footer'
-import CartSidebar from '@/components/cart/CartSidebar'
-import { AuthProvider } from '@/contexts/AuthContext'
-import { Analytics } from "@vercel/analytics/next"
-import './globals.css'
+import CartSidebar from "@/components/cart/CartSidebar";
+import Footer from "@/components/layout/Footer";
+import HeaderWrapper from "@/components/layout/HeaderWrapper";
+import { AuthProvider } from "@/contexts/AuthContext";
+import { Analytics } from "@vercel/analytics/next";
+import { Inter } from "next/font/google";
+import { useState } from "react";
+import "./globals.css";
 
-const inter = Inter({ subsets: ['latin']})
+const inter = Inter({ subsets: ["latin"] });
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
-  }) {
-  const [isCartOpen, setIsCartOpen] = useState(false)
-  const [user, setUser] = useState<{ id: string; email: string; name?: string } | null>(null)
-  
+  children: React.ReactNode;
+}) {
+  const [isCartOpen, setIsCartOpen] = useState(false);
 
   return (
     <html lang="en" suppressHydrationWarning>
@@ -29,21 +27,19 @@ export default function RootLayout({
       <body className={inter.className} suppressHydrationWarning>
         <AuthProvider>
           <div className="min-h-screen bg-white transition-colors duration-300">
-            <Header onCartClick={() => setIsCartOpen(true)} user={user} />
+            <HeaderWrapper onCartClick={() => setIsCartOpen(true)} />
 
-          <main className="min-h-screen bg-white">
-              {children}
-          </main>
+            <main className="min-h-screen bg-white">{children}</main>
 
-          <Footer />
+            <Footer />
 
-        <CartSidebar
-          isOpen={isCartOpen}
-          onClose={() => setIsCartOpen(false)}
-          />
+            <CartSidebar
+              isOpen={isCartOpen}
+              onClose={() => setIsCartOpen(false)}
+            />
           </div>
         </AuthProvider>
       </body>
     </html>
-  )
+  );
 }

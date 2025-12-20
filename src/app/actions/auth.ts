@@ -1,219 +1,208 @@
-"use server";
+'use server'
 
-import { headers } from "next/headers";
+import { createClient } from '@/lib/supabase/server'
+import { revalidatePath } from 'next/cache'
+import { redirect } from 'next/navigation'
 
-export async function getUser() {
+// Type definitions for better type safety and IDE autocomplete
+export type User = {
+  id: string
+  email: string
+  // Add other user properties as needed
+}
+
+export type AuthResult = {
+  error?: string
+  success?: boolean
+}
+
+export async function getUser(): Promise<User | null> {
   try {
-    const response = await fetch("/api/auth/me", {
-      credentials: "include",
-    });
-
-    if (!response.ok) {
-      return null;
+    const supabase = await createClient()
+    
+    // Why getUser() instead of getSession():
+    // - getUser() makes an API call to verify the token is still valid
+    // - getSession() only reads the local session without verification
+    // - For security-critical operations, always use getUser()
+    const { data: { user }, error } = await supabase.auth.getUser()
+    
+    if (error) {
+      console.error('Error fetching user:', error.message)
+      return null
     }
-
-    const data = await response.json();
-    return data.user || null;
+    
+    if (!user || !user.email) {
+      return null
+    }
+    
+    // Return only the data we need to minimize payload
+    return {
+      id: user.id,
+      email: user.email,
+    }
   } catch (error) {
-    console.error("Get user error:", error);
-    return null;
+    // Catch any unexpected errors (network issues, etc.)
+    console.error('Unexpected error in getUser:', error)
+    return null
   }
 }
 
-export async function signUp(formData: FormData) {
-  try {
-    // Extract form values
-    const email = formData.get("email") as string | null;
-    const password = formData.get("password") as string | null;
-    const confirmPassword = formData.get("confirm_password") as string | null;
-    const full_name = formData.get("full_name") as string | null;
-    const phone_number = formData.get("phone_number") as string | null;
+// Signs in a user with an email and password
+export async function signIn(formData: FormData): Promise<AuthResult> {
+  const supabase = await createClient()
+  
+  const email = formData.get('email') as string
+  const password = formData.get('password') as string
+  
+  // Validation: Check if required fields are present
+  if (!email || !password) {
+    return { error: 'Email and password are required' }
+  }
+  
+  console.log('Attempting sign in for:', email)
+  
+  const { data: authData, error } = await supabase.auth.signInWithPassword({
+    email,
+    password,
+  })
+  
+  if (error) {
+    console.error('Sign in error:', error.message)
+    return { error: error.message }
+  }
+  
+  console.log('Sign in successful for user:', authData.user?.id)
+  
+  // Revalidate all pages to reflect new auth state
+  revalidatePath('/', 'layout')
+  
+  // Redirect happens after function returns, so this works differently
+  // than your original implementation
+  redirect('/')
+}
 
-    // Log extracted values for debugging
-    console.log("📋 Form data extracted:", {
-      email: email ? "✓" : "✗ MISSING",
-      password: password ? "✓" : "✗ MISSING",
-      confirmPassword: confirmPassword ? "✓" : "✗ MISSING",
-      full_name: full_name ? "✓" : "✗ MISSING",
-      phone_number: phone_number ? "✓ (optional)" : "- (optional)",
-    });
-
-    // Split full name
-    const [firstName, lastName] = full_name
-      ? full_name.trim().split(" ")
-      : ["", ""];
-
-    console.log("📝 Parsed names:", { firstName, lastName });
-
-    // Client-side validation
-    if (!email?.trim()) {
-      console.error("❌ Validation failed: Email is empty");
-      return { error: "Email is required" };
-    }
-
-    if (!password?.trim()) {
-      console.error("❌ Validation failed: Password is empty");
-      return { error: "Password is required" };
-    }
-
-    if (!confirmPassword?.trim()) {
-      console.error("❌ Validation failed: Confirm password is empty");
-      return { error: "Please confirm your password" };
-    }
-
-    if (!firstName?.trim()) {
-      console.error("❌ Validation failed: Full name is required");
-      return { error: "Full name is required" };
-    }
-
-    if (password.length < 8) {
-      console.error("❌ Validation failed: Password too short");
-      return { error: "Password must be at least 8 characters" };
-    }
-
-    if (password !== confirmPassword) {
-      console.error("❌ Validation failed: Passwords don't match");
-      return { error: "Passwords do not match" };
-    }
-
-    const payload = {
-      email: email.trim(),
-      password,
-      confirmPassword,
-      firstName: firstName.trim(),
-      lastName: lastName?.trim() || "",
-      phone: phone_number?.trim() || undefined,
-    };
-
-    // Construct absolute URL for server-side fetch
-    const headersList = await headers();
-    const host = headersList.get('host') || 'localhost:3000';
-    const protocol = headersList.get('x-forwarded-proto') || (host.includes('localhost') ? 'http' : 'https');
-    const baseUrl = `${protocol}://${host}`;
-    const registerUrl = `${baseUrl}/api/auth/register`;
-
-    console.log("🚀 Sending registration request:", {
-      url: registerUrl,
-      payload: {
-        ...payload,
-        password: "***",
-        confirmPassword: "***",
-      },
-    });
-
-    const response = await fetch(registerUrl, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      credentials: "include",
-      body: JSON.stringify(payload),
-    });
-
-    const data = await response.json();
-
-    console.log("📥 Registration response:", {
-      status: response.status,
-      statusText: response.statusText,
-      error: data.error,
-      success: data.success,
-    });
-
-    if (!response.ok) {
-      console.error("❌ Registration failed:", data.error);
-      return { error: data.error || "Registration failed" };
-    }
-
-    console.log("✅ Registration successful");
-    return {
+// Signs up a new user with an email and password
+export async function signUp(formData: FormData): Promise<AuthResult> {
+  const supabase = await createClient()
+  
+  const email = formData.get('email') as string
+  const password = formData.get('password') as string
+  
+  if (!email || !password) {
+    return { error: 'Email and password are required' }
+  }
+  
+  // Password strength validation (basic example)
+  if (password.length < 8) {
+    return { error: 'Password must be at least 8 characters' }
+  }
+  
+  console.log('Attempting sign up for:', email)
+  
+  const { data: authData, error } = await supabase.auth.signUp({
+    email,
+    password,
+    options: {
+      // Email redirect URL after confirmation
+      emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`,
+    },
+  })
+  
+  if (error) {
+    console.error('Sign up error:', error.message)
+    return { error: error.message }
+  }
+  
+  console.log('Sign up successful for user:', authData.user?.id)
+  
+  // Check if email confirmation is required
+  if (authData.user && !authData.session) {
+    return { 
       success: true,
-      message: "Account created! Redirecting to login...",
-    };
-  } catch (error) {
-    console.error("💥 Signup exception:", error);
-    return {
-      error:
-        error instanceof Error ? error.message : "An unexpected error occurred",
-    };
+      error: 'Please check your email to confirm your account'
+    }
   }
+  
+  revalidatePath('/', 'layout')
+  redirect('/')
 }
 
-export async function signIn(formData: FormData) {
-  try {
-    const email = formData.get("email") as string | null;
-    const password = formData.get("password") as string | null;
-
-    console.log("📋 Login form data extracted:", {
-      email: email ? "✓" : "✗ MISSING",
-      password: password ? "✓" : "✗ MISSING",
-    });
-
-    if (!email?.trim() || !password?.trim()) {
-      console.error("❌ Validation failed: Email or password is empty");
-      return { error: "Email and password are required" };
-    }
-
-    // Construct absolute URL for server-side fetch
-    const headersList = await headers();
-    const host = headersList.get('host') || 'localhost:3000';
-    const protocol = headersList.get('x-forwarded-proto') || (host.includes('localhost') ? 'http' : 'https');
-    const baseUrl = `${protocol}://${host}`;
-    const loginUrl = `${baseUrl}/api/auth/login`;
-
-    console.log("🚀 Sending login request:", {
-      url: loginUrl,
-      email: email.trim(),
-    });
-
-    const response = await fetch(loginUrl, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      credentials: "include",
-      body: JSON.stringify({ email: email.trim(), password }),
-    });
-
-    const data = await response.json();
-
-    console.log("📥 Login response:", {
-      status: response.status,
-      statusText: response.statusText,
-      error: data.error,
-      success: data.success,
-      user: data.user ? "✓ User returned" : "✗ No user",
-    });
-
-    if (!response.ok) {
-      console.error("❌ Login failed:", data.error);
-      return { error: data.error || "Login failed" };
-    }
-
-    console.log("✅ Login successful");
-    return { success: true, user: data.user };
-  } catch (error) {
-    console.error("💥 Signin exception:", error);
-    return {
-      error:
-        error instanceof Error ? error.message : "An unexpected error occurred",
-    };
+// Signs out the current user
+export async function signOut(): Promise<void> {
+  const supabase = await createClient()
+  
+  const { error } = await supabase.auth.signOut()
+  
+  if (error) {
+    console.error('Sign out error:', error.message)
+    // Don't return error - still revalidate to clear cached user data
   }
+  
+  console.log('User signed out successfully')
+  
+  // Revalidate all pages to remove user-specific cached content
+  revalidatePath('/', 'layout')
+  
+  // Redirect to home or login page
+  redirect('/')
 }
 
-export async function signOut() {
-  try {
-    console.log("🚀 Sending logout request");
+// Updates user password
+export async function updatePassword(formData: FormData): Promise<AuthResult> {
+  const supabase = await createClient()
+  
+  const newPassword = formData.get('newPassword') as string
+  const confirmPassword = formData.get('confirmPassword') as string
+  
+  if (!newPassword || !confirmPassword) {
+    return { error: 'Both password fields are required' }
+  }
+  
+  if (newPassword !== confirmPassword) {
+    return { error: 'Passwords do not match' }
+  }
+  
+  if (newPassword.length < 8) {
+    return { error: 'Password must be at least 8 characters' }
+  }
+  
+  const { error } = await supabase.auth.updateUser({
+    password: newPassword,
+  })
+  
+  if (error) {
+    console.error('Password update error:', error.message)
+    return { error: error.message }
+  }
+  
+  console.log('Password updated successfully')
+  
+  return { success: true }
+}
 
-    const response = await fetch("/api/auth/logout", {
-      method: "POST",
-      credentials: "include",
-    });
-
-    if (response.ok) {
-      console.log("✅ Logout successful");
-      return { success: true };
-    } else {
-      console.error("❌ Logout failed");
-      return { error: "Logout failed" };
-    }
-  } catch (error) {
-    console.error("💥 Signout exception:", error);
-    return { error: "Logout failed" };
+// Sends a password reset email
+export async function resetPassword(formData: FormData): Promise<AuthResult> {
+  const supabase = await createClient()
+  
+  const email = formData.get('email') as string
+  
+  if (!email) {
+    return { error: 'Email is required' }
+  }
+  
+  const { error } = await supabase.auth.resetPasswordForEmail(email, {
+    redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/reset-password`,
+  })
+  
+  if (error) {
+    console.error('Password reset error:', error.message)
+    return { error: error.message }
+  }
+  
+  console.log('Password reset email sent to:', email)
+  
+  return { 
+    success: true,
+    error: 'Check your email for the password reset link'
   }
 }
