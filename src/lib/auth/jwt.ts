@@ -84,10 +84,14 @@ export function extractTokenFromCookie(cookieHeader: string | undefined) {
 export function createSecureCookie(token: string): string {
   const maxAge = 7 * 24 * 60 * 60; // 7 days in seconds
 
+  // Use Lax in development to avoid cross-site cookie issues during local testing
+  const sameSite =
+    process.env.NODE_ENV === "production" ? "SameSite=Strict" : "SameSite=Lax";
+
   const secureParts = [
     `session=${token}`,
     "HttpOnly",
-    "SameSite=Strict",
+    sameSite,
     "Path=/",
     `Max-Age=${maxAge}`,
   ];
@@ -96,11 +100,15 @@ export function createSecureCookie(token: string): string {
     secureParts.splice(2, 0, "Secure");
   }
 
+  console.log("[Auth] Setting session cookie with SameSite:", sameSite);
+
   return secureParts.join("; ");
 }
 
 export function deleteCookie(): string {
-  return "session=; HttpOnly; SameSite=Strict; Path=/; Max-Age=0";
+  const sameSite =
+    process.env.NODE_ENV === "production" ? "SameSite=Strict" : "SameSite=Lax";
+  return `session=; HttpOnly; ${sameSite}; Path=/; Max-Age=0`;
 }
 
 export function getTokenExpiration(token: string): Date | null {

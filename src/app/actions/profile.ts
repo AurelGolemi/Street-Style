@@ -1,6 +1,6 @@
 'use server'
 
-import { createClient } from '@/lib/supabase/server'
+import { createServerSupabaseClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
 
 // Type definitions for type safety and clarity
@@ -27,7 +27,7 @@ export type UpdateProfileData = {
  * 4. Returns profile data or error
  */
 export async function getProfile(): Promise<{ profile: UserProfile | null; error?: string }> {
-  const supabase = await createClient()
+  const supabase = await createServerSupabaseClient()
   
   // Why getUser: Retrieves the authenticated user from the session.
   // This is how we know WHO is making the request.
@@ -66,7 +66,7 @@ export async function getProfile(): Promise<{ profile: UserProfile | null; error
 export async function updateProfile(
   updates: UpdateProfileData
 ): Promise<{ success: boolean; error?: string }> {
-  const supabase = await createClient()
+  const supabase = await createServerSupabaseClient()
   
   const { data: { user }, error: authError } = await supabase.auth.getUser()
 
@@ -121,7 +121,7 @@ export async function updateProfile(
 export async function updatePassword(
   newPassword: string
 ): Promise<{ success: boolean; error?: string }> {
-  const supabase = await createClient()
+  const supabase = await createServerSupabaseClient()
   
   const { data: { user }, error: authError } = await supabase.auth.getUser()
 
@@ -157,7 +157,7 @@ export async function updatePassword(
  * cart_items, etc. are automatically deleted (ON DELETE CASCADE)
  */
 export async function deleteAccount(): Promise<{ success: boolean; error?: string }> {
-  const supabase = await createClient()
+  const supabase = await createServerSupabaseClient()
   
   const { data: { user }, error: authError } = await supabase.auth.getUser()
 

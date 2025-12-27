@@ -1,6 +1,6 @@
 'use server'
 
-import { createClient } from '@/lib/supabase/server'
+import { createServerSupabaseClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 
@@ -18,7 +18,7 @@ export type AuthResult = {
 
 export async function getUser(): Promise<User | null> {
   try {
-    const supabase = await createClient()
+    const supabase = await createServerSupabaseClient()
     
     // Why getUser() instead of getSession():
     // - getUser() makes an API call to verify the token is still valid
@@ -49,7 +49,7 @@ export async function getUser(): Promise<User | null> {
 
 // Signs in a user with an email and password
 export async function signIn(formData: FormData): Promise<AuthResult> {
-  const supabase = await createClient()
+  const supabase = await createServerSupabaseClient()
   
   const email = formData.get('email') as string
   const password = formData.get('password') as string
@@ -83,7 +83,7 @@ export async function signIn(formData: FormData): Promise<AuthResult> {
 
 // Signs up a new user with an email and password
 export async function signUp(formData: FormData): Promise<AuthResult> {
-  const supabase = await createClient()
+  const supabase = await createServerSupabaseClient()
   
   const email = formData.get('email') as string
   const password = formData.get('password') as string
@@ -129,7 +129,7 @@ export async function signUp(formData: FormData): Promise<AuthResult> {
 
 // Signs out the current user
 export async function signOut(): Promise<void> {
-  const supabase = await createClient()
+  const supabase = await createServerSupabaseClient()
   
   const { error } = await supabase.auth.signOut()
   
@@ -149,7 +149,7 @@ export async function signOut(): Promise<void> {
 
 // Updates user password
 export async function updatePassword(formData: FormData): Promise<AuthResult> {
-  const supabase = await createClient()
+  const supabase = await createServerSupabaseClient()
   
   const newPassword = formData.get('newPassword') as string
   const confirmPassword = formData.get('confirmPassword') as string
@@ -182,7 +182,7 @@ export async function updatePassword(formData: FormData): Promise<AuthResult> {
 
 // Sends a password reset email
 export async function resetPassword(formData: FormData): Promise<AuthResult> {
-  const supabase = await createClient()
+  const supabase = await createServerSupabaseClient()
   
   const email = formData.get('email') as string
   

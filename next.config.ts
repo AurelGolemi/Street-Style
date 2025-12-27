@@ -1,16 +1,23 @@
 import type { NextConfig } from "next";
+import path from "path";
 
 const nextConfig: NextConfig = {
-  // Image optimization
+  // Image optimization (use remotePatterns instead of domains)
   images: {
-    domains: [
-      'images.unsplash.com',
-      'upload.wikimedia.org',
-      'your-cdn-domain.com', // Add your CDN
+    remotePatterns: [
+      { protocol: "https", hostname: "images.unsplash.com", pathname: "/**" },
+      { protocol: "https", hostname: "upload.wikimedia.org", pathname: "/**" },
+      { protocol: "https", hostname: "your-cdn-domain.com", pathname: "/**" },
     ],
-    formats: ['image/avif', 'image/webp'], // Modern formats
+    formats: ["image/avif", "image/webp"], // Modern formats
     deviceSizes: [640, 750, 828, 1080, 1200, 1920], // Responsive breakpoints
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384], // Icon sizes
+  },
+
+  // Tell Turbopack what the workspace root is to silence the multiple lockfile warning
+  turbopack: {
+    // Use the project directory (explicit) to avoid resolving to parent user folders
+    root: path.resolve(__dirname),
   },
 
   // Enable compression
@@ -30,37 +37,37 @@ const nextConfig: NextConfig = {
   async headers() {
     return [
       {
-        source: '/:path*',
+        source: "/:path*",
         headers: [
           {
-            key: 'X-DNS-Prefetch-Control',
-            value: 'on',
+            key: "X-DNS-Prefetch-Control",
+            value: "on",
           },
           {
-            key: 'X-Frame-Options',
-            value: 'SAMEORIGIN',
+            key: "X-Frame-Options",
+            value: "SAMEORIGIN",
           },
           {
-            key: 'X-Content-Type-Options',
-            value: 'nosniff',
+            key: "X-Content-Type-Options",
+            value: "nosniff",
           },
           {
-            key: 'Referrer-Policy',
-            value: 'origin-when-cross-origin',
+            key: "Referrer-Policy",
+            value: "origin-when-cross-origin",
           },
         ],
       },
       // Cache static assets
       {
-        source: '/static/:path*',
+        source: "/static/:path*",
         headers: [
           {
-            key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable',
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
           },
         ],
       },
-    ]
+    ];
   },
 };
 

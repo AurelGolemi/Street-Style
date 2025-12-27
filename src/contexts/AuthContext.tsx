@@ -8,8 +8,10 @@ import {
   useEffect,
   useState,
 } from "react";
+import { useCartStore } from "@/store/CartStore"
 
 interface User {
+  phone: string;
   id: string;
   email: string;
   firstName: string;
@@ -74,11 +76,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     });
 
     if (response.ok) {
-      const data = await response.json();
-      setUser(data.user);
-    } else {
-      setUser(null);
-    }
+  const data = await response.json();
+  setUser(data.user);
+
+  // Initialize / merge cart for this user
+  try {
+    useCartStore.getState().initializeCart(data.user?.id ?? null);
+  } catch (e) {
+    console.error("Cart initialization failed:", e);
+  }
+} else {
+  setUser(null);
+  // Ensure cart cleared for unauthenticated users
+  useCartStore.getState().initializeCart(null);
+}
   } catch (error) {
     console.error("Auth check failed:", error);
     setUser(null);
@@ -155,6 +166,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         credentials: "include",
       });
       setUser(null);
+      useCartStore.getState().initializeCart(null);
       router.push("/login");
       router.refresh();
     } catch (error) {
