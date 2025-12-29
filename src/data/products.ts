@@ -41,6 +41,73 @@ export const brands: Brand[] = [
 
 export const products: Product[] = [
   {
+    id: "the-north-face-globe-relaxed-t-shirt",
+    sku: "IB8939-019",
+    name: "Globe Relaxed T-SHirt",
+    brand: "The North Face",
+    description: `Rep '90s-inspired sneaks with these men's Air Max 95 OG trainers from Nike. In a Black, Persian Violet and Wolf Grey colourway, these sneaks mix real and synthetic leather with airy textiles for a layered look. They feature a lace fastening to keep you locked in, with wavy side panels for natural flow. Underfoot, the foam midsole and visible Max Air unit provide responsive cushioning, while flex groves in the midsole and grippy rubber outsole let you move freely. Finished up with signature Nike Air Max branding throughout.`,
+    price: 33.99,
+    originalPrice: 49.99,
+    currency: "EUR",
+    images: [
+      "/brand-product/the-north-face-globe-relaxed-t-shirt/the-north-face-globe-relaxed-t-shirt-1.webp",
+      "/brand-product/the-north-face-globe-relaxed-t-shirt/the-north-face-globe-relaxed-t-shirt-2.webp",
+      "/brand-product/the-north-face-globe-relaxed-t-shirt/the-north-face-globe-relaxed-t-shirt-3.webp",
+      "/brand-product/the-north-face-globe-relaxed-t-shirt/the-north-face-globe-relaxed-t-shirt-4.webp",
+      "/brand-product/the-north-face-globe-relaxed-t-shirt/the-north-face-globe-relaxed-t-shirt-5.webp",
+    ],
+    category: "men",
+    subcategory: "clothing",
+    tags: ["t-shirt", "streetwear", "casual"],
+
+    sizes: ["XS", "S", "M", "L", "XL", "XXL"],
+    colors: [
+      {
+        name: "Gray",
+        hex: "#ccc",
+        images: ["/brand-product/the-north-face-globe-relaxed-t-shirt/the-north-face-globe-relaxed-t-shirt-1.webp"],
+      },
+      {
+        name: "White",
+        hex: "#fff",
+        images: [
+          "/brand-product/the-north-face-globe-relaxed-t-shirt/the-north-face-globe-relaxed-t-shirt-white.webp",
+        ],
+      },
+    ],
+
+    features: [
+      "Staple Cuts",
+      "Soft Cotton",
+      "Bold Back Graphic",
+      "Classic Crew Neck",
+    ],
+
+    materials: ["Cotton"],
+    
+
+    inStock: true,
+    stockLevel: 44,
+    lowStockThreshold: 10,
+
+    rating: 4.9,
+    reviewCount: 48,
+
+    relatedProducts: ["adidas-ultraboost-22"],
+
+    createdAt: new Date("2025-12-12"),
+    updatedAt: new Date("2025-12-29"),
+
+    seoTitle: "The North Face Globe Relaxed T-Shirt | Street Style",
+    seoDescription:
+      "Rep '90s-inspired sneaks with these men's Air Max 95 OG trainers from Nike. In a Black, Persian Violet and Wolf Grey colourway, these sneaks mix real and synthetic leather with airy textiles for a layered look. They feature a lace fastening to keep you locked in, with wavy side panels for natural flow. Underfoot, the foam midsole and visible Max Air unit provide responsive cushioning, while flex groves in the midsole and grippy rubber outsole let you move freely. Finished up with signature Nike Air Max branding throughout.",
+    seoKeywords: [
+      "the north face",
+      "t-shirt",
+      "streetwear",
+    ],
+  },
+  {
     id: "nike-air-max-95-og",
     sku: "IB7936-001",
     name: "Air Max 95",

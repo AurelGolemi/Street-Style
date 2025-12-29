@@ -297,6 +297,15 @@ const Hero = () => {
       ctaLink: "/sales",
       backgroundImage: '/slideshow-image/forever-forward.jpg',
       overlayOpacity: 60
+    },
+    {
+      id: 4,
+      title: "Cold Weather Kit",
+      description: "Here are your winter products from Exclusive Brands",
+      ctaText: "Shop Now",
+      ctaLink: "/sales",
+      backgroundImage: '/slideshow-image/cold-weather-kit.jpg',
+      overlayOpacity: 60
     }
   ];
 
