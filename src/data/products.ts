@@ -612,10 +612,27 @@ export function getDiscountPercentage(product: Product): number {
   );
 }
 
-export function isOnSale(product: Product): boolean {
-  return Boolean(
-    product.originalPrice && product.originalPrice > product.price
-  );
+export function isOnSale(
+  product: Product,
+  opts?: { minDiscountPercent?: number; now?: Date }
+): boolean {
+  const minDiscountPercent = opts?.minDiscountPercent ?? 1; // treat <1% as not a sale
+  const now = opts?.now ?? new Date();
+
+  if (
+    typeof product.price !== "number" ||
+    typeof product.originalPrice !== "number" ||
+    product.originalPrice <= product.price
+  ) {
+    return false;
+  }
+
+  // optional sale window support (if you add saleFrom/saleTo to Product)
+  if (product.saleFrom && new Date(product.saleFrom) > now) return false;
+  if (product.saleTo && new Date(product.saleTo) < now) return false;
+
+  const percent = ((product.originalPrice - product.price) / product.originalPrice) * 100;
+  return percent >= minDiscountPercent;
 }
 
 export function isLowStock(product: Product): boolean {

@@ -44,6 +44,10 @@ export interface Product {
   stockLevel?: number;
   lowStockThreshold?: number;
 
+  // Sale Window
+  saleFrom?: string | Date;
+  saleTo?: string | Date;
+
   // Social Proof (optional)
   rating?: number;
   reviewCount?: number;
