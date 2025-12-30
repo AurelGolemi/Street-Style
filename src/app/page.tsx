@@ -36,7 +36,7 @@ export default function HomePage() {
     {
       name: "Hoodrich",
       logo: "/brand-logos/hoodrich-logo.svg",
-      href: "/brands/the-north-face",
+      href: "/brands/hoodrich",
     },
     {
       name: "The North Face",

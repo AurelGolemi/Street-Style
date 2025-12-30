@@ -108,7 +108,7 @@ export default function ProductImageGallery({
           />
 
           {/* Zoom Icon Overlay */}
-          <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black bg-opacity-20">
+          <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-transparent">
             <div className="bg-white rounded-full p-3">
               <ZoomIn className="w-6 h-6 text-gray-900" />
             </div>
@@ -125,7 +125,7 @@ export default function ProductImageGallery({
                 className="absolute left-4 top-1/2 -translate-y-1/2 bg-white bg-opacity-90 hover:bg-opacity-100 rounded-full p-2 shadow-lg transition-all opacity-0 group-hover:opacity-100 text-gray-900"
                 aria-label="Previous image"
               >
-                <ChevronLeft className="w-6 h-6" />
+                <ChevronLeft className="w-6 h-6 cursor-pointer" />
               </button>
 
               <button
@@ -133,10 +133,10 @@ export default function ProductImageGallery({
                   e.stopPropagation()
                   nextImage()
                 }}
-                className="absolute right-4 top-1/2 translate-y-1/2 bg-white bg-opacity-90 hover:bg-opacity-100 rounded-full p-2 shadow-lg transition-all opacity-0 group-hover:opacity-100 text-gray-900"
+                className="absolute right-4 top-1/2 -translate-y-1/2 bg-white bg-opacity-90 hover:bg-opacity-100 rounded-full p-2 shadow-lg transition-all opacity-0 group-hover:opacity-100 text-gray-900"
               aria-label="Next Image"
               >
-                <ChevronRight className="w-6 h-6" />
+                <ChevronRight className="w-6 h-6 cursor-pointer" />
               </button>
             </>
           )}
@@ -171,7 +171,7 @@ export default function ProductImageGallery({
                   sizes="(max-width: 768px) 25vw, 10vw"
                 />
                 {index === currentIndex && (
-                  <div className="absolute inset-0 bg-gray-900 bg-opacity-20" />
+                  <div className="absolute inset-0 bg-transparent bg-opacity-20" />
                 )}
               </button>
             ))}

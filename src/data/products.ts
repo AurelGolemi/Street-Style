@@ -65,13 +65,23 @@ export const products: Product[] = [
       {
         name: "Gray",
         hex: "#ccc",
-        images: ["/brand-product/the-north-face-globe-relaxed-t-shirt/the-north-face-globe-relaxed-t-shirt-1.webp"],
+        images: [
+          "/brand-product/the-north-face-globe-relaxed-t-shirt/the-north-face-globe-relaxed-t-shirt-1.webp",
+          "/brand-product/the-north-face-globe-relaxed-t-shirt/the-north-face-globe-relaxed-t-shirt-2.webp",
+          "/brand-product/the-north-face-globe-relaxed-t-shirt/the-north-face-globe-relaxed-t-shirt-3.webp",
+          "/brand-product/the-north-face-globe-relaxed-t-shirt/the-north-face-globe-relaxed-t-shirt-4.webp",
+          "/brand-product/the-north-face-globe-relaxed-t-shirt/the-north-face-globe-relaxed-t-shirt-5.webp",
+        ],
       },
       {
         name: "White",
         hex: "#fff",
         images: [
           "/brand-product/the-north-face-globe-relaxed-t-shirt/the-north-face-globe-relaxed-t-shirt-white.webp",
+          "/brand-product/the-north-face-globe-relaxed-t-shirt/the-north-face-globe-relaxed-t-shirt-white-2.webp",
+          "/brand-product/the-north-face-globe-relaxed-t-shirt/the-north-face-globe-relaxed-t-shirt-white-3.webp",
+          "/brand-product/the-north-face-globe-relaxed-t-shirt/the-north-face-globe-relaxed-t-shirt-white-4.webp",
+          "/brand-product/the-north-face-globe-relaxed-t-shirt/the-north-face-globe-relaxed-t-shirt-white-5.webp",
         ],
       },
     ],
@@ -108,100 +118,76 @@ export const products: Product[] = [
     ],
   },
   {
-    id: "nike-air-max-95-og",
-    sku: "IB7936-001",
-    name: "Air Max 95",
-    brand: "Nike",
-    description: `Rep '90s-inspired sneaks with these men's Air Max 95 OG trainers from Nike. In a Black, Persian Violet and Wolf Grey colourway, these sneaks mix real and synthetic leather with airy textiles for a layered look. They feature a lace fastening to keep you locked in, with wavy side panels for natural flow. Underfoot, the foam midsole and visible Max Air unit provide responsive cushioning, while flex groves in the midsole and grippy rubber outsole let you move freely. Finished up with signature Nike Air Max branding throughout.`,
-    price: 189.99,
+    id: "hoodrich-volcano-hoodie-junior",
+    sku: "IB4521-029",
+    name: "Volcano Hoodie Junior",
+    brand: "Hoodrich",
+    description: `Need a new layer? Turn to Hoodrich. They've got things covered with this juniors' Volcano Hoodie. Only at JD, it's got all the classic features - brushed fleece fabric, ribbed trims, kangaroo pocket. Arched Hoodrich branding signs it off on the front and back. Machine washable.`,
+    price: 31.99,
+    originalPrice: 52.99,
     currency: "EUR",
     images: [
-      "/brand-product/nike-air-max-95-og/nike-air-max-95-og.jpg",
-      "/brand-product/nike-air-max-95-og/nike-air-max-95-og-2.jpg",
-      "/brand-product/nike-air-max-95-og/nike-air-max-95-og-3.jpg",
-      "/brand-product/nike-air-max-95-og/nike-air-max-95-og-4.jpg",
-      "/brand-product/nike-air-max-95-og/nike-air-max-95-og-5.jpg",
-      "/brand-product/nike-air-max-95-og/nike-air-max-95-og-6.jpg",
+      "/brand-product/hoodrich-volcano-hoodie-junior/hoodrich-volcano-hoodie-junior-1.webp",
+      "/brand-product/hoodrich-volcano-hoodie-junior/hoodrich-volcano-hoodie-junior-2.webp",
+      "/brand-product/hoodrich-volcano-hoodie-junior/hoodrich-volcano-hoodie-junior-3.webp",
+      "/brand-product/hoodrich-volcano-hoodie-junior/hoodrich-volcano-hoodie-junior-4.webp",
     ],
-    category: "men",
-    subcategory: "shoes",
-    tags: ["sneakers", "running", "casual", "retro", "bestseller"],
+    category: "kids",
+    subcategory: "clothing",
+    tags: ["hoodie", "streetwear", "casual"],
 
-    sizes: ["41", "42"],
+    sizes: ["7-8Y", "8-10Y", "10-12Y", "12-13Y", "13-15Y"],
     colors: [
       {
-        name: "Black-Violet",
-        hex: "#1f11f1",
-        images: ["/brand-product/nike-air-max-95-og/nike-air-max-95-og.jpg"],
-      },
-      {
-        name: "Baltic-Blue",
-        hex: "#11f1ff",
+        name: "black",
+        hex: "#111",
         images: [
-          "/brand-product/nike-air-max-95-og/nike-air-max-95-og-baltic-blue.jpg",
+          "/brand-product/hoodrich-volcano-hoodie-junior/hoodrich-volcano-hoodie-junior-1.webp",
+          "/brand-product/hoodrich-volcano-hoodie-junior/hoodrich-volcano-hoodie-junior-2.webp",
+          "/brand-product/hoodrich-volcano-hoodie-junior/hoodrich-volcano-hoodie-junior-3.webp",
+          "/brand-product/hoodrich-volcano-hoodie-junior/hoodrich-volcano-hoodie-junior-4.webp",
         ],
       },
       {
-        name: "Gold-White",
-        hex: "#FFFFF4",
+        name: "Blue",
+        hex: "#4444ff",
         images: [
-          "/brand-product/nike-air-max-95-og/nike-air-max-95-og-gold-white.jpg",
-        ],
-      },
-      {
-        name: "Black-Green",
-        hex: "#1ff11f",
-        images: [
-          "/brand-product/nike-air-max-95-og/nike-air-max-95-og-black-green.jpg",
-        ],
-      },
-      {
-        name: "Silver-Black-Metallic",
-        hex: "#706F6D",
-        images: [
-          "/brand-product/nike-air-max-95-og/nike-air-max-95-og-silver-black-metallic.jpg",
+          "/brand-product/hoodrich-volcano-hoodie-junior/hoodrich-volcano-hoodie-junior-blue.webp",
+          "/brand-product/hoodrich-volcano-hoodie-junior/hoodrich-volcano-hoodie-junior-blue-2.webp",
+          "/brand-product/hoodrich-volcano-hoodie-junior/hoodrich-volcano-hoodie-junior-blue-3.webp",
+          "/brand-product/hoodrich-volcano-hoodie-junior/hoodrich-volcano-hoodie-junior-blue-4.webp",
         ],
       },
     ],
 
     features: [
-      "Max Air cushioning in heel for impact protection",
-      "Leather and synthetic upper for durability",
-      "Padded low-cut collar for comfortable fit",
-      "Waffle-inspired rubber outsole for traction",
-      "Foam midsole for lightweight cushioning",
-      "Visible Air unit for iconic style",
-      "Lace-up closure for secure fit",
+      "Staple Cuts",
+      "Soft Cotton",
+      "Bold Back Graphic",
+      "Classic Crew Neck",
     ],
 
-    materials: ["Leather", "Synthetic", "Rubber", "Foam"],
-    care: [
-      "Carefully wipe away dust and dirt with a dry brush.",
-      "Clean your shoes with water and a little dishwashing liquid or laundry detergent, and using a soft brush or old toothbrush, gently wash the upper and outsole of your sneakers. If your Nike shoes are white, add a small amount of baking soda to make them extra clean!",
-      "Remove the laces from your shoes and wash them with the same solution.",
-      "Allow your sneakers to dry naturally, under shade, so they retain their colour and shape. Remember that your sneakers need to dry very well before you wear them, which can take around 8 hours.",
-    ],
+    materials: ["Cotton", "Polyester"],
+    
 
     inStock: true,
-    stockLevel: 45,
+    stockLevel: 44,
     lowStockThreshold: 10,
 
-    rating: 4.7,
-    reviewCount: 43,
+    rating: 4.8,
+    reviewCount: 54,
 
-    relatedProducts: ["adidas-ultraboost-22", "puma-rs-x", "new-balance-574"],
+    relatedProducts: ["the-north-face-globe-relaxed-t-shirt"],
 
-    createdAt: new Date("2025-09-12"),
-    updatedAt: new Date("2025-10-21"),
+    createdAt: new Date("2025-12-14"),
+    updatedAt: new Date("2025-12-30"),
 
-    seoTitle: "Nike Air Max 95 - Classic Sneakers | Street Style",
+    seoTitle: "Hoodrich Volcano Hoodie Junior | Street Style",
     seoDescription:
-      "Shop the iconic Nike Air Max 90 with visible Air cushioning. Available in multiple colorways. Free shipping on orders over €50.",
+      "Need a new layer? Turn to Hoodrich. They've got things covered with this juniors' Volcano Hoodie. Only at JD, it's got all the classic features - brushed fleece fabric, ribbed trims, kangaroo pocket. Arched Hoodrich branding signs it off on the front and back. Machine washable.",
     seoKeywords: [
-      "nike air max",
-      "air max 95",
-      "nike sneakers",
-      "retro running shoes",
+      "hoodrich",
+      "hoodie",
       "streetwear",
     ],
   },
@@ -382,6 +368,104 @@ export const products: Product[] = [
       "running shoes",
       "boost cushioning",
       "adidas sneakers",
+    ],
+  },
+  {
+    id: "nike-air-max-95-og",
+    sku: "IB7936-001",
+    name: "Air Max 95",
+    brand: "Nike",
+    description: `Rep '90s-inspired sneaks with these men's Air Max 95 OG trainers from Nike. In a Black, Persian Violet and Wolf Grey colourway, these sneaks mix real and synthetic leather with airy textiles for a layered look. They feature a lace fastening to keep you locked in, with wavy side panels for natural flow. Underfoot, the foam midsole and visible Max Air unit provide responsive cushioning, while flex groves in the midsole and grippy rubber outsole let you move freely. Finished up with signature Nike Air Max branding throughout.`,
+    price: 189.99,
+    currency: "EUR",
+    images: [
+      "/brand-product/nike-air-max-95-og/nike-air-max-95-og.jpg",
+      "/brand-product/nike-air-max-95-og/nike-air-max-95-og-2.jpg",
+      "/brand-product/nike-air-max-95-og/nike-air-max-95-og-3.jpg",
+      "/brand-product/nike-air-max-95-og/nike-air-max-95-og-4.jpg",
+      "/brand-product/nike-air-max-95-og/nike-air-max-95-og-5.jpg",
+      "/brand-product/nike-air-max-95-og/nike-air-max-95-og-6.jpg",
+    ],
+    category: "men",
+    subcategory: "shoes",
+    tags: ["sneakers", "running", "casual", "retro", "bestseller"],
+
+    sizes: ["41", "42"],
+    colors: [
+      {
+        name: "Black-Violet",
+        hex: "#1f11f1",
+        images: ["/brand-product/nike-air-max-95-og/nike-air-max-95-og.jpg"],
+      },
+      {
+        name: "Baltic-Blue",
+        hex: "#11f1ff",
+        images: [
+          "/brand-product/nike-air-max-95-og/nike-air-max-95-og-baltic-blue.jpg",
+        ],
+      },
+      {
+        name: "Gold-White",
+        hex: "#FFFFF4",
+        images: [
+          "/brand-product/nike-air-max-95-og/nike-air-max-95-og-gold-white.jpg",
+        ],
+      },
+      {
+        name: "Black-Green",
+        hex: "#1ff11f",
+        images: [
+          "/brand-product/nike-air-max-95-og/nike-air-max-95-og-black-green.jpg",
+        ],
+      },
+      {
+        name: "Silver-Black-Metallic",
+        hex: "#706F6D",
+        images: [
+          "/brand-product/nike-air-max-95-og/nike-air-max-95-og-silver-black-metallic.jpg",
+        ],
+      },
+    ],
+
+    features: [
+      "Max Air cushioning in heel for impact protection",
+      "Leather and synthetic upper for durability",
+      "Padded low-cut collar for comfortable fit",
+      "Waffle-inspired rubber outsole for traction",
+      "Foam midsole for lightweight cushioning",
+      "Visible Air unit for iconic style",
+      "Lace-up closure for secure fit",
+    ],
+
+    materials: ["Leather", "Synthetic", "Rubber", "Foam"],
+    care: [
+      "Carefully wipe away dust and dirt with a dry brush.",
+      "Clean your shoes with water and a little dishwashing liquid or laundry detergent, and using a soft brush or old toothbrush, gently wash the upper and outsole of your sneakers. If your Nike shoes are white, add a small amount of baking soda to make them extra clean!",
+      "Remove the laces from your shoes and wash them with the same solution.",
+      "Allow your sneakers to dry naturally, under shade, so they retain their colour and shape. Remember that your sneakers need to dry very well before you wear them, which can take around 8 hours.",
+    ],
+
+    inStock: true,
+    stockLevel: 45,
+    lowStockThreshold: 10,
+
+    rating: 4.7,
+    reviewCount: 43,
+
+    relatedProducts: ["adidas-ultraboost-22", "puma-rs-x", "new-balance-574"],
+
+    createdAt: new Date("2025-09-12"),
+    updatedAt: new Date("2025-10-21"),
+
+    seoTitle: "Nike Air Max 95 - Classic Sneakers | Street Style",
+    seoDescription:
+      "Shop the iconic Nike Air Max 90 with visible Air cushioning. Available in multiple colorways. Free shipping on orders over €50.",
+    seoKeywords: [
+      "nike air max",
+      "air max 95",
+      "nike sneakers",
+      "retro running shoes",
+      "streetwear",
     ],
   },
   {
