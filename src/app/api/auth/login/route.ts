@@ -100,6 +100,9 @@ export async function POST(request: NextRequest) {
     const cookieStore = await cookies();
     const allCookies = cookieStore.getAll();
 
+    // Debug: Log all cookies to be set
+    console.log("[LOGIN] Setting cookies in response:", allCookies);
+
     // Set all Supabase-related cookies in the response
     allCookies.forEach((cookie) => {
       response.cookies.set(cookie.name, cookie.value, {

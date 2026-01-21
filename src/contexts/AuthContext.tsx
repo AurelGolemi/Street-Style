@@ -113,10 +113,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         throw new Error(data.error || "Login failed");
       }
 
-      // Force a hard page reload to ensure cookies are processed and user sees logged-in state
-      if (typeof window !== "undefined") {
-        window.location.href = "/";
+      // Immediately update client-side user so UI reflects auth state without reload
+      setUser(data.user ?? null);
+      try {
+        useCartStore.getState().initializeCart(data.user?.id ?? null);
+      } catch (e) {
+        console.error("Cart initialization failed after login:", e);
       }
+
+      // Redirect client-side; new page load will also pick up cookies for SSR
+      router.push("/");
     } catch (error) {
       throw error;
     }
@@ -137,10 +143,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         throw new Error(responseData.error || "Registration failed");
       }
 
-      // Force a hard page reload to ensure cookies are processed and user sees logged-in state
-      if (typeof window !== "undefined") {
-        window.location.href = "/";
+      // Immediately update client-side user so UI reflects auth state without reload
+      setUser(responseData.user ?? null);
+      try {
+        useCartStore.getState().initializeCart(responseData.user?.id ?? null);
+      } catch (e) {
+        console.error("Cart initialization failed after register:", e);
       }
+
+      // Redirect client-side; new page load will also pick up cookies for SSR
+      router.push("/");
     } catch (error) {
       throw error;
     }
@@ -153,16 +165,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         credentials: "include",
       });
 
-      // Force a hard page reload to ensure cookies are cleared and user sees logged-out state
-      if (typeof window !== "undefined") {
-        window.location.href = "/login";
+      // Immediately clear client-side user so UI reflects logged-out state
+      setUser(null);
+      try {
+        useCartStore.getState().initializeCart(null);
+      } catch (e) {
+        console.error("Cart clear failed after logout:", e);
       }
+
+      // Redirect to login
+      router.push("/login");
     } catch (error) {
       console.error("Logout failed:", error);
       // Still navigate on error
-      if (typeof window !== "undefined") {
-        window.location.href = "/login";
-      }
+      router.push("/login");
     }
   };
 

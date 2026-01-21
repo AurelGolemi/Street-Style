@@ -17,13 +17,12 @@ export async function POST() {
       console.log("🔐 ========== SUPABASE LOGOUT END (ERROR) ========== 🔐\n");
       return NextResponse.json(
         { error: error.message || "Logout failed" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     console.log("✓ Supabase sign out successful");
 
-    // Revalidate all pages to clear cached user data
     revalidatePath("/", "layout");
 
     console.log("✅ SUPABASE LOGOUT SUCCESS");
@@ -38,10 +37,35 @@ export async function POST() {
     const errorMessage =
       error instanceof Error ? error.message : "Unknown error";
     console.error("💥 Error details:", errorMessage);
+    // Revalidate all pages to clear cached user data
+    revalidatePath("/", "layout");
+
+    // Clear Supabase cookies (set to expired)
+    const response = NextResponse.json({
+      success: true,
+      message: "Logged out successfully",
+    });
+    // List of possible Supabase cookie names
+    const supabaseCookies = [
+      "sb-access-token",
+      "sb-refresh-token",
+      "supabase-auth-token",
+      "supabase-session",
+    ];
+    supabaseCookies.forEach((name) => {
+      response.cookies.set(name, "", {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
+        expires: new Date(0),
+      });
+    });
+    console.log("[LOGOUT] Cleared cookies:", supabaseCookies);
+    return response;
     console.log("🔐 ========== SUPABASE LOGOUT END (ERROR) ========== 🔐\n");
     return NextResponse.json(
       { error: "An error occurred during logout: " + errorMessage },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
