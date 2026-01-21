@@ -18,6 +18,8 @@ interface CartStore {
   isLoading: boolean;
   isSyncing: boolean;
   error: string | null;
+  hasLoadedFromServer: boolean;
+  lastSyncTimestamp: number;
   addItem: (item: CartItem) => void;
   removeItem: (productId: string, size?: string, color?: string) => void;
   updateQuantity: (
@@ -42,6 +44,8 @@ export const useCartStore = create<CartStore>()(
       isLoading: false,
       isSyncing: false,
       error: null,
+      hasLoadedFromServer: false,
+      lastSyncTimestamp: 0,
 
       addItem: (item: CartItem) => {
         set((state) => {
@@ -181,79 +185,81 @@ export const useCartStore = create<CartStore>()(
       // inside useCartStore: replace loadFromServer implementation with:
 
       loadFromServer: async () => {
-        try {
-          set({ isLoading: true });
-          let response = await fetch("/api/cart/sync", {
-            credentials: "include",
+  // Prevent concurrent loads
+  const state = get();
+  if (state.isLoading) {
+    console.log('[Cart] loadFromServer already in progress, skipping');
+    return;
+  }
+
+  try {
+    set({ isLoading: true, error: null });
+    
+    let response = await fetch("/api/cart/sync", {
+      credentials: "include",
+    });
+
+    // Retry once on 401
+    if (response.status === 401) {
+      console.log("[Cart] loadFromServer received 401 - retrying once");
+      await new Promise((r) => setTimeout(r, 250));
+      response = await fetch("/api/cart/sync", {
+        credentials: "include",
+      });
+    }
+
+    if (response.ok) {
+      const { items: serverItems = [] } = await response.json();
+      
+      // CRITICAL FIX: Only merge if we haven't loaded from server yet
+      // Otherwise, just use server items as source of truth
+      if (!state.hasLoadedFromServer) {
+        const localItems = state.items || [];
+        
+        // Only merge if we actually have local items
+        if (localItems.length > 0) {
+          console.log('[Cart] First load: merging local + server carts');
+          const merged = mergeCartItems(serverItems, localItems);
+          set({ 
+            items: merged, 
+            hasLoadedFromServer: true,
+            lastSyncTimestamp: Date.now()
           });
-
-          // If unauthenticated, retry once briefly in case the cookie is still being set
-          if (response.status === 401) {
-            console.log("[Cart] loadFromServer received 401 - retrying once");
-            await new Promise((r) => setTimeout(r, 250));
-            response = await fetch("/api/cart/sync", {
-              credentials: "include",
-            });
-          }
-
-          if (response.ok) {
-            const { items: serverItems = [] } = await response.json();
-            const localItems = get().items || [];
-
-            // Merge strategy: key by productId + size + color and sum quantities
-            const keyOf = (i: CartItem) =>
-              `${i.productId}::${i.size ?? ""}::${i.color ?? ""}`;
-
-            const map = new Map<string, CartItem>();
-
-            const put = (it: CartItem) => {
-              const key = keyOf(it);
-              if (!map.has(key)) {
-                map.set(key, { ...it });
-              } else {
-                const existing = map.get(key)!;
-                map.set(key, {
-                  ...existing,
-                  quantity: existing.quantity + (it.quantity || 0),
-                  // prefer existing metadata but fall back to new fields
-                  name: existing.name || it.name,
-                  price: existing.price || it.price,
-                  image: existing.image || it.image,
-                  brand: existing.brand || it.brand,
-                });
-              }
-            };
-
-            serverItems.forEach(put);
-            localItems.forEach(put);
-
-            const merged = Array.from(map.values());
-
-            set({ items: merged });
-
-            // If server didn't already have the merged result, push it back
-            const serverJson = JSON.stringify(serverItems || []);
-            const mergedJson = JSON.stringify(merged || []);
-            if (serverJson !== mergedJson) {
-              // ensures server has the merged view across devices
-              await get().syncToServer();
-            }
-          } else if (response.status !== 401) {
-            console.error("Failed to load cart:", response.statusText);
-            set({ error: "Failed to load cart" });
-          } else {
-            // if still 401, keep local cart intact and log for debugging
-            console.log(
-              "[Cart] loadFromServer aborted due to unauthenticated (401)"
-            );
-          }
-        } catch (error) {
-          console.error("Failed to load cart:", error);
-          set({ error: "Failed to load cart" });
-        } finally {
-          set({ isLoading: false });
+          
+          // Sync merged result back to server
+          await get().syncToServer();
+        } else {
+          // No local items, just use server items
+          console.log('[Cart] First load: using server cart (no local items)');
+          set({ 
+            items: serverItems, 
+            hasLoadedFromServer: true,
+            lastSyncTimestamp: Date.now()
+          });
         }
-      },
+      } else {
+        // Subsequent loads: server is source of truth
+        console.log('[Cart] Subsequent load: using server as source of truth');
+        set({ 
+          items: serverItems,
+          lastSyncTimestamp: Date.now()
+        });
+      }
+      
+      set({ error: null });
+    } else if (response.status !== 401) {
+      console.error("Failed to load cart:", response.statusText);
+      set({ error: "Failed to load cart" });
+    } else {
+      console.log("[Cart] loadFromServer aborted (401 - not authenticated)");
+    }
+  } catch (error) {
+    console.error("Failed to load cart:", error);
+    set({ error: "Failed to load cart" });
+  } finally {
+    set({ isLoading: false });
+  }
+},
 
       initializeCart: (userId: string | null) => {
         if (userId) {
@@ -277,3 +283,28 @@ export const useCartStore = create<CartStore>()(
     }
   )
 );
+export function mergeCartItems(serverItems: CartItem[], localItems: CartItem[]): CartItem[] {
+  const merged = new Map<string, CartItem>();
+
+  // Add server items first
+  serverItems.forEach((item) => {
+    const key = `${item.productId}-${item.size || ''}-${item.color || ''}`;
+    merged.set(key, item);
+  });
+
+  // Merge local items, preferring local quantities for existing items
+  localItems.forEach((item) => {
+    const key = `${item.productId}-${item.size || ''}-${item.color || ''}`;
+    if (merged.has(key)) {
+      // Item exists on server: keep server data but use local quantity
+      const serverItem = merged.get(key)!;
+      merged.set(key, { ...serverItem, quantity: item.quantity });
+    } else {
+      // New local item: add it
+      merged.set(key, item);
+    }
+  });
+
+  return Array.from(merged.values());
+}
+
