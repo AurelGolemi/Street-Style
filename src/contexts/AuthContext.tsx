@@ -1,5 +1,6 @@
 "use client";
 
+import { useCartStore } from "@/store/CartStore";
 import { useRouter } from "next/navigation";
 import {
   createContext,
@@ -8,7 +9,6 @@ import {
   useEffect,
   useState,
 } from "react";
-import { useCartStore } from "@/store/CartStore"
 
 interface User {
   phone: string;
@@ -69,35 +69,34 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const checkAuth = async () => {
-  setIsLoading(true);
-  try {
-    const response = await fetch("/api/auth/me", {
-      credentials: "include",
-    });
+    setIsLoading(true);
+    try {
+      const response = await fetch("/api/auth/me", {
+        credentials: "include",
+      });
 
-    if (response.ok) {
-  const data = await response.json();
-  setUser(data.user);
+      if (response.ok) {
+        const data = await response.json();
+        setUser(data.user);
 
-  // Initialize / merge cart for this user
-  try {
-    useCartStore.getState().initializeCart(data.user?.id ?? null);
-  } catch (e) {
-    console.error("Cart initialization failed:", e);
-  }
-} else {
-  setUser(null);
-  // Ensure cart cleared for unauthenticated users
-  useCartStore.getState().initializeCart(null);
-}
-  } catch (error) {
-    console.error("Auth check failed:", error);
-    setUser(null);
-  } finally {
-    setIsLoading(false);
-  }
-};
-
+        // Initialize / merge cart for this user
+        try {
+          useCartStore.getState().initializeCart(data.user?.id ?? null);
+        } catch (e) {
+          console.error("Cart initialization failed:", e);
+        }
+      } else {
+        setUser(null);
+        // Ensure cart cleared for unauthenticated users
+        useCartStore.getState().initializeCart(null);
+      }
+    } catch (error) {
+      console.error("Auth check failed:", error);
+      setUser(null);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const login = async (email: string, password: string) => {
     try {
@@ -114,7 +113,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         throw new Error(data.error || "Login failed");
       }
 
-      setUser(data.user);
+      // Immediately refresh auth state from server
+      await checkAuth();
 
       // Load cart from server for this user
       if (typeof window !== "undefined") {
@@ -144,7 +144,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         throw new Error(responseData.error || "Registration failed");
       }
 
-      setUser(responseData.user);
+      // Immediately refresh auth state from server
+      await checkAuth();
 
       // Initialize cart for new user
       if (typeof window !== "undefined") {
@@ -165,7 +166,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         method: "POST",
         credentials: "include",
       });
-      setUser(null);
+
+      // Immediately refresh auth state (will be null after logout)
+      await checkAuth();
+
       useCartStore.getState().initializeCart(null);
       router.push("/login");
       router.refresh();

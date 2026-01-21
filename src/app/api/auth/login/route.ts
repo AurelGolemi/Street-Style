@@ -1,5 +1,6 @@
 import { userDb } from "@/data/db/users";
 import { createSecureCookie, generateToken } from "@/lib/auth/jwt";
+import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
 // Login API Route
@@ -20,12 +21,12 @@ export async function POST(request: NextRequest) {
     // Validate required fields
     if (!email || !password) {
       console.log(
-        "❌ VALIDATION FAILED: Email/phone and password are required"
+        "❌ VALIDATION FAILED: Email/phone and password are required",
       );
       console.log("🔐 ========== LOGIN END (ERROR) ========== 🔐\n");
       return NextResponse.json(
         { error: "Email/phone and password are required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
     console.log("✓ All required fields present");
@@ -35,7 +36,7 @@ export async function POST(request: NextRequest) {
     // Try to find by email first
     let user = await userDb.findUserByEmail(email);
     console.log(
-      user ? `✓ User found by email: ${user.id}` : "✗ Not found by email"
+      user ? `✓ User found by email: ${user.id}` : "✗ Not found by email",
     );
 
     // If not found and looks like phone number, try phone lookup
@@ -43,7 +44,7 @@ export async function POST(request: NextRequest) {
       console.log("📱 Input looks like phone number, trying phone lookup...");
       user = await userDb.findUserByPhone(email);
       console.log(
-        user ? `✓ User found by phone: ${user.id}` : "✗ Not found by phone"
+        user ? `✓ User found by phone: ${user.id}` : "✗ Not found by phone",
       );
     }
 
@@ -53,7 +54,7 @@ export async function POST(request: NextRequest) {
       console.log("🔐 ========== LOGIN END (ERROR) ========== 🔐\n");
       return NextResponse.json(
         { error: "Invalid credentials" },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -62,7 +63,7 @@ export async function POST(request: NextRequest) {
     if (userDb.isAccountLocked(user)) {
       const lockUntil = user.lockUntil!;
       const minutesRemaining = Math.ceil(
-        (lockUntil.getTime() - Date.now()) / 60000
+        (lockUntil.getTime() - Date.now()) / 60000,
       );
       console.log(`❌ ACCOUNT LOCKED: ${minutesRemaining} minutes remaining`);
       console.log("🔐 ========== LOGIN END (ERROR) ========== 🔐\n");
@@ -72,7 +73,7 @@ export async function POST(request: NextRequest) {
           error: `Account is temporarily locked. Please try again in ${minutesRemaining} minutes.`,
           lockedUntil: lockUntil.toISOString(),
         },
-        { status: 423 } // 423 Locked
+        { status: 423 }, // 423 Locked
       );
     }
     console.log("✓ Account not locked");
@@ -100,7 +101,7 @@ export async function POST(request: NextRequest) {
 
       return NextResponse.json(
         { error: "Invalid credentials" },
-        { status: 401 }
+        { status: 401 },
       );
     }
     console.log("✓ Password verified");
@@ -136,6 +137,9 @@ export async function POST(request: NextRequest) {
     response.headers.set("Set-Cookie", createSecureCookie(token));
     console.log("🍪 Secure cookie set in response headers");
 
+    // Revalidate all pages to update auth state across the app
+    revalidatePath("/", "layout");
+
     console.log("✅ LOGIN SUCCESS");
     console.log("🔐 ========== LOGIN END (SUCCESS) ========== 🔐\n");
 
@@ -148,7 +152,7 @@ export async function POST(request: NextRequest) {
     console.log("🔐 ========== LOGIN END (ERROR) ========== 🔐\n");
     return NextResponse.json(
       { error: "An error occurred during login: " + errorMessage },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

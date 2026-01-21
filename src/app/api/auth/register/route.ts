@@ -1,5 +1,6 @@
 import { userDb } from "@/data/db/users";
 import { createSecureCookie, generateToken } from "@/lib/auth/jwt";
+import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
 // Register API Route
@@ -30,7 +31,7 @@ export async function POST(request: NextRequest) {
       console.log("🔐 ========== REGISTER END (ERROR) ========== 🔐\n");
       return NextResponse.json(
         { error: "Email is required", field: "email" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -39,29 +40,29 @@ export async function POST(request: NextRequest) {
       console.log("🔐 ========== REGISTER END (ERROR) ========== 🔐\n");
       return NextResponse.json(
         { error: "Password is required", field: "password" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     if (!confirmPassword) {
       console.log(
-        "❌ CONFIRM PASSWORD VALIDATION FAILED: Please confirm your password"
+        "❌ CONFIRM PASSWORD VALIDATION FAILED: Please confirm your password",
       );
       console.log("🔐 ========== REGISTER END (ERROR) ========== 🔐\n");
       return NextResponse.json(
         { error: "Please confirm your password", field: "confirmPassword" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     if (!firstName || !lastName) {
       console.log(
-        "❌ NAME VALIDATION FAILED: First and last name are required"
+        "❌ NAME VALIDATION FAILED: First and last name are required",
       );
       console.log("🔐 ========== REGISTER END (ERROR) ========== 🔐\n");
       return NextResponse.json(
         { error: "First and last name are required", field: "firstName" },
-        { status: 400 }
+        { status: 400 },
       );
     }
     console.log("✓ All required fields present");
@@ -74,7 +75,7 @@ export async function POST(request: NextRequest) {
       console.log("🔐 ========== REGISTER END (ERROR) ========== 🔐\n");
       return NextResponse.json(
         { error: "Invalid email format", field: "email" },
-        { status: 400 }
+        { status: 400 },
       );
     }
     console.log("✓ Email format valid");
@@ -88,12 +89,12 @@ export async function POST(request: NextRequest) {
       // Check if valid length (10-15 digits)
       if (digitsOnly.length < 10 || digitsOnly.length > 15) {
         console.log(
-          `❌ PHONE FORMAT INVALID: "${phone}" has ${digitsOnly.length} digits`
+          `❌ PHONE FORMAT INVALID: "${phone}" has ${digitsOnly.length} digits`,
         );
         console.log("🔐 ========== REGISTER END (ERROR) ========== 🔐\n");
         return NextResponse.json(
           { error: "Invalid phone number format", field: "phone" },
-          { status: 400 }
+          { status: 400 },
         );
       }
       console.log("✓ Phone format valid");
@@ -109,7 +110,7 @@ export async function POST(request: NextRequest) {
           error: "Password must be at least 8 characters long",
           field: "password",
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -122,7 +123,7 @@ export async function POST(request: NextRequest) {
           error: "Password must contain at least one uppercase letter",
           field: "password",
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -135,7 +136,7 @@ export async function POST(request: NextRequest) {
           error: "Password must contain at least one lowercase letter",
           field: "password",
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -148,7 +149,7 @@ export async function POST(request: NextRequest) {
           error: "Password must contain at least one number",
           field: "password",
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
     console.log("✓ Password strength valid");
@@ -159,7 +160,7 @@ export async function POST(request: NextRequest) {
       console.log("🔐 ========== REGISTER END (ERROR) ========== 🔐\n");
       return NextResponse.json(
         { error: "Passwords do not match", field: "confirmPassword" },
-        { status: 400 }
+        { status: 400 },
       );
     }
     console.log("✓ Passwords match");
@@ -168,7 +169,7 @@ export async function POST(request: NextRequest) {
     console.log("📝 Validating name lengths...");
     if (firstName.trim().length === 0 || firstName.length > 50) {
       console.log(
-        `❌ FIRST NAME LENGTH: "${firstName.length}" chars, needs 1-50`
+        `❌ FIRST NAME LENGTH: "${firstName.length}" chars, needs 1-50`,
       );
       console.log("🔐 ========== REGISTER END (ERROR) ========== 🔐\n");
       return NextResponse.json(
@@ -176,13 +177,13 @@ export async function POST(request: NextRequest) {
           error: "First name must be between 1 and 50 characters",
           field: "firstName",
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     if (lastName.trim().length === 0 || lastName.length > 50) {
       console.log(
-        `❌ LAST NAME LENGTH: "${lastName.length}" chars, needs 1-50`
+        `❌ LAST NAME LENGTH: "${lastName.length}" chars, needs 1-50`,
       );
       console.log("🔐 ========== REGISTER END (ERROR) ========== 🔐\n");
       return NextResponse.json(
@@ -190,7 +191,7 @@ export async function POST(request: NextRequest) {
           error: "Last name must be between 1 and 50 characters",
           field: "lastName",
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
     console.log("✓ Name lengths valid");
@@ -238,11 +239,14 @@ export async function POST(request: NextRequest) {
             emailVerified: user.emailVerified,
           },
         },
-        { status: 201 }
+        { status: 201 },
       );
 
       response.headers.set("Set-Cookie", createSecureCookie(token));
       console.log("🍪 Secure cookie set in response headers");
+
+      // Revalidate all pages to update auth state across the app
+      revalidatePath("/", "layout");
 
       console.log("✅ REGISTRATION SUCCESS");
       console.log("🔐 ========== REGISTER END (SUCCESS) ========== 🔐\n");
@@ -255,12 +259,12 @@ export async function POST(request: NextRequest) {
           console.log("🔐 ========== REGISTER END (ERROR) ========== 🔐\n");
           return NextResponse.json(
             { error: "This email is already registered", field: "email" },
-            { status: 400 }
+            { status: 400 },
           );
         }
         if (error.message.includes("Phone number already registered")) {
           console.log(
-            `❌ USER CREATION FAILED: Phone number already registered`
+            `❌ USER CREATION FAILED: Phone number already registered`,
           );
           console.log("🔐 ========== REGISTER END (ERROR) ========== 🔐\n");
           return NextResponse.json(
@@ -268,7 +272,7 @@ export async function POST(request: NextRequest) {
               error: "This phone number is already registered",
               field: "phone",
             },
-            { status: 400 }
+            { status: 400 },
           );
         }
       }
@@ -282,7 +286,7 @@ export async function POST(request: NextRequest) {
     console.log("🔐 ========== REGISTER END (ERROR) ========== 🔐\n");
     return NextResponse.json(
       { error: "An error occurred during registration: " + errorMessage },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
