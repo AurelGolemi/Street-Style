@@ -113,17 +113,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         throw new Error(data.error || "Login failed");
       }
 
-      // Immediately refresh auth state from server
-      await checkAuth();
-
-      // Load cart from server for this user
+      // Force a hard page reload to ensure cookies are processed and user sees logged-in state
       if (typeof window !== "undefined") {
-        const { useCartStore } = await import("@/store/CartStore");
-        useCartStore.getState().loadFromServer();
+        window.location.href = "/";
       }
-
-      router.push("/");
-      router.refresh();
     } catch (error) {
       throw error;
     }
@@ -144,17 +137,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         throw new Error(responseData.error || "Registration failed");
       }
 
-      // Immediately refresh auth state from server
-      await checkAuth();
-
-      // Initialize cart for new user
+      // Force a hard page reload to ensure cookies are processed and user sees logged-in state
       if (typeof window !== "undefined") {
-        const { useCartStore } = await import("@/store/CartStore");
-        useCartStore.getState().loadFromServer();
+        window.location.href = "/";
       }
-
-      router.push("/");
-      router.refresh();
     } catch (error) {
       throw error;
     }
@@ -167,15 +153,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         credentials: "include",
       });
 
-      // Immediately refresh auth state (will be null after logout)
-      await checkAuth();
-
-      useCartStore.getState().initializeCart(null);
-      router.push("/login");
-      router.refresh();
+      // Force a hard page reload to ensure cookies are cleared and user sees logged-out state
+      if (typeof window !== "undefined") {
+        window.location.href = "/login";
+      }
     } catch (error) {
       console.error("Logout failed:", error);
-      setUser(null);
+      // Still navigate on error
+      if (typeof window !== "undefined") {
+        window.location.href = "/login";
+      }
     }
   };
 
