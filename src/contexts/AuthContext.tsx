@@ -2,6 +2,7 @@
 
 import { useCartStore } from "@/store/CartStore";
 import { useRouter } from "next/navigation";
+import { createClient } from "@/lib/supabase/client";
 import {
   createContext,
   ReactNode,
@@ -46,23 +47,50 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const router = useRouter();
 
   useEffect(() => {
+    // Initial auth check
     checkAuth();
 
-    // Check auth on focus/visibility changes to handle cross-device sessions
+    // CRITICAL FIX: Subscribe to Supabase auth state changes for real-time updates
+    // This ensures UI updates immediately when auth state changes (login, logout, etc.)
+    const supabase = createClient();
+    const { data: authListenerData } = supabase.auth.onAuthStateChange(
+      async (event, session) => {
+        console.log("[AUTH STATE CHANGE]", event, session?.user?.id);
+
+        // When user logs in or session is restored, refresh user data
+        if (event === "SIGNED_IN" || event === "USER_UPDATED") {
+          console.log(
+            "[AUTH LISTENER] Refreshing user after auth state change",
+          );
+          await checkAuth();
+        }
+
+        // When user logs out, clear state immediately
+        if (event === "SIGNED_OUT") {
+          console.log("[AUTH LISTENER] Clearing user on sign out");
+          setUser(null);
+          useCartStore.getState().initializeCart(null);
+        }
+      },
+    );
+
+    // Check auth on focus/visibility changes as secondary polling
     const handleVisibilityChange = () => {
       if (document.visibilityState === "visible") {
         checkAuth();
       }
     };
 
-    // Also check on window focus for better cross-device sync
     const handleWindowFocus = () => {
       checkAuth();
     };
 
     window.addEventListener("visibilitychange", handleVisibilityChange);
     window.addEventListener("focus", handleWindowFocus);
+
+    // Cleanup: Unsubscribe from auth listener and remove event listeners
     return () => {
+      authListenerData?.subscription.unsubscribe();
       window.removeEventListener("visibilitychange", handleVisibilityChange);
       window.removeEventListener("focus", handleWindowFocus);
     };
@@ -121,7 +149,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         console.error("Cart initialization failed after login:", e);
       }
 
-      // Redirect client-side; new page load will also pick up cookies for SSR
+      // Give UI a moment to render the logged-in state before navigating
+      // onAuthStateChange listener will also trigger, but having local state
+      // updated first prevents brief flashes of logged-out UI
+      await new Promise((resolve) => setTimeout(resolve, 100));
+
+      // Redirect; SSR middleware and cache revalidation will sync server state
       router.push("/");
     } catch (error) {
       throw error;
@@ -150,6 +183,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       } catch (e) {
         console.error("Cart initialization failed after register:", e);
       }
+
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       // Redirect client-side; new page load will also pick up cookies for SSR
       router.push("/");

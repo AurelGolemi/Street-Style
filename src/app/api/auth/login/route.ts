@@ -85,6 +85,9 @@ export async function POST(request: NextRequest) {
     revalidatePath("/", "layout");
 
     console.log("✅ SUPABASE LOGIN SUCCESS");
+    console.log(
+      "[LOGIN] Auth state listener should trigger SIGNED_IN event in client",
+    );
     console.log("🔐 ========== SUPABASE LOGIN END (SUCCESS) ========== 🔐\n");
 
     // Create response
