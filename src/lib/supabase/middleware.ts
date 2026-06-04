@@ -1,9 +1,17 @@
+/**
+ * Supabase middleware redirect logic
+ * RESPONSIBILITY: Check auth state and redirect based on route protection rules
+ * - Protect private routes (/profile, etc.) by redirecting to /login
+ * - Redirect authenticated users away from /login and /register to home
+ */
+
 import { createServerClient } from "@supabase/ssr";
-import { NextResponse, type NextRequest } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 
-export async function updateSession(request: NextRequest) {
-  let supabaseResponse = NextResponse.next({ request });
-
+export async function applyAuthRedirects(
+  request: NextRequest,
+  supabaseResponse: NextResponse,
+) {
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
@@ -12,24 +20,19 @@ export async function updateSession(request: NextRequest) {
         getAll() {
           return request.cookies.getAll();
         },
-        setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value }) => {
-            request.cookies.set(name, value);
-          });
-          supabaseResponse = NextResponse.next({ request });
-          cookiesToSet.forEach(({ name, value, options }) => {
-            supabaseResponse.cookies.set(name, value, options);
-          });
-        },
+        // For middleware, we don't need setAll because we're read-only
+        // Cookie refresh is handled in lib/supabase/proxy.ts
+        setAll() {},
       },
     },
   );
 
+  // Get current auth state using getUser() which checks the session
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
-  // Protect /profile route
+  // Protected routes - redirect to login if not authenticated
   if (!user && request.nextUrl.pathname.startsWith("/profile")) {
     const url = request.nextUrl.clone();
     url.pathname = "/login";
@@ -37,7 +40,7 @@ export async function updateSession(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
-  // Redirect authenticated users from auth pages
+  // Auth routes - redirect to home if already authenticated
   if (
     user &&
     (request.nextUrl.pathname === "/login" ||
@@ -48,5 +51,6 @@ export async function updateSession(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
+  // No redirect needed, return the proxied response with refreshed session
   return supabaseResponse;
 }
