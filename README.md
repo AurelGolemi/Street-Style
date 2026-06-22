@@ -1,35 +1,105 @@
-# 🛍️ Street Style — Modern E-Commerce Web App
+# 🛍️ Street Style — Modern E-Commerce Web Application
 
-**Live Demo:** [street-style-iota.vercel.app](https://street-style-iota.vercel.app)
+🔗 Live Demo: https://street-style-iota.vercel.app
 
-Street Style is a modern, fully responsive e-commerce web app built to showcase stylish streetwear products.  
-The goal was to create a fast, minimal, and immersive shopping experience using modern web technologies and clean UI design.
-
----
-
-## 🚀 Features
-- 🧾 **Dynamic Product Listing** – Browse through curated streetwear products with clean, responsive layouts.  
-- 🛒 **Cart System** – Add and manage items in your shopping cart with real-time updates.  
-- 🌍 **Internationalization (i18n)** – Multi-language support powered by `next-intl`.  
-- 📊 **Analytics Integration** – Google Analytics 4 with Consent Mode for accurate tracking and insights.  
-- 🔍 **SEO Optimization** – Optimized meta tags, Open Graph data, and structured schema.  
-- 📱 **Responsive Design** – Perfectly adapts to any device using Tailwind CSS.  
-- ⚡ **Lightning-Fast Deployment** – Hosted and continuously deployed via Vercel.  
+Street Style is a fully responsive e-commerce web application built with Next.js 15 (App Router) and TypeScript.  
+The project focuses on performance, scalability, internationalization, analytics integration, and modern UI architecture.
 
 ---
 
-## 🧱 Tech Stack
-- **Next.js 15+ (App Router)** – Full-stack React framework  
-- **TypeScript** – Type safety and maintainable code  
-- **React** – Component-based UI logic  
-- **Tailwind CSS** – Utility-first modern styling  
-- **Next-Intl** – Internationalization for multi-language support  
-- **Google Analytics 4** – Traffic monitoring and performance insights  
-- **Vercel** – Hosting and CI/CD  
+## 🚀 Overview
+
+The goal of this project was to simulate a real-world streetwear e-commerce platform while implementing production-level frontend patterns including:
+
+- App Router architecture
+- Server & Client Component separation
+- Cart state management
+- Internationalized routing
+- SEO & structured metadata
+- Google Analytics 4 with Consent Mode
 
 ---
 
-## 🧩 Project Goals
-- Create a clean, professional, and modern UI for a streetwear e-commerce concept  
-- Implement key e-commerce features (product listings, cart, responsive layout)  
-- Learn and apply SEO, GA4, and internationalization with Next.js  
+## 🛠 Tech Stack
+
+Framework:
+- Next.js 15+ (App Router)
+
+Frontend:
+- React
+- TypeScript
+- Tailwind CSS
+
+Internationalization:
+- next-intl
+
+Analytics:
+- Google Analytics 4
+- Consent Mode
+
+Deployment & CI/CD:
+- Vercel
+
+---
+
+## ✨ Core Features
+
+🧾 Dynamic Product Listings  
+- Responsive product grid layout  
+- Structured product data  
+
+🛒 Cart System  
+- Real-time cart state updates  
+- Add / remove item functionality  
+- Client-side state management  
+
+🌍 Internationalization (i18n)  
+- Multi-language routing  
+- Dynamic locale switching  
+
+🔍 SEO Optimization  
+- Dynamic metadata  
+- Open Graph tags  
+- Structured schema  
+
+📊 Analytics Integration  
+- GA4 event tracking  
+- Consent-based analytics configuration  
+
+📱 Fully Responsive  
+- Mobile-first Tailwind implementation  
+
+---
+
+## 🧠 Architecture Highlights
+
+- App Router with nested layouts
+- Separation of server and client components
+- Modular component structure (UI / Layout / Feature components)
+- Type-safe product models using TypeScript
+- Scalable folder organization for maintainability
+- Optimized image handling via Next.js Image component
+
+---
+
+## 📂 Project Structure (Simplified)
+app/
+components/
+lib/
+public/
+
+
+- `app/` → Routes & layout structure
+- `components/` → Reusable UI and feature components
+- `lib/` → Utility functions and shared logic
+
+---
+
+## ⚙️ Installation & Setup
+
+```bash
+git clone https://github.com/AurelGolemi/street-style
+cd street-style
+npm install
+npm run dev
+Then open https://localhost:3000
