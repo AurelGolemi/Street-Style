@@ -1,6 +1,5 @@
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
-import { cookies } from "next/headers";
 import { NextResponse, type NextRequest } from "next/server";
 
 export async function POST(request: NextRequest) {
@@ -20,7 +19,6 @@ export async function POST(request: NextRequest) {
       lastName: lastName ? `✓ "${lastName}"` : "✗ missing",
     });
 
-    // Validate required fields
     if (!email || !password || !confirmPassword || !firstName || !lastName) {
       console.log("❌ VALIDATION FAILED: All fields are required");
       console.log(
@@ -32,7 +30,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       console.log(`❌ EMAIL FORMAT INVALID: "${email}" does not match regex`);
@@ -45,7 +42,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Validate password strength
     if (password.length < 8) {
       console.log(`❌ PASSWORD LENGTH: "${password.length}" chars, needs 8+`);
       console.log(
@@ -90,7 +86,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Validate password match
     if (password !== confirmPassword) {
       console.log("❌ PASSWORD MISMATCH: passwords do not match");
       console.log(
@@ -102,7 +97,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Validate name lengths
     if (
       firstName.trim().length === 0 ||
       firstName.length > 50 ||
@@ -119,10 +113,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Create Supabase client
     const supabase = await createServerSupabaseClient();
 
-    // Sign up with Supabase
     console.log("🔐 Attempting Supabase sign up...");
     const { data: authData, error: authError } = await supabase.auth.signUp({
       email,
@@ -159,7 +151,6 @@ export async function POST(request: NextRequest) {
 
     console.log("✓ Supabase account created");
 
-    // Fetch or wait for profile to be created (trigger should create it)
     console.log("👤 Fetching user profile...");
     const { data: profile } = await supabase
       .from("user_profiles")
@@ -179,7 +170,6 @@ export async function POST(request: NextRequest) {
 
     console.log("✓ User profile retrieved");
 
-    // Revalidate all pages to update auth state across the app
     revalidatePath("/", "layout");
 
     console.log("✅ SUPABASE REGISTRATION SUCCESS");
@@ -187,39 +177,22 @@ export async function POST(request: NextRequest) {
       "🔐 ========== SUPABASE REGISTER END (SUCCESS) ========== 🔐\n",
     );
 
-    // Create response
-    const response = NextResponse.json(
+    // Return user. Session/cookies handled by @supabase/ssr via middleware.
+    return NextResponse.json(
       {
         success: true,
         user: userData,
       },
       { status: 201 },
     );
-
-    // Get the updated cookies from the cookie store and set them in the response
-    const cookieStore = await cookies();
-    const allCookies = cookieStore.getAll();
-
-    // Debug: Log all cookies to be set
-    console.log("[REGISTER] Setting cookies in response:", allCookies);
-
-    // Set all Supabase-related cookies in the response
-    allCookies.forEach((cookie) => {
-      response.cookies.set(cookie.name, cookie.value, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "lax",
-        maxAge: 60 * 60 * 24 * 365, // 1 year
-      });
-    });
-
-    return response;
   } catch (error) {
     console.error("💥 REGISTRATION ERROR:", error);
     const errorMessage =
       error instanceof Error ? error.message : "Unknown error";
+
     console.error("💥 Error details:", errorMessage);
     console.log("🔐 ========== SUPABASE REGISTER END (ERROR) ========== 🔐\n");
+
     return NextResponse.json(
       { error: "An error occurred during registration: " + errorMessage },
       { status: 500 },

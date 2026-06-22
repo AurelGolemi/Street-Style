@@ -1,15 +1,17 @@
 "use client";
 
-import { signUp } from "@/app/actions/auth";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function RegisterForm() {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+
+  const { register } = useAuth();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -19,25 +21,30 @@ export default function RegisterForm() {
 
     try {
       const formData = new FormData(e.currentTarget);
-      const result = await signUp(formData);
+      const email = formData.get("email") as string;
+      const phone = (formData.get("phone_number") as string | null) ?? undefined;
+      const password = formData.get("password") as string;
 
-      if (result.error) {
-        setError(result.error);
-        setIsLoading(false);
-        return;
-      }
+      // This form collects full name; split into first/last for the API/AuthContext contract.
+      const fullName = (formData.get("full_name") as string) || "";
+      const [firstName, ...rest] = fullName.trim().split(/\s+/);
+      const lastName = rest.join(" ");
 
-      if (result.success) {
-        setSuccess("Account created successfully!");
-        // Redirect to login after 2 seconds
-        setTimeout(() => {
-          router.push("/login");
-        }, 2000);
-      }
+      await register({
+        email,
+        phone,
+        password,
+        firstName: firstName || "",
+        lastName: lastName || "",
+      });
+
+      // AuthContext.register does router.push("/") internally
+      setSuccess("Account created successfully!");
     } catch (err) {
       setError("An unexpected error occurred");
-      setIsLoading(false);
       console.error("Submit error:", err);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -73,7 +80,6 @@ export default function RegisterForm() {
           )}
 
           <div className="space-y-4">
-            {/* Full Name */}
             <div>
               <label
                 htmlFor="full_name"
@@ -91,7 +97,6 @@ export default function RegisterForm() {
               />
             </div>
 
-            {/* Email */}
             <div>
               <label
                 htmlFor="email"
@@ -109,7 +114,6 @@ export default function RegisterForm() {
               />
             </div>
 
-            {/* Phone */}
             <div>
               <label
                 htmlFor="phone_number"
@@ -126,7 +130,6 @@ export default function RegisterForm() {
               />
             </div>
 
-            {/* Password */}
             <div>
               <label
                 htmlFor="password"
@@ -147,7 +150,6 @@ export default function RegisterForm() {
               </p>
             </div>
 
-            {/* Confirm Password */}
             <div>
               <label
                 htmlFor="confirm_password"
@@ -178,3 +180,4 @@ export default function RegisterForm() {
     </div>
   );
 }
+

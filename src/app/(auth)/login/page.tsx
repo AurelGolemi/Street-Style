@@ -1,67 +1,37 @@
-'use client'
+"use client";
 
-import { useState, useTransition } from 'react'
-import { signIn } from '@/app/actions/auth'
-import Link from 'next/link'
-import { useRouter } from 'next/navigation'
+import { useAuth } from "@/contexts/AuthContext";
+import Link from "next/link";
+import { useState, useTransition } from "react";
 
 export default function LoginPage() {
-  // Why useState for error: We need to store and display error messages
-  // in the UI. State persists across re-renders.
-  const [error, setError] = useState<string | null>(null)
-  
-  // Why useTransition: This React hook gives us 'isPending' state for
-  // server actions. It's more reliable than managing loading state manually.
-  const [isPending, startTransition] = useTransition()
-  
-  // Why useRouter: Backup navigation in case redirect fails
-  const router = useRouter()
+  const { login } = useAuth();
+
+  const [error, setError] = useState<string | null>(null);
+
+  const [isPending, startTransition] = useTransition();
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault()
-    // Why preventDefault: Stops the browser's default form submission
-    // (which would reload the page). We want to handle it with JavaScript.
-    
-    setError(null)
-    // Clear any previous errors before attempting new login
+    e.preventDefault();
 
-    const formData = new FormData(e.currentTarget)
-    // Why e.currentTarget: Gets the form element that triggered the event.
-    // This gives us access to all form fields via FormData API.
+    setError(null);
 
-    // Why startTransition: Wraps the async operation and automatically
-    // sets isPending to true during execution, false when complete.
+    const formData = new FormData(e.currentTarget);
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
+
     startTransition(async () => {
       try {
-        const result = await signIn(formData)
-        // Server action returns undefined on success (due to redirect)
-        // or {error: string} on failure
-
-        if (result?.error) {
-          // If we got an error back, display it
-          setError(result.error)
-        } else {
-          // Success case: redirect worked, but if we reach here (shouldn't happen),
-          // manually navigate as backup
-          router.push('/')
-          router.refresh()
-          // Why refresh: Forces Next.js to refetch server components,
-          // ensuring auth state is updated
-        }
+        await login(email, password); // handles setUser + router.push internally
       } catch (err) {
-        // Why catch: If redirect() throws (which it does), we catch it here.
-        // If it's the redirect error, ignore it (that's expected behavior).
-        // If it's another error, handle it.
-        
-        if (err instanceof Error && err.message === 'NEXT_REDIRECT') {
-          // This is expected - redirect() throws this error to stop execution
-          return
-        }
-        
-        console.error('Unexpected error:', err)
-        setError('An unexpected error occurred. Please try again.')
+        console.error("Login failed:", err);
+        setError(
+          err instanceof Error
+            ? err.message
+            : "An unexpected error occurred. Please try again.",
+        );
       }
-    })
+    });
   }
 
   return (
@@ -72,8 +42,11 @@ export default function LoginPage() {
             Sign in to Street Style
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600">
-            Or{' '}
-            <Link href="/register" className="font-medium text-black hover:underline">
+            Or{" "}
+            <Link
+              href="/register"
+              className="font-medium text-black hover:underline"
+            >
               create a new account
             </Link>
           </p>
@@ -88,7 +61,10 @@ export default function LoginPage() {
 
           <div className="space-y-4">
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Email address
               </label>
               <input
@@ -103,7 +79,10 @@ export default function LoginPage() {
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Password
               </label>
               <input
@@ -125,18 +104,34 @@ export default function LoginPage() {
           >
             {isPending ? (
               <span className="flex items-center">
-                <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                <svg
+                  className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  ></path>
                 </svg>
                 Signing in...
               </span>
             ) : (
-              'Sign in'
+              "Sign in"
             )}
           </button>
         </form>
       </div>
     </div>
-  )
+  );
 }

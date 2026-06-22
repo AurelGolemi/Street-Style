@@ -1,8 +1,10 @@
 'use client'
 
-import { signOut } from '@/app/actions/auth'
+// import { signOut } from '@/app/actions/auth'
 import { useState } from 'react'
 import Link from 'next/link'
+import { useAuth } from '@/contexts/AuthContext'
+
 
 interface UserDropdownProps {
   user: {
@@ -15,6 +17,7 @@ interface UserDropdownProps {
 }
 
 export default function UserDropdown({ user }: UserDropdownProps) {
+  const { logout } = useAuth();
   const [isOpen, setIsOpen] = useState(false)
 
   // Why user_metadata?.full_name: Optional chaining. If user_metadata
@@ -126,9 +129,13 @@ export default function UserDropdown({ user }: UserDropdownProps) {
 
             {/* Sign Out Button */}
             <button
-              onClick={() => {
+              onClick={async () => {
                 setIsOpen(false)
-                signOut()
+                try {
+                  await logout()
+                } catch (e) {
+                  console.error('Logout failed:', e)
+                }
               }}
               className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors"
             >

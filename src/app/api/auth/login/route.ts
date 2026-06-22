@@ -1,6 +1,5 @@
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
-import { cookies } from "next/headers";
 import { NextResponse, type NextRequest } from "next/server";
 
 export async function POST(request: NextRequest) {
@@ -25,10 +24,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Create Supabase client
     const supabase = await createServerSupabaseClient();
 
-    // Sign in with Supabase
     console.log("🔐 Attempting Supabase sign in...");
     const { data: authData, error: authError } =
       await supabase.auth.signInWithPassword({
@@ -68,7 +65,6 @@ export async function POST(request: NextRequest) {
       console.warn("⚠️ Profile fetch warning:", profileError.message);
     }
 
-    // Return user data
     const userData = {
       id: authData.user.id,
       email: authData.user.email!,
@@ -81,7 +77,7 @@ export async function POST(request: NextRequest) {
 
     console.log("✓ User profile retrieved");
 
-    // Revalidate all pages to update auth state across the app
+    // Sync server components/UI
     revalidatePath("/", "layout");
 
     console.log("✅ SUPABASE LOGIN SUCCESS");
@@ -90,39 +86,22 @@ export async function POST(request: NextRequest) {
     );
     console.log("🔐 ========== SUPABASE LOGIN END (SUCCESS) ========== 🔐\n");
 
-    // Create response
-    const response = NextResponse.json(
+    // Session/cookies are handled by @supabase/ssr via middleware.
+    return NextResponse.json(
       {
         success: true,
         user: userData,
       },
       { status: 200 },
     );
-
-    // Get the updated cookies from the cookie store and set them in the response
-    const cookieStore = await cookies();
-    const allCookies = cookieStore.getAll();
-
-    // Debug: Log all cookies to be set
-    console.log("[LOGIN] Setting cookies in response:", allCookies);
-
-    // Set all Supabase-related cookies in the response
-    allCookies.forEach((cookie) => {
-      response.cookies.set(cookie.name, cookie.value, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "lax",
-        maxAge: 60 * 60 * 24 * 365, // 1 year
-      });
-    });
-
-    return response;
   } catch (error) {
     console.error("💥 LOGIN ERROR:", error);
     const errorMessage =
       error instanceof Error ? error.message : "Unknown error";
+
     console.error("💥 Error details:", errorMessage);
     console.log("🔐 ========== SUPABASE LOGIN END (ERROR) ========== 🔐\n");
+
     return NextResponse.json(
       { error: "An error occurred during login: " + errorMessage },
       { status: 500 },
