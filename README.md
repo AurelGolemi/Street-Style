@@ -16,7 +16,7 @@ The goal of this project was to simulate a real-world streetwear e-commerce plat
 - Cart state management
 - Internationalized routing
 - SEO & structured metadata
-- Google Analytics 4 with Consent Mode
+- Authentication & user data
 
 ---
 
@@ -30,12 +30,9 @@ Frontend:
 - TypeScript
 - Tailwind CSS
 
-Internationalization:
-- next-intl
-
-Analytics:
-- Google Analytics 4
-- Consent Mode
+Back-End & Data Integration:
+- Supabase (PostgreSQL-Integrated)
+- Rest API
 
 Deployment & CI/CD:
 - Vercel
@@ -53,18 +50,14 @@ Deployment & CI/CD:
 - Add / remove item functionality  
 - Client-side state management  
 
-🌍 Internationalization (i18n)  
-- Multi-language routing  
-- Dynamic locale switching  
-
 🔍 SEO Optimization  
 - Dynamic metadata  
 - Open Graph tags  
 - Structured schema  
 
-📊 Analytics Integration  
-- GA4 event tracking  
-- Consent-based analytics configuration  
+📊 Database Integration
+- Supabase Authentication
+- Rest API routes
 
 📱 Fully Responsive  
 - Mobile-first Tailwind implementation  
