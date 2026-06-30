@@ -94,7 +94,7 @@ export default function BrandsPage() {
                 href={`/${category.name.toLowerCase()}`}
                 className="relative group aspect-square rounded-2xl overflow-hidden"
               >
-                <div className="absolute inset-0 bg-gradient-to-br from-gray-900 to-gray-700">
+                <div className="absolute inset-0 bg-linear-to-br from-gray-900 to-gray-700">
                   {/* Add background image here in production */}
                   <Image
                     src={category.image}

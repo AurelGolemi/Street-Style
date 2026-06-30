@@ -2,7 +2,7 @@
 
 import ProductCard from "@/components/products/ProductCard";
 import Container from "@/components/ui/Container";
-import { getProductsByCategory, isOnSale } from "@/data/products";
+import { products, isOnSale } from "@/data/products";
 import { Filter, X } from "lucide-react";
 import { useMemo, useState } from "react";
 
@@ -13,7 +13,7 @@ export default function SalesPage() {
   const [sortBy, setSortBy] = useState("featured");
   const [showFilters, setShowFilters] = useState(false);
 
-  const rawSales = getProductsByCategory("sales").filter((product) => isOnSale(product));
+  const rawSales = products.filter((product) => isOnSale(product));
 
   const brands = Array.from(new Set(rawSales.map((p) => p.brand)));
   const categories = Array.from(new Set(rawSales.map((p) => p.category)));
@@ -70,6 +70,14 @@ export default function SalesPage() {
     );
   };
 
+  const handleMinPriceChange = (value: number) => {
+    setPriceRange(([, max]) => [Math.min(value, max), max]);
+  };
+
+  const handleMaxPriceChange = (value: number) => {
+    setPriceRange(([min]) => [min, Math.max(value, min)]);
+  };
+
   const clearAllFilters = () => {
     setSelectedBrands([]);
     setSelectedCategories([]);
@@ -95,7 +103,7 @@ export default function SalesPage() {
       <Container className="py-12">
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Filters Sidebar - Desktop */}
-          <aside className="hidden lg:block lg:w-64 flex-shrink-0">
+          <aside className="hidden lg:block lg:w-64 shrink-0">
             <div className="sticky top-24 bg-white rounded-lg shadow-sm p-6 border border-gray-200">
               <div className="flex items-center justify-between mb-6">
                 <h3 className="font-bold text-lg text-gray-900">Filters</h3>
@@ -158,14 +166,19 @@ export default function SalesPage() {
               {/* Price Range */}
               <div>
                 <h4 className="font-semibold mb-3 text-gray-900">Price</h4>
-                <input
-                  type="range"
-                  min="0"
-                  max="300"
-                  value={priceRange[1]}
-                  onChange={(e) => setPriceRange([0, parseInt(e.target.value)])}
-                  className="w-full accent-blue-600"
-                />
+                <div className="space-y-3">
+                  <div>
+                    <label className="text-xs text-gray-500">Max</label>
+                    <input
+                      type="range"
+                      min="0"
+                      max="300"
+                      value={priceRange[1]}
+                      onChange={(e) => handleMaxPriceChange(parseInt(e.target.value))}
+                      className="w-full accent-blue-600"
+                    />
+                  </div>
+                </div>
                 <div className="flex justify-between text-sm text-gray-600 mt-2">
                   <span>€{priceRange[0]}</span>
                   <span>€{priceRange[1]}</span>

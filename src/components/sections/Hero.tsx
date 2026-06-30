@@ -142,7 +142,7 @@ const HeroSlideshow: React.FC<HeroSlideshowProps> = ({
 
               {/* Gradient Overlay for text readability */}
               <div
-                className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-transparent"
+                className="absolute inset-0 bg-linear-to-r from-black/70 via-black/50 to-transparent"
                 style={{
                   opacity: (slide.overlayOpacity ?? 60) / 100
                 }}
@@ -305,6 +305,15 @@ const Hero = () => {
       ctaText: "Shop Now",
       ctaLink: "/sales",
       backgroundImage: '/slideshow-image/cold-weather-kit.jpg',
+      overlayOpacity: 60
+    },
+    {
+      id: 5,
+      title: "Hoodrich Style",
+      description: "Here are your new exclusive hoodrich clothes",
+      ctaText: "Shop Now",
+      ctaLink: "/sales",
+      backgroundImage: '/slideshow-image/hoodrich-style.jpg',
       overlayOpacity: 60
     }
   ];

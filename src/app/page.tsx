@@ -133,7 +133,7 @@ export default function HomePage() {
                     sizes="(max-width: 768px) 100vw, 33vw"
                   />
                 </div>
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent flex flex-col items-center justify-end p-8 text-center">
+                <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/40 to-transparent flex flex-col items-center justify-end p-8 text-center">
                   <h3 className="text-white text-4xl font-bold mb-2 group-hover:scale-110 transition-transform">
                     {category.name}
                   </h3>
@@ -308,7 +308,7 @@ export default function HomePage() {
       </section>
 
       {/* Newsletter Section */}
-      <div className="py-16 bg-gradient-to-r from-gray-100 to-gray-200">
+      <div className="py-16 bg-linear-to-r from-gray-100 to-gray-200">
         <Container>
           <div className="text-center max-w-2xl mx-auto">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">

@@ -267,9 +267,9 @@ export default function ProfilePage() {
         role="alert"
       >
         {message.type === "success" ? (
-          <CheckCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
+          <CheckCircle className="w-5 h-5 shrink-0 mt-0.5" />
         ) : (
-          <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
+          <AlertCircle className="w-5 h-5 shrink-0 mt-0.5" />
         )}
         <span className="text-sm">{message.text}</span>
       </div>
@@ -309,7 +309,7 @@ export default function ProfilePage() {
         {/* Header */}
         <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
           <div className="flex items-center space-x-4">
-            <div className="w-16 h-16 bg-gradient-to-br from-black to-gray-700 rounded-full flex items-center justify-center">
+            <div className="w-16 h-16 bg-linear-to-br from-black to-gray-700 rounded-full flex items-center justify-center">
               <User className="w-8 h-8 text-white" />
             </div>
             <div>
@@ -547,7 +547,7 @@ export default function ProfilePage() {
                 <div className="space-y-4">
                   <div className="bg-red-50 border border-red-200 rounded-lg p-4">
                     <div className="flex items-start space-x-3">
-                      <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+                      <AlertCircle className="w-5 h-5 text-red-600 shrink-0 mt-0.5" />
                       <div>
                         <h3 className="font-semibold text-red-900 mb-1">Danger Zone</h3>
                         <p className="text-sm text-red-800">

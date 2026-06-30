@@ -77,8 +77,8 @@ export default function Footer() {
             © 2025 Street Style. All rights reserved.
           </p>
           <div className="flex space-x-6 mt-4 md:mt-0">
-            <Link href="/privacy" onClick={handleNavClick} className="text-gray-800 hover:text-white text-sm transition">Privacy Policy</Link>
-            <Link href="/terms" onClick={handleNavClick} className="text-gray-800 hover:text-white text-sm transition">Terms of Service</Link>
+            <Link href="/privacy" onClick={handleNavClick} className="text-gray-800 hover:text-black hover:underline-offset-2 text-sm transition">Privacy Policy</Link>
+            <Link href="/terms" onClick={handleNavClick} className="text-gray-800 hover:text-black hover:underline-offset-2 text-sm transition">Terms of Service</Link>
           </div>
         </div>
       </Container>
